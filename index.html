@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Research Methods Map — Interactive Explorer</title>
+<style>
+  :root {
+    --qualitative: #E8655A;
+    --quantitative: #5B9BD5;
+    --behavioral: #70AD47;
+    --attitudinal: #FFC000;
+    --exploratory: #9B59B6;
+    --generative: #E67E22;
+    --evaluative: #1ABC9C;
+    --phase1: #F4A7B9;
+    --phase2: #A8D8EA;
+    --phase3: #FDFD96;
+    --phase4: #B5EAD7;
+    --phase5: #C3B1E1;
+    --bg: #F7F8FA;
+    --card: #FFFFFF;
+    --text: #2D3748;
+    --textLight: #718096;
+    --border: #E2E8F0;
+    --accent: #4A6CF7;
+    --accentHover: #3B5DE7;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    padding: 2rem 2rem 1.5rem;
+    position: sticky; top:0; z-index:100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .header h1 { font-size:1.6rem; font-weight:700; margin-bottom:.3rem; }
+  .header p { font-size:.85rem; opacity:.75; }
+  .header-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+  .search-box {
+    display:flex; align-items:center; background:rgba(255,255,255,.12);
+    border-radius:8px; padding:.45rem .8rem; min-width:280px; border:1px solid rgba(255,255,255,.15);
+  }
+  .search-box input {
+    background:none; border:none; color:white; outline:none; font-size:.9rem; width:100%;
+    margin-left:.4rem;
+  }
+  .search-box input::placeholder { color:rgba(255,255,255,.5); }
+  .search-icon { opacity:.5; }
+  /* Tabs */
+  .tabs {
+    display:flex; gap:0; margin-top:1rem; border-bottom:2px solid rgba(255,255,255,.1);
+  }
+  .tab {
+    padding:.5rem 1.2rem; font-size:.85rem; cursor:pointer; border:none; background:none;
+    color:rgba(255,255,255,.55); font-weight:500; border-bottom:2px solid transparent;
+    margin-bottom:-2px; transition:.2s;
+  }
+  .tab:hover { color:rgba(255,255,255,.8); }
+  .tab.active { color:white; border-bottom-color:#4A6CF7; }
+  .tab .badge {
+    background:var(--accent); color:white; font-size:.7rem; padding:1px 6px;
+    border-radius:10px; margin-left:6px; vertical-align:middle;
+  }
+  /* Layout */
+  .layout { display:flex; min-height:calc(100vh - 140px); }
+  /* Sidebar */
+  .sidebar {
+    width:280px; min-width:280px; background:white; border-right:1px solid var(--border);
+    padding:1.2rem; overflow-y:auto; max-height:calc(100vh - 140px); position:sticky; top:140px;
+  }
+  .filter-section { margin-bottom:1.4rem; }
+  .filter-title {
+    font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--textLight); margin-bottom:.6rem;
+  }
+  .filter-group { display:flex; flex-direction:column; gap:.35rem; }
+  .filter-item {
+    display:flex; align-items:center; gap:.5rem; cursor:pointer; padding:.3rem .4rem;
+    border-radius:6px; transition:.15s; font-size:.84rem;
+  }
+  .filter-item:hover { background:#F0F4FF; }
+  .filter-item input[type=checkbox] { accent-color:var(--accent); width:15px; height:15px; cursor:pointer; }
+  .color-dot {
+    width:12px; height:12px; border-radius:50%; flex-shrink:0;
+  }
+  .btn-clear {
+    font-size:.75rem; color:var(--accent); cursor:pointer; background:none; border:none;
+    float:right; margin-top:-1.2rem;
+  }
+  .btn-clear:hover { text-decoration:underline; }
+  /* Main area */
+  .main { flex:1; padding:1.5rem; overflow-y:auto; max-height:calc(100vh - 140px); }
+  .results-bar {
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;
+    font-size:.85rem; color:var(--textLight);
+  }
+  .view-toggle { display:flex; gap:.3rem; }
+  .view-btn {
+    padding:.35rem .6rem; border:1px solid var(--border); background:white;
+    border-radius:6px; cursor:pointer; font-size:.8rem; transition:.15s;
+  }
+  .view-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
+  /* Grid view */
+  .methods-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:1rem;
+  }
+  .method-card {
+    background:white; border-radius:12px; padding:1.1rem; cursor:pointer;
+    border:1px solid var(--border); transition:.25s; position:relative; overflow:hidden;
+  }
+  .method-card:hover {
+    transform:translateY(-3px); box-shadow:0 8px 25px rgba(0,0,0,.08);
+    border-color:var(--accent);
+  }
+  .method-card.selected {
+    border-color:var(--accent); box-shadow:0 0 0 2px rgba(74,108,247,.25);
+  }
+  .method-card .card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.5rem; }
+  .method-card h3 { font-size:.95rem; font-weight:600; flex:1; }
+  .add-btn {
+    width:26px; height:26px; border-radius:50%; border:2px solid var(--border);
+    background:white; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; color:var(--textLight); transition:.2s; flex-shrink:0; margin-left:.5rem;
+  }
+  .add-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .add-btn.added { background:var(--accent); border-color:var(--accent); color:white; }
+  .card-tags { display:flex; flex-wrap:wrap; gap:.3rem; margin-bottom:.5rem; }
+  .tag {
+    font-size:.65rem; padding:2px 8px; border-radius:10px; font-weight:600;
+    white-space:nowrap;
+  }
+  .tag-qualitative { background:#FDECEA; color:#C0392B; }
+  .tag-quantitative { background:#E8F4FD; color:#2471A3; }
+  .tag-behavioral { background:#EAF7E5; color:#27AE60; }
+  .tag-attitudinal { background:#FFF9E6; color:#D4A017; }
+  .tag-exploratory { background:#F4ECF7; color:#8E44AD; }
+  .tag-generative { background:#FDF2E9; color:#CA6F1E; }
+  .tag-evaluative { background:#E8F8F5; color:#0E6655; }
+  .card-desc { font-size:.8rem; color:var(--textLight); line-height:1.5; }
+  .card-phases { display:flex; gap:3px; margin-top:.6rem; }
+  .phase-pip {
+    width:18px; height:6px; border-radius:3px; opacity:.3;
+  }
+  .phase-pip.active { opacity:1; }
+  /* List view */
+  .methods-list { display:flex; flex-direction:column; gap:.5rem; }
+  .method-row {
+    display:flex; align-items:center; gap:1rem; background:white; border-radius:10px;
+    padding:.8rem 1rem; border:1px solid var(--border); cursor:pointer; transition:.2s;
+  }
+  .method-row:hover { border-color:var(--accent); box-shadow:0 2px 10px rgba(0,0,0,.05); }
+  .method-row h3 { font-size:.9rem; font-weight:600; min-width:200px; }
+  .method-row .card-tags { margin:0; flex:1; }
+  .method-row .card-phases { margin:0; }
+  /* Detail Modal */
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200;
+    display:none; align-items:center; justify-content:center; padding:2rem;
+    backdrop-filter:blur(4px);
+  }
+  .modal-overlay.open { display:flex; }
+  .modal {
+    background:white; border-radius:16px; max-width:680px; width:100%;
+    max-height:85vh; overflow-y:auto; padding:2rem; position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.2);
+  }
+  .modal-close {
+    position:absolute; top:1rem; right:1rem; width:32px; height:32px;
+    border-radius:50%; border:none; background:#F0F0F0; cursor:pointer;
+    font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover { background:#E0E0E0; }
+  .modal h2 { font-size:1.4rem; font-weight:700; margin-bottom:.5rem; padding-right:2rem; }
+  .modal .card-tags { margin-bottom:1rem; }
+  .modal-section { margin-bottom:1.2rem; }
+  .modal-section h4 { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--textLight); margin-bottom:.4rem; }
+  .modal-section p, .modal-section ul { font-size:.9rem; line-height:1.7; }
+  .modal-section ul { padding-left:1.2rem; }
+  .modal-section li { margin-bottom:.3rem; }
+  .modal-phases { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1rem; }
+  .modal-phase-tag {
+    font-size:.75rem; padding:4px 12px; border-radius:8px; font-weight:600;
+  }
+  .modal-add-btn {
+    width:100%; padding:.7rem; border:none; border-radius:10px;
+    font-size:.9rem; font-weight:600; cursor:pointer; transition:.2s;
+    background:var(--accent); color:white; margin-top:1rem;
+  }
+  .modal-add-btn:hover { background:var(--accentHover); }
+  .modal-add-btn.added { background:#e74c3c; }
+  /* Project Panel */
+  .project-panel { display:none; }
+  .project-panel.visible { display:block; }
+  .project-card {
+    background:white; border-radius:12px; padding:1rem; border:1px solid var(--border);
+    margin-bottom:.8rem;
+  }
+  .project-card h3 { font-size:.9rem; margin-bottom:.4rem; }
+  .project-card .card-tags { margin-bottom:.3rem; }
+  .project-empty {
+    text-align:center; padding:3rem 1rem; color:var(--textLight);
+  }
+  .project-empty svg { width:48px; height:48px; opacity:.3; margin-bottom:1rem; }
+  .remove-btn {
+    font-size:.7rem; color:#e74c3c; cursor:pointer; background:none; border:none;
+    margin-top:.3rem;
+  }
+  .remove-btn:hover { text-decoration:underline; }
+  .export-btn {
+    width:100%; padding:.6rem; border:none; border-radius:8px;
+    background:var(--accent); color:white; font-weight:600; font-size:.85rem;
+    cursor:pointer; margin-top:1rem; transition:.2s;
+  }
+  .export-btn:hover { background:var(--accentHover); }
+  /* Phase legend strip */
+  .phase-legend {
+    display:flex; flex-wrap:wrap; gap:.5rem; padding:.8rem 1.2rem;
+    background:white; border-bottom:1px solid var(--border); font-size:.75rem;
+  }
+  .phase-legend-item { display:flex; align-items:center; gap:.3rem; }
+  .phase-legend-dot { width:10px; height:10px; border-radius:3px; }
+  /* Responsive */
+  @media(max-width:900px) {
+    .sidebar { display:none; }
+    .layout { flex-direction:column; }
+    .main { max-height:none; }
+  }
+  /* Scrollbar */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:#CBD5E0; border-radius:3px; }
+  /* Compare view */
+  .compare-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem;
+  }
+  .compare-card {
+    background:white; border-radius:12px; padding:1.2rem; border:1px solid var(--border);
+  }
+  .compare-card h3 { margin-bottom:.6rem; font-size:1rem; }
+  .compare-row { display:flex; justify-content:space-between; font-size:.82rem; padding:.3rem 0; border-bottom:1px solid #f0f0f0; }
+  .compare-row:last-child { border-bottom:none; }
+  .compare-label { color:var(--textLight); }
+  .compare-value { font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-row">
+    <div>
+      <h1>Map of Design Methods</h1>
+      <p>Explore, filter, and select the right user research methods for your project</p>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search methods..." oninput="applyFilters()">
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('explore')">Explore</button>
+    <button class="tab" onclick="switchTab('project')">My Project <span class="badge" id="projectCount">0</span></button>
+    <button class="tab" onclick="switchTab('compare')">Compare</button>
+  </div>
+</div>
+
+<div class="phase-legend">
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase1)"></div> Planning, Scoping & Definition</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase2)"></div> Exploration, Synthesis & Design Implication</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase3)"></div> Concept Generation & Early Prototype Iteration</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase4)"></div> Evaluation, Refinement & Production</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase5)"></div> Launch & Monitor</div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="filter-section">
+      <div class="filter-title">Data Type <button class="btn-clear" onclick="clearGroup('dataType')">Clear</button></div>
+      <div class="filter-group" id="dataTypeFilters">
+        <label class="filter-item"><input type="checkbox" value="qualitative" onchange="applyFilters()"><span class="color-dot" style="background:var(--qualitative)"></span>Qualitative</label>
+        <label class="filter-item"><input type="checkbox" value="quantitative" onchange="applyFilters()"><span class="color-dot" style="background:var(--quantitative)"></span>Quantitative</label>
+        <label class="filter-item"><input type="checkbox" value="behavioral" onchange="applyFilters()"><span class="color-dot" style="background:var(--behavioral)"></span>Behavioral</label>
+        <label class="filter-item"><input type="checkbox" value="attitudinal" onchange="applyFilters()"><span class="color-dot" style="background:var(--attitudinal)"></span>Attitudinal</label>
+      </div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Approach <button class="btn-clear" onclick="clearGroup('approach')">Clear</button></div>
+      <div class="filter-group" id="approachFilters">
+        <label class="filter-item"><input type="checkbox" value="exploratory" onchange="applyFilters()"><span class="color-dot" style="background:var(--exploratory)"></span>Exploratory</label>
+        <label class="filter-item"><input type="checkbox" value="generative" onchange="applyFilters()"><span class="color-dot" style="background:var(--generative)"></span>Generative</label>
+        <label class="filter-item"><input type="checkbox" value="evaluative" onchange="applyFilters()"><span class="color-dot" style="background:var(--evaluative)"></span>Evaluative</label>
+      </div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Design Phase <button class="btn-clear" onclick="clearGroup('phase')">Clear</button></div>
+      <div class="filter-group" id="phaseFilters">
+        <label class="filter-item"><input type="checkbox" value="phase1" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase1);border-radius:3px"></span>Planning & Scoping</label>
+        <label class="filter-item"><input type="checkbox" value="phase2" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase2);border-radius:3px"></span>Exploration & Synthesis</label>
+        <label class="filter-item"><input type="checkbox" value="phase3" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase3);border-radius:3px"></span>Concept Generation</label>
+        <label class="filter-item"><input type="checkbox" value="phase4" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase4);border-radius:3px"></span>Evaluation & Refinement</label>
+        <label class="filter-item"><input type="checkbox" value="phase5" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase5);border-radius:3px"></span>Launch & Monitor</label>
+      </div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Effort / Resources</div>
+      <div class="filter-group" id="effortFilters">
+        <label class="filter-item"><input type="checkbox" value="low" onchange="applyFilters()"> Low effort</label>
+        <label class="filter-item"><input type="checkbox" value="medium" onchange="applyFilters()"> Medium effort</label>
+        <label class="filter-item"><input type="checkbox" value="high" onchange="applyFilters()"> High effort</label>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main" id="mainContent">
+    <div id="exploreView">
+      <div class="results-bar">
+        <span id="resultCount">Showing 100 methods</span>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('grid')" id="gridBtn">Grid</button>
+          <button class="view-btn" onclick="setView('list')" id="listBtn">List</button>
+        </div>
+      </div>
+      <div class="methods-grid" id="methodsContainer"></div>
+    </div>
+    <div id="projectView" class="project-panel">
+      <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Selected Methods</h2>
+      <div id="projectMethods"></div>
+      <button class="export-btn" onclick="exportProject()" id="exportBtn" style="display:none">Export Selection as Text</button>
+    </div>
+    <div id="compareView" class="project-panel">
+      <h2 style="margin-bottom:1rem;font-size:1.2rem;">Compare Selected Methods</h2>
+      <div class="compare-grid" id="compareMethods"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const methods = [
+  // Each method: { name, dataType:[], approach:[], phases:[], effort, description, whenToUse, steps, strengths, limitations }
+  {
+    name: "A/B Testing",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase4","phase5"],
+    effort: "medium",
+    description: "A controlled experiment comparing two versions (A and B) of a design element to determine which performs better based on a specific metric.",
+    whenToUse: "When you need to make data-driven decisions between two design alternatives, optimize conversion rates, or validate design changes before full rollout.",
+    steps: ["Define the hypothesis and metric to measure","Create two variants (control and test)","Randomly split users between variants","Run the test for a statistically significant duration","Analyze results and implement the winner"],
+    strengths: ["Provides statistically significant evidence","Removes subjective bias from design decisions","Easy to understand and communicate results"],
+    limitations: ["Only tests two options at a time","Requires significant traffic for meaningful results","Doesn't explain why one version performs better"]
+  },
+  {
+    name: "AEIOU Framework",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "A structured observation framework categorizing findings into Activities, Environments, Interactions, Objects, and Users to organize ethnographic research data.",
+    whenToUse: "When conducting field observations and you need a systematic framework to organize your notes and ensure comprehensive coverage of contextual factors.",
+    steps: ["Prepare observation sheets with AEIOU categories","Observe users in their natural environment","Document Activities, Environments, Interactions, Objects, and Users","Synthesize findings across categories","Identify patterns and insights"],
+    strengths: ["Provides comprehensive observation structure","Easy to learn and apply","Ensures no key area is overlooked"],
+    limitations: ["Can feel rigid for some contexts","Requires skilled observers","Categories may overlap"]
+  },
+  {
+    name: "Affinity Diagramming",
+    dataType: ["qualitative"],
+    approach: ["exploratory","generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "A collaborative method of organizing large amounts of data, ideas, or insights into meaningful clusters by identifying natural relationships and themes.",
+    whenToUse: "After gathering qualitative data from interviews, usability tests, or brainstorming sessions and you need to synthesize findings into actionable themes.",
+    steps: ["Write individual data points on sticky notes","Spread all notes on a large surface","Group related notes together silently","Label each group with a theme","Discuss and refine groupings as a team"],
+    strengths: ["Reveals hidden patterns in data","Encourages team participation","Scalable to large data sets"],
+    limitations: ["Can be time-consuming with very large data sets","Groupings can be subjective","Requires physical or digital collaboration space"]
+  },
+  {
+    name: "Artifact Analysis",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "Examining objects, documents, or tools that people use in their daily work or life to understand their behaviors, needs, and cultural context.",
+    whenToUse: "When you want to understand users' existing tools, workflows, and workarounds without direct observation or interviews.",
+    steps: ["Identify relevant artifacts to collect","Gather physical or digital artifacts from users","Document and photograph each artifact","Analyze patterns, wear marks, customizations","Draw insights about user behavior and needs"],
+    strengths: ["Reveals unconscious behaviors","Non-intrusive method","Provides tangible evidence"],
+    limitations: ["Artifacts may lack context without user explanation","Limited to what users share","Interpretation can be subjective"]
+  },
+  {
+    name: "Automated Remote Research",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase4","phase5"],
+    effort: "low",
+    description: "Unmoderated research conducted via online platforms where participants complete tasks independently, with their interactions recorded automatically.",
+    whenToUse: "When you need quick usability feedback from a large number of geographically dispersed participants without the overhead of moderated sessions.",
+    steps: ["Define research objectives and tasks","Set up the study on a remote testing platform","Write clear task instructions and questions","Recruit and screen participants","Review recordings and analyze results"],
+    strengths: ["Fast turnaround time","Cost-effective at scale","Reaches diverse participants"],
+    limitations: ["No ability to probe or ask follow-up questions","Participants may misunderstand tasks","Lower engagement than moderated sessions"]
+  },
+  {
+    name: "Behavioral Mapping",
+    dataType: ["quantitative","qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "Systematically recording and mapping the movements, activities, and behaviors of people within a specific physical space over time.",
+    whenToUse: "When designing or redesigning physical spaces and you need to understand how people actually use and move through an environment.",
+    steps: ["Obtain or create a floor plan of the space","Define behaviors and activities to track","Observe and record user positions and movements at intervals","Mark behaviors on the map","Analyze patterns of use and movement"],
+    strengths: ["Provides objective spatial usage data","Reveals unexpected behavior patterns","Visual output is easy to communicate"],
+    limitations: ["Time-intensive to collect data","Limited to physical spaces","May miss the reasons behind behaviors"]
+  },
+  {
+    name: "Bodystorming",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase3"],
+    effort: "low",
+    description: "A physically active ideation technique where participants role-play scenarios in a simulated environment to generate design ideas through embodied experience.",
+    whenToUse: "When exploring physical interactions, spatial designs, or service experiences where traditional brainstorming fails to capture the embodied nature of the experience.",
+    steps: ["Define the scenario or design challenge","Set up a rough physical simulation of the environment","Have participants act out the experience","Encourage improvisation and idea generation","Document observations and ideas that emerge"],
+    strengths: ["Generates empathy through physical experience","Surfaces overlooked interaction details","Fun and engaging for teams"],
+    limitations: ["Requires physical space and props","Can feel uncomfortable for some participants","Difficult to simulate complex digital interactions"]
+  },
+  {
+    name: "Brainstorming",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "A group creativity technique for generating a large number of ideas in a short period by encouraging free-flowing, non-judgmental ideation.",
+    whenToUse: "When you need to generate a wide range of potential solutions early in the design process, especially when diverse perspectives would be valuable.",
+    steps: ["Define a clear problem statement or 'How Might We' question","Set ground rules (no criticism, go for quantity)","Generate ideas individually or as a group","Build on others' ideas","Vote or cluster to identify the most promising ideas"],
+    strengths: ["Generates many ideas quickly","Builds team engagement and buy-in","Low barrier to entry"],
+    limitations: ["Dominant personalities can take over","Quantity over quality without good facilitation","Ideas may lack feasibility"]
+  },
+  {
+    name: "Business Origami",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "A collaborative modeling technique using paper cut-outs to represent stakeholders, channels, and interactions within a service ecosystem.",
+    whenToUse: "When mapping complex service ecosystems involving multiple stakeholders, touchpoints, and information flows to identify opportunities for improvement.",
+    steps: ["Identify key actors, channels, and touchpoints","Create paper cut-outs representing each element","Arrange elements on a shared surface","Map interactions and information flows between elements","Identify gaps, redundancies, and opportunities"],
+    strengths: ["Makes complex systems tangible","Highly collaborative and visual","Easy to reconfigure and explore alternatives"],
+    limitations: ["May oversimplify complex relationships","Requires knowledgeable participants","Time needed for setup"]
+  },
+  {
+    name: "Card Sorting",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative","generative"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "A technique where users organize topics or content items into categories that make sense to them, revealing their mental models of information architecture.",
+    whenToUse: "When designing or restructuring navigation, menus, or content organization and you need to understand how users naturally categorize information.",
+    steps: ["Prepare cards with content items or topics","Recruit representative participants","Ask participants to sort cards into groups","Have them label groups (open sort) or sort into predefined categories (closed sort)","Analyze groupings using similarity matrices or dendrograms"],
+    strengths: ["Directly reflects user mental models","Quick and inexpensive","Can be done remotely with online tools"],
+    limitations: ["Results can vary widely between participants","Doesn't account for task context","Large card sets can overwhelm participants"]
+  },
+  {
+    name: "Case Studies",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "In-depth examination of a specific instance, project, or user scenario to understand complex issues in their real-world context.",
+    whenToUse: "When you need deep understanding of how a product or service works in a specific real-world context, or to document and share design outcomes.",
+    steps: ["Define the case and research questions","Gather data from multiple sources (interviews, documents, observations)","Organize and analyze the data","Identify patterns and key findings","Write up the case with conclusions and implications"],
+    strengths: ["Provides rich, contextual understanding","Reveals complexity of real-world use","Compelling for stakeholder communication"],
+    limitations: ["Time-intensive to conduct properly","Findings may not generalize","Risk of researcher bias"]
+  },
+  {
+    name: "Cognitive Walkthrough",
+    dataType: ["qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "low",
+    description: "An expert evaluation method simulating a user's problem-solving process at each step of an interface to identify usability issues for new or infrequent users.",
+    whenToUse: "When you need a quick usability evaluation of a design without recruiting participants, especially for first-time use or onboarding flows.",
+    steps: ["Define user goals and task sequences","Assemble evaluators with the interface","Walk through each step asking: Will the user try this? Can they find the control? Will they understand the feedback?","Document issues found at each step","Prioritize issues and recommend fixes"],
+    strengths: ["Fast and low-cost","Focuses on learnability","Can be done with prototypes"],
+    limitations: ["Only covers evaluator-defined tasks","Misses issues real users would find","Subjective to evaluator expertise"]
+  },
+  {
+    name: "Collage",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "A creative exercise where participants assemble images, words, and materials to express feelings, aspirations, and perceptions related to a design challenge.",
+    whenToUse: "When exploring emotional, aspirational, or abstract aspects of user experience that are difficult to articulate verbally.",
+    steps: ["Provide diverse visual materials (magazines, printed images, materials)","Define the prompt or theme","Have participants create collages expressing their perspective","Ask participants to present and explain their collage","Discuss themes and patterns across collages"],
+    strengths: ["Accesses emotions and aspirations beyond words","Engaging and fun for participants","Reveals latent needs"],
+    limitations: ["Interpretation can be subjective","Some participants may resist creative activities","Difficult to quantify results"]
+  },
+  {
+    name: "Competitive Testing",
+    dataType: ["quantitative","qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase1","phase4"],
+    effort: "medium",
+    description: "Conducting usability tests on competitors' products alongside your own to benchmark performance, identify best practices, and find competitive advantages.",
+    whenToUse: "When you need to understand your product's strengths and weaknesses relative to competitors, or to establish usability benchmarks for your market.",
+    steps: ["Identify key competitors to evaluate","Define common tasks across all products","Recruit representative users","Conduct usability tests with each product","Compare metrics (completion rate, time, satisfaction) across products"],
+    strengths: ["Provides objective competitive benchmarks","Identifies industry best practices","Strong evidence for stakeholder decisions"],
+    limitations: ["Requires access to competitor products","Time-intensive to test multiple products","Competitors may change frequently"]
+  },
+  {
+    name: "Concept Mapping",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "A visual technique for organizing and representing relationships between concepts, showing how ideas connect and relate to each other.",
+    whenToUse: "When synthesizing complex research findings, aligning team understanding, or exploring the structure of a problem space.",
+    steps: ["Identify the focal question or topic","List key concepts related to the topic","Arrange concepts hierarchically or relationally","Draw and label connections between concepts","Refine the map collaboratively"],
+    strengths: ["Makes abstract relationships visible","Facilitates shared understanding","Can reveal gaps in knowledge"],
+    limitations: ["Can become cluttered with complex topics","Subjective structure","Requires facilitation for group activities"]
+  },
+  {
+    name: "Content Analysis",
+    dataType: ["qualitative","quantitative"],
+    approach: ["exploratory","evaluative"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "Systematic examination of existing content (text, media, communications) to identify patterns, themes, and characteristics relevant to design decisions.",
+    whenToUse: "When auditing existing content, analyzing user-generated content, or examining communication patterns in support tickets or reviews.",
+    steps: ["Define the scope of content to analyze","Develop a coding scheme or categories","Systematically code content items","Analyze frequency and patterns of codes","Report findings and implications for design"],
+    strengths: ["Works with existing data (no recruitment)","Can handle large volumes of content","Combines qualitative and quantitative insights"],
+    limitations: ["Time-consuming coding process","Coding reliability requires training","May miss context around content"]
+  },
+  {
+    name: "Content Inventory",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase1","phase4"],
+    effort: "medium",
+    description: "A comprehensive catalog of all content on a website or product, documenting attributes like type, owner, format, and quality of each content item.",
+    whenToUse: "When planning a website redesign or migration, auditing content quality, or establishing content governance processes.",
+    steps: ["Define the scope (entire site or specific sections)","Create a spreadsheet with relevant attributes","Catalog each piece of content","Assess quality, accuracy, and relevance","Identify content gaps, redundancies, and issues"],
+    strengths: ["Provides comprehensive content overview","Essential for redesign planning","Identifies content gaps and redundancies"],
+    limitations: ["Very time-consuming for large sites","Can become outdated quickly","Doesn't capture user perspective on content value"]
+  },
+  {
+    name: "Contextual Design",
+    dataType: ["qualitative"],
+    approach: ["exploratory","generative"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "high",
+    description: "A comprehensive user-centered design methodology involving field research, data consolidation, visioning, storyboarding, and prototyping.",
+    whenToUse: "For large-scale product design projects where deep understanding of work practices and user needs must drive the entire design process.",
+    steps: ["Conduct contextual inquiries in the field","Build work models (flow, sequence, artifact, cultural, physical)","Consolidate data across users","Create a vision for the redesigned work","Prototype and test the new design"],
+    strengths: ["Deeply grounded in user reality","Comprehensive end-to-end methodology","Strong emphasis on work context"],
+    limitations: ["Very resource-intensive","Requires extensive training","Can be slow for fast-paced environments"]
+  },
+  {
+    name: "Contextual Inquiry",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "high",
+    description: "A semi-structured interview method conducted in the user's own environment while they work, combining observation with dialogue to understand work practices.",
+    whenToUse: "When you need to deeply understand how users actually work in their natural environment, including workarounds and tacit knowledge they can't articulate in interviews.",
+    steps: ["Identify users and arrange visits to their workplace","Observe users performing their actual work","Ask questions about their actions in real-time","Focus on breakdowns, workarounds, and surprises","Debrief and document findings immediately after"],
+    strengths: ["Reveals real behavior vs. reported behavior","Captures rich contextual detail","Uncovers tacit knowledge and workarounds"],
+    limitations: ["Time-intensive (2-3 hours per session)","Requires skilled interviewers","Can disrupt user's workflow"]
+  },
+  {
+    name: "Creative Toolkits",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "Collections of evocative materials (images, shapes, components) given to participants to construct representations of their experiences, feelings, or ideal solutions.",
+    whenToUse: "When you want participants to express latent needs, dreams, and desires that are difficult to access through traditional interviews or surveys.",
+    steps: ["Design a toolkit appropriate to the research question","Prepare diverse materials and components","Introduce the activity with a clear prompt","Give participants time to create their constructions","Have participants present and explain what they made"],
+    strengths: ["Accesses deep latent needs","Equalizes participation across personality types","Produces rich, tangible artifacts"],
+    limitations: ["Requires careful toolkit design","Some participants resist creative activities","Analysis can be complex"]
+  },
+  {
+    name: "Critical Incident Technique",
+    dataType: ["qualitative"],
+    approach: ["exploratory","evaluative"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "A method of collecting detailed accounts of specific positive or negative events (critical incidents) that significantly impacted user experience.",
+    whenToUse: "When you need to identify the most impactful moments in a user experience, understand what makes or breaks satisfaction, or prioritize design improvements.",
+    steps: ["Define the domain and type of incidents to collect","Interview users about specific memorable experiences","Probe for detailed context, actions, and outcomes","Categorize incidents by theme","Identify patterns that inform design priorities"],
+    strengths: ["Focuses on high-impact moments","Rich, detailed stories","Actionable for prioritization"],
+    limitations: ["Subject to recall bias","May miss routine aspects of experience","Negative incidents may dominate"]
+  },
+  {
+    name: "Crowdsourcing",
+    dataType: ["quantitative","qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase3"],
+    effort: "medium",
+    description: "Leveraging a large, distributed group of people to contribute ideas, feedback, content, or solutions to a design challenge, typically via online platforms.",
+    whenToUse: "When you need diverse perspectives at scale, want to involve your user community in the design process, or need to gather many ideas quickly.",
+    steps: ["Define the challenge or question clearly","Choose a platform for crowdsourcing","Launch the campaign with clear guidelines","Moderate and curate submissions","Synthesize and prioritize the best contributions"],
+    strengths: ["Access to diverse perspectives","Can generate massive amounts of input","Engages community and builds loyalty"],
+    limitations: ["Quality varies widely","Requires significant moderation effort","May raise intellectual property concerns"]
+  },
+  {
+    name: "Cultural Probes",
+    dataType: ["qualitative"],
+    approach: ["exploratory","generative"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "Packages of creative, open-ended activities (diaries, cameras, maps, postcards) given to participants to self-document their lives and experiences over time.",
+    whenToUse: "When you want to understand users' daily lives, values, and experiences in a way that is less intrusive than observation and richer than interviews alone.",
+    steps: ["Design a probe kit with diverse self-documentation activities","Prepare compelling and inviting materials","Distribute kits with clear (but open-ended) instructions","Collect completed probes after 1-4 weeks","Analyze responses for inspiration and patterns"],
+    strengths: ["Non-intrusive and respectful of participants","Captures experiences over time","Inspires design through unexpected responses"],
+    limitations: ["Completion rates can be low","Not designed for rigorous analysis","Responses may be hard to interpret"]
+  },
+  {
+    name: "Customer Experience Audit",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase1","phase4"],
+    effort: "high",
+    description: "A comprehensive evaluation of all touchpoints and interactions a customer has with a brand or service, assessing quality and consistency across the journey.",
+    whenToUse: "When you need to assess the current state of customer experience across all channels, identify pain points, and prioritize improvements.",
+    steps: ["Map all customer touchpoints and channels","Define evaluation criteria for each touchpoint","Assess each touchpoint through multiple methods","Score and compare across touchpoints","Identify priority areas for improvement"],
+    strengths: ["Holistic view of customer experience","Identifies cross-channel inconsistencies","Provides clear improvement priorities"],
+    limitations: ["Very resource-intensive","Requires cross-functional collaboration","Point-in-time snapshot that can age quickly"]
+  },
+  {
+    name: "Design Charette",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase3"],
+    effort: "medium",
+    description: "An intensive collaborative design session bringing together diverse stakeholders to rapidly generate and develop design solutions for a specific challenge.",
+    whenToUse: "When facing a complex design challenge that benefits from multiple disciplines and perspectives working together under time pressure.",
+    steps: ["Define the design challenge clearly","Assemble a diverse group of stakeholders","Present the challenge and constraints","Conduct timed rounds of sketching and presenting","Converge on the most promising directions"],
+    strengths: ["Generates diverse solutions quickly","Builds cross-functional alignment","Creates energy and momentum"],
+    limitations: ["Requires skilled facilitation","Solutions may lack depth","Can be dominated by vocal participants"]
+  },
+  {
+    name: "Design Ethnography",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "high",
+    description: "Immersive, long-term field research observing and participating in users' lives to understand their culture, behaviors, and unmet needs in deep context.",
+    whenToUse: "When designing for unfamiliar user groups or cultural contexts, or when surface-level research has failed to reveal breakthrough insights.",
+    steps: ["Define the research scope and community","Gain access and build trust with participants","Immerse yourself in the environment over extended periods","Document through field notes, photos, and video","Synthesize observations into cultural insights and design opportunities"],
+    strengths: ["Deepest understanding of user context","Reveals hidden cultural factors","Generates breakthrough insights"],
+    limitations: ["Very time-intensive (weeks to months)","Requires trained ethnographers","Findings can be hard to translate into design"]
+  },
+  {
+    name: "Design Workshops",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "Facilitated collaborative sessions where team members and stakeholders work together through structured activities to explore problems and generate solutions.",
+    whenToUse: "When you need to align a team on a design direction, generate ideas collaboratively, or make progress on a complex design challenge as a group.",
+    steps: ["Define workshop objectives and agenda","Prepare activities, materials, and templates","Facilitate warm-up and framing activities","Guide participants through structured design exercises","Capture outputs and define next steps"],
+    strengths: ["Builds team alignment and ownership","Generates diverse perspectives","Creates momentum and shared understanding"],
+    limitations: ["Quality depends on facilitation","Can be derailed by group dynamics","Outputs need refinement after workshop"]
+  },
+  {
+    name: "Desirability Testing",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "low",
+    description: "A method for measuring emotional response to a design by having users select from a list of words or images that describe how they feel about it.",
+    whenToUse: "When you need to evaluate the aesthetic appeal and emotional impact of visual designs, branding, or overall look and feel.",
+    steps: ["Prepare the design(s) to evaluate","Create a word list with positive, negative, and neutral terms","Present the design to participants","Ask them to select words that describe the design","Analyze word frequency and sentiment patterns"],
+    strengths: ["Captures emotional response quantitatively","Quick to administer","Compares designs objectively on 'feel'"],
+    limitations: ["Word list influences results","Doesn't explain why users feel a certain way","Limited to surface-level emotional assessment"]
+  },
+  {
+    name: "Diary Studies",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "high",
+    description: "A longitudinal method where participants self-report their behaviors, experiences, and thoughts over an extended period through regular diary entries.",
+    whenToUse: "When you need to understand experiences that unfold over time, capture in-the-moment reactions, or study behaviors in context without observation.",
+    steps: ["Define the study duration and entry frequency","Design the diary format (paper, digital, or app)","Recruit and onboard participants","Remind and motivate participants throughout the study","Analyze entries for patterns and temporal changes"],
+    strengths: ["Captures experience over time","In-context, in-the-moment data","Reveals patterns invisible in one-time studies"],
+    limitations: ["Participant fatigue and dropout","Self-report bias","Time-intensive to analyze"]
+  },
+  {
+    name: "Directed Storytelling",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "An interview technique where participants are asked to tell specific stories about their experiences, prompted by targeted questions about particular events.",
+    whenToUse: "When you need rich, contextual accounts of user experiences quickly, especially when time constraints prevent full contextual inquiry.",
+    steps: ["Prepare prompts targeting key experience areas","Ask participants to recall specific instances","Listen actively and probe for details (who, what, where, when, why)","Follow the story rather than a rigid script","Document key moments, emotions, and breakdowns"],
+    strengths: ["Elicits rich contextual detail quickly","Reveals emotional dimensions of experience","More natural than structured interviews"],
+    limitations: ["Subject to recall bias","Participants may embellish stories","Requires skilled interviewing to probe effectively"]
+  },
+  {
+    name: "Elito Method",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "A structured analysis method that transforms research observations into design solutions by systematically linking findings to judgments to design concepts.",
+    whenToUse: "When transitioning from research findings to design implications and you need a rigorous method to ensure designs are grounded in evidence.",
+    steps: ["List key observations from research","For each observation, record a judgment (interpretation)","Derive a design principle from the judgment","Generate a design concept addressing the principle","Trace each concept back to its original observation"],
+    strengths: ["Maintains clear traceability from data to design","Structured yet creative process","Ensures research drives design decisions"],
+    limitations: ["Can feel mechanical for some teams","Works best with rich qualitative data","Requires practice to master"]
+  },
+  {
+    name: "Ergonomic Analysis",
+    dataType: ["quantitative","qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase4"],
+    effort: "medium",
+    description: "Evaluating the physical and cognitive demands of a product or workspace on users, assessing comfort, safety, and efficiency of human-product interaction.",
+    whenToUse: "When designing physical products, workstations, or interfaces where physical comfort, safety, and prolonged use are critical concerns.",
+    steps: ["Identify tasks and user populations to assess","Select appropriate ergonomic assessment methods","Evaluate posture, force, repetition, and environment","Compare findings against ergonomic standards","Recommend design modifications for comfort and safety"],
+    strengths: ["Grounded in scientific standards","Addresses safety and legal compliance","Improves user comfort and productivity"],
+    limitations: ["Requires specialized expertise","May conflict with aesthetic goals","Focus on physical aspects may miss emotional factors"]
+  },
+  {
+    name: "Evaluative Research",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "A broad category of research methods focused on assessing how well a design meets user needs and identifying specific usability issues to fix.",
+    whenToUse: "When you have a design (prototype or live product) and need to assess its effectiveness, efficiency, and user satisfaction.",
+    steps: ["Define evaluation objectives and success criteria","Select appropriate evaluation methods","Recruit representative users","Conduct the evaluation sessions","Analyze findings and prioritize issues"],
+    strengths: ["Directly measures design effectiveness","Identifies specific issues to fix","Can be adapted to any fidelity level"],
+    limitations: ["Only evaluates what exists, doesn't generate new ideas","Requires a testable artifact","Results depend on task and scenario selection"]
+  },
+  {
+    name: "Evidence-Based Design",
+    dataType: ["quantitative","qualitative"],
+    approach: ["exploratory","evaluative"],
+    phases: ["phase1","phase2","phase4"],
+    effort: "high",
+    description: "Making design decisions based on credible research findings and data, systematically integrating the best available evidence into the design process.",
+    whenToUse: "When designing in domains where decisions must be justified with evidence (healthcare, education, safety-critical systems) or for high-stakes design choices.",
+    steps: ["Formulate specific design questions","Search for relevant research and evidence","Critically appraise the quality of evidence","Integrate evidence with design expertise and user needs","Evaluate outcomes and document for future reference"],
+    strengths: ["Decisions backed by credible evidence","Reduces reliance on opinion or trend","Particularly valuable in regulated industries"],
+    limitations: ["Relevant research may not exist","Can slow down the design process","May conflict with innovation or creativity"]
+  },
+  {
+    name: "Experience Sampling",
+    dataType: ["quantitative","qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "A method where participants are prompted at random intervals throughout the day to report their current activities, feelings, and context in real time.",
+    whenToUse: "When you need to understand users' real-time experiences in daily life, capturing momentary emotions and behaviors as they naturally occur.",
+    steps: ["Design the questionnaire for each sampling moment","Determine sampling frequency and schedule","Deploy via mobile app or messaging","Collect responses over the study period (typically 1-2 weeks)","Analyze temporal patterns and contextual factors"],
+    strengths: ["Captures real-time data in context","Minimizes recall bias","Reveals temporal patterns"],
+    limitations: ["Can be intrusive for participants","Response rates may decline over time","Brief responses may lack depth"]
+  },
+  {
+    name: "Experiments",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase4"],
+    effort: "high",
+    description: "Controlled studies with manipulated variables to establish causal relationships between design changes and measurable user outcomes.",
+    whenToUse: "When you need to prove that a specific design change causes a measurable improvement, especially for high-stakes or contentious design decisions.",
+    steps: ["Define the hypothesis to test","Identify independent and dependent variables","Design the experimental protocol with controls","Recruit sufficient participants","Analyze results with appropriate statistical methods"],
+    strengths: ["Establishes causality, not just correlation","Results are statistically rigorous","Highly credible evidence for stakeholders"],
+    limitations: ["Artificial conditions may not reflect real use","Requires significant time and resources","Ethical considerations may limit what can be tested"]
+  },
+  {
+    name: "Exploratory Research",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1"],
+    effort: "medium",
+    description: "Open-ended research conducted early in the design process to understand the problem space, discover user needs, and identify design opportunities.",
+    whenToUse: "At the beginning of a new project when the problem space is unclear and you need to discover what to design, not just how to design it.",
+    steps: ["Define broad areas of inquiry","Choose appropriate exploratory methods","Conduct research with an open mind","Look for patterns, surprises, and contradictions","Synthesize findings into design opportunities"],
+    strengths: ["Discovers unknown unknowns","Prevents designing for wrong problems","Builds deep empathy with users"],
+    limitations: ["Findings may be ambiguous","Can feel unfocused to stakeholders","Requires comfort with uncertainty"]
+  },
+  {
+    name: "Eye Tracking",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase4"],
+    effort: "high",
+    description: "Using specialized equipment to measure where, how long, and in what sequence users look at elements on a screen or physical object.",
+    whenToUse: "When you need objective data about visual attention, reading patterns, or whether users notice specific interface elements.",
+    steps: ["Define research questions about visual attention","Set up eye tracking equipment and calibrate","Design tasks for participants to complete","Record eye movement data during tasks","Analyze heat maps, gaze plots, and fixation metrics"],
+    strengths: ["Objective measure of visual attention","Reveals what users actually look at vs. what they say","Powerful heat map visualizations for stakeholders"],
+    limitations: ["Expensive equipment and expertise","Doesn't explain why users look at something","Lab environment may affect behavior"]
+  },
+  {
+    name: "Flexible Modeling",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "Using simple, manipulable materials (clay, LEGO, pipe cleaners) to build physical models of concepts, systems, or products during ideation.",
+    whenToUse: "When exploring three-dimensional design concepts or when teams need a hands-on, tactile approach to ideation and concept development.",
+    steps: ["Provide diverse modeling materials","Define the design challenge or scenario","Have participants build models representing their ideas","Present and explain models to the group","Iterate and combine ideas from different models"],
+    strengths: ["Tangible and engaging ideation process","Accessible to non-designers","Encourages spatial and systems thinking"],
+    limitations: ["Material constraints may limit expression","Models may be over-interpreted","Difficult to document and share digitally"]
+  },
+  {
+    name: "Fly-on-the-Wall Observation",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "A passive observation method where the researcher silently watches users in their natural environment without interacting or interfering with their activities.",
+    whenToUse: "When you need to understand natural behavior without the influence of researcher presence, especially for sensitive or routine activities.",
+    steps: ["Identify the environment and activities to observe","Gain access and negotiate a non-intrusive observation spot","Observe silently, taking detailed notes","Focus on behaviors, sequences, and interactions","Analyze observations for patterns and insights"],
+    strengths: ["Captures unbiased natural behavior","No participant recruitment needed","Reveals what people actually do vs. say"],
+    limitations: ["Cannot ask questions or probe","May miss context and motivations","Observer may still influence behavior despite passivity"]
+  },
+  {
+    name: "Focus Groups",
+    dataType: ["qualitative"],
+    approach: ["exploratory","generative"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "medium",
+    description: "Moderated group discussions with 6-10 participants exploring attitudes, perceptions, and ideas about a product, service, or concept.",
+    whenToUse: "When you want to explore a range of perspectives quickly, understand social dynamics around a topic, or generate ideas through group interaction.",
+    steps: ["Define research objectives and discussion topics","Develop a moderator guide with open-ended questions","Recruit diverse but relevant participants","Facilitate the discussion encouraging all voices","Analyze transcripts for themes and areas of agreement/disagreement"],
+    strengths: ["Efficient way to gather multiple perspectives","Group dynamics can spark new ideas","Reveals social norms and language people use"],
+    limitations: ["Groupthink can suppress individual opinions","Dominant participants can skew discussion","Doesn't predict actual behavior"]
+  },
+  {
+    name: "Graffiti Walls",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "low",
+    description: "A large shared surface (physical or digital) where participants freely add ideas, comments, drawings, or reactions throughout a research or design activity.",
+    whenToUse: "When you want to capture spontaneous ideas and reactions over time, especially in shared spaces during workshops or extended research activities.",
+    steps: ["Set up a large visible surface in a shared space","Provide writing/drawing materials","Post a provocative prompt or question","Encourage everyone to contribute freely at any time","Periodically photograph and analyze contributions"],
+    strengths: ["Lowers barriers to participation","Captures ideas that might be lost in discussion","Builds on others' contributions over time"],
+    limitations: ["Contributions may be shallow","Can become cluttered without curation","Some people may not participate"]
+  },
+  {
+    name: "Graphic Organizers",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "Visual frameworks (Venn diagrams, matrices, flowcharts, timelines) used to organize, compare, and communicate complex information during design activities.",
+    whenToUse: "When you need to structure and communicate complex information, compare alternatives, or help participants organize their thinking visually.",
+    steps: ["Select the appropriate organizer type for your purpose","Prepare the template or framework","Populate with data, ideas, or findings collaboratively","Discuss patterns revealed by the visualization","Refine and use to guide design decisions"],
+    strengths: ["Makes complex information accessible","Multiple formats for different purposes","Facilitates comparison and analysis"],
+    limitations: ["Can oversimplify nuanced information","Format may constrain thinking","Requires appropriate template selection"]
+  },
+  {
+    name: "Heuristic Evaluation",
+    dataType: ["qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "low",
+    description: "Expert reviewers evaluate an interface against a set of established usability principles (heuristics) to identify potential usability issues.",
+    whenToUse: "When you need a quick, cost-effective usability assessment without recruiting users, especially in early design stages or between user testing rounds.",
+    steps: ["Select appropriate heuristics (e.g., Nielsen's 10)","Assemble 3-5 evaluators","Each evaluator reviews the interface independently","Rate severity of each issue found","Compile and deduplicate findings across evaluators"],
+    strengths: ["Fast and cost-effective","Finds many usability issues","Can be done at any design stage"],
+    limitations: ["Misses issues real users would find","Evaluators may have false alarms","Requires UI/UX expertise"]
+  },
+  {
+    name: "Image Boards",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "low",
+    description: "Curated collections of images, textures, colors, and visual references that communicate the intended look, feel, and mood of a design direction.",
+    whenToUse: "When establishing visual direction, communicating design intent to stakeholders, or aligning a team on the aesthetic and emotional qualities of a design.",
+    steps: ["Define the mood or theme to explore","Collect diverse visual references","Curate and arrange images into coherent boards","Present to stakeholders and gather reactions","Refine based on feedback to establish visual direction"],
+    strengths: ["Communicates abstract qualities effectively","Aligns teams on visual direction","Quick to create and iterate"],
+    limitations: ["Subjective interpretation","May anchor thinking too early","Gap between inspiration and implementation"]
+  },
+  {
+    name: "Interviews",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "One-on-one conversations with users using open-ended questions to understand their experiences, needs, motivations, and pain points in depth.",
+    whenToUse: "When you need to deeply understand individual user perspectives, explore complex experiences, or investigate sensitive topics that require trust and rapport.",
+    steps: ["Define research objectives","Develop a semi-structured interview guide","Recruit representative participants","Conduct interviews with active listening and probing","Analyze transcripts for themes and insights"],
+    strengths: ["Deep, rich qualitative data","Flexible to follow unexpected threads","Builds empathy with users"],
+    limitations: ["Time-intensive to conduct and analyze","Self-reported data may differ from behavior","Interviewer bias can influence responses"]
+  },
+  {
+    name: "KJ Technique",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "A Japanese consensus-building method (also called Affinity Diagram) where team members silently sort ideas into groups, then collectively label and prioritize clusters.",
+    whenToUse: "When a team needs to reach consensus on priorities or themes from a large amount of qualitative data, especially when there are diverse opinions.",
+    steps: ["Write ideas or data points on individual cards","Silently group related cards (no discussion during sorting)","Collaboratively label each group","Vote to prioritize the most important groups","Discuss and plan actions for top priorities"],
+    strengths: ["Democratic process equalizes voices","Builds consensus without lengthy debate","Efficient for large groups"],
+    limitations: ["Silent sorting can be frustrating","May produce shallow groupings if rushed","Requires clear data inputs"]
+  },
+  {
+    name: "Kano Analysis",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase1","phase3"],
+    effort: "medium",
+    description: "A model for categorizing product features by how they influence customer satisfaction: must-haves, performance features, and delighters.",
+    whenToUse: "When prioritizing features for development and you need to understand which features are expected, which drive satisfaction, and which create delight.",
+    steps: ["List features to evaluate","Create functional/dysfunctional question pairs for each feature","Survey users with the paired questions","Classify features into Kano categories","Prioritize features based on their category"],
+    strengths: ["Distinguishes between different types of value","Prevents over-investing in expected features","Identifies delight opportunities"],
+    limitations: ["Feature categories can shift over time","Requires careful survey design","May not capture feature interactions"]
+  },
+  {
+    name: "Key Performance Indicators",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase4","phase5"],
+    effort: "medium",
+    description: "Defined measurable values that track how effectively a product or service meets its key business and user experience objectives over time.",
+    whenToUse: "When you need to define success metrics for a product, track design impact over time, or align team efforts around measurable outcomes.",
+    steps: ["Identify key business and user objectives","Define specific, measurable indicators for each objective","Establish baseline measurements","Set targets and thresholds","Monitor and report regularly, taking action on trends"],
+    strengths: ["Aligns team on measurable goals","Tracks design impact over time","Facilitates data-driven decisions"],
+    limitations: ["Risk of optimizing for metrics vs. user value","Can be gamed or misinterpreted","Lagging indicators may miss emerging issues"]
+  },
+  {
+    name: "Laddering",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "An interview technique that repeatedly asks 'why' to move from surface-level product attributes to the underlying personal values and motivations driving user preferences.",
+    whenToUse: "When you need to understand the deeper motivations and values behind user preferences, not just what they prefer but why it matters to them.",
+    steps: ["Start with a concrete preference or attribute","Ask 'Why is that important to you?'","Continue asking 'why' to move up the ladder","Map the chain: Attribute → Consequence → Value","Identify common value patterns across participants"],
+    strengths: ["Reveals deep motivations and values","Simple technique to learn","Powerful insights for positioning and messaging"],
+    limitations: ["Can feel repetitive or interrogative","Participants may not know why","Requires skilled probing to avoid leading"]
+  },
+  {
+    name: "Literature Review",
+    dataType: ["qualitative","quantitative"],
+    approach: ["exploratory"],
+    phases: ["phase1"],
+    effort: "medium",
+    description: "Systematic review of existing academic and industry research relevant to a design challenge to leverage existing knowledge and identify gaps.",
+    whenToUse: "At the start of a project to understand the existing body of knowledge, when designing in specialized domains, or when evidence-based justification is needed.",
+    steps: ["Define the scope and research questions","Search academic databases and industry sources","Screen and select relevant publications","Extract and synthesize key findings","Summarize implications for the design project"],
+    strengths: ["Builds on existing knowledge","Cost-effective (uses existing data)","Establishes credibility with stakeholders"],
+    limitations: ["Published research may be outdated","Academic findings may not apply to your context","Time-consuming to do thoroughly"]
+  },
+  {
+    name: "Love & the Breakup Letter",
+    dataType: ["qualitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase1","phase4"],
+    effort: "low",
+    description: "A creative exercise where users write letters to a product—a love letter about what they adore, and a breakup letter about what frustrates them.",
+    whenToUse: "When you want to understand users' emotional relationship with a product in a more engaging way than traditional satisfaction surveys.",
+    steps: ["Explain the activity and provide letter templates","Ask users to write a 'love letter' to the product","Then ask them to write a 'breakup letter'","Have participants share and discuss their letters","Analyze for emotional themes and priority issues"],
+    strengths: ["Elicits genuine emotional responses","Fun and engaging for participants","Reveals both positive and negative sentiments"],
+    limitations: ["Some participants may feel silly doing this","Skews toward emotional rather than functional issues","Results are qualitative and hard to quantify"]
+  },
+  {
+    name: "Mental Model Diagrams",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase2"],
+    effort: "high",
+    description: "Visual diagrams mapping how users think about and approach a task or domain, aligned against the features and content a product currently offers.",
+    whenToUse: "When you need to understand the gap between how users think about a task and how your product supports it, revealing missing features or misaligned solutions.",
+    steps: ["Conduct in-depth interviews about user approaches to a task","Extract and group user behaviors and philosophies","Build the top half: user mental model towers","Build the bottom half: product features aligned underneath","Identify gaps where user needs lack product support"],
+    strengths: ["Reveals gaps between user thinking and product","Provides strategic direction for features","Deeply grounded in user behavior"],
+    limitations: ["Very time-intensive to create","Requires many interviews (15-30+)","Complex diagrams can be hard to communicate"]
+  },
+  {
+    name: "Mind Mapping",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "low",
+    description: "A radial visual technique for exploring and organizing ideas by branching out from a central concept, capturing associations and relationships.",
+    whenToUse: "When brainstorming, organizing thoughts, planning research, or exploring the scope of a design challenge in a free-form, visual way.",
+    steps: ["Write the central topic in the middle","Branch out with main themes or categories","Add sub-branches with related ideas","Use colors, images, and keywords","Review for patterns and areas to explore further"],
+    strengths: ["Quick and intuitive to create","Encourages free association","Visual overview of complex topics"],
+    limitations: ["Can become messy with complex topics","Difficult to capture nuanced relationships","May reinforce existing thinking patterns"]
+  },
+  {
+    name: "Observation",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "Systematically watching users interact with products, services, or environments in natural or controlled settings to understand actual behavior.",
+    whenToUse: "When you need to understand how users actually behave (vs. what they say they do) in real or simulated use contexts.",
+    steps: ["Define what to observe and where","Develop an observation protocol or checklist","Position yourself appropriately in the environment","Record behaviors, sequences, and notable events","Analyze observations for patterns and design implications"],
+    strengths: ["Captures real behavior","Reveals workarounds and unexpected uses","Non-reliance on self-report"],
+    limitations: ["Observer effect may change behavior","Cannot access thoughts and motivations","Requires significant time in the field"]
+  },
+  {
+    name: "Parallel Prototyping",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase3"],
+    effort: "medium",
+    description: "Creating multiple different design solutions simultaneously rather than iterating on a single concept, then comparing and combining the best elements.",
+    whenToUse: "When you want to explore a wide solution space, avoid fixation on one idea, or when the design challenge has no clear best approach.",
+    steps: ["Define the design challenge and constraints","Have designers independently create different solutions","Present all solutions to the team","Identify strengths of each approach","Combine the best elements into an integrated design"],
+    strengths: ["Avoids premature commitment to one idea","Produces more innovative solutions","Enables comparison of fundamentally different approaches"],
+    limitations: ["More resource-intensive than single-path design","Can be difficult to combine different approaches","Requires team comfortable with ambiguity"]
+  },
+  {
+    name: "Participant Observation",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "high",
+    description: "A research method where the researcher actively participates in the activities being studied, gaining insider perspective while maintaining a research lens.",
+    whenToUse: "When you need the deepest possible understanding of a user experience by actually living it, especially for complex social or physical activities.",
+    steps: ["Gain access to the community or activity","Participate authentically while maintaining research awareness","Take detailed field notes during or after sessions","Balance insider participation with outsider analysis","Synthesize experiences into design insights"],
+    strengths: ["Deepest form of experiential understanding","Builds genuine empathy","Reveals nuances invisible to outside observers"],
+    limitations: ["Risk of 'going native' and losing objectivity","Very time-intensive","Ethical considerations around disclosure"]
+  },
+  {
+    name: "Participatory Action Research",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "high",
+    description: "A collaborative research approach where users are active co-researchers in identifying problems, collecting data, and developing solutions that affect their lives.",
+    whenToUse: "When designing for communities where empowerment and ownership are important, or when traditional research approaches fail to capture marginalized perspectives.",
+    steps: ["Partner with the community to define research questions","Train community members as co-researchers","Collect and analyze data collaboratively","Develop solutions together","Implement changes and evaluate outcomes collectively"],
+    strengths: ["Empowers users as active partners","Produces highly relevant solutions","Builds community capacity"],
+    limitations: ["Time-intensive relationship building","Power dynamics can be complex","May lack traditional rigor"]
+  },
+  {
+    name: "Participatory Design",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "An approach where end users are active participants in the design process, contributing their knowledge and creativity alongside designers.",
+    whenToUse: "When the expertise of end users is essential for design success, especially for specialized work domains or when designing for diverse populations.",
+    steps: ["Identify and recruit representative user-participants","Create design activities accessible to non-designers","Facilitate collaborative design sessions","Develop shared understanding between users and designers","Iterate on designs with continued user involvement"],
+    strengths: ["Designs grounded in real user expertise","Builds user buy-in and ownership","Surfaces needs that designers might miss"],
+    limitations: ["Users may have limited design skills","Can be difficult to manage differing opinions","Takes more time than designer-led approaches"]
+  },
+  {
+    name: "Personal Inventories",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "Asking users to share and explain the contents of their bags, workspaces, devices, or other personal spaces to reveal values, priorities, and daily practices.",
+    whenToUse: "When you want quick insight into users' daily lives, priorities, and the tools they rely on, especially as an ice-breaker or supplement to interviews.",
+    steps: ["Ask users to display contents of a relevant personal space","Photograph the items","Have users explain each item's significance","Probe for stories and emotional connections","Analyze for patterns across participants"],
+    strengths: ["Reveals values and priorities tangibly","Natural conversation starter","Quick and engaging for participants"],
+    limitations: ["Users may curate what they share","Limited to physical objects","May feel invasive to some"]
+  },
+  {
+    name: "Personas",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "Fictional but research-based character profiles representing key user segments, used to guide design decisions by keeping real user needs front of mind.",
+    whenToUse: "When you need to communicate user research to the team in a memorable, actionable way, or when making design decisions that affect different user types.",
+    steps: ["Analyze user research for distinct patterns and segments","Define 3-5 primary persona profiles","Add realistic details, goals, frustrations, and behaviors","Validate personas against additional research","Introduce personas to the team and integrate into design process"],
+    strengths: ["Makes user data memorable and shareable","Guides design decisions consistently","Builds team empathy for users"],
+    limitations: ["Can become stereotypical if not research-based","May oversimplify user diversity","Risk of designing for the persona, not real users"]
+  },
+  {
+    name: "Photo Studies",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "Asking participants to photograph aspects of their daily lives, environments, or experiences related to a research question, then discussing the images.",
+    whenToUse: "When you want participants to self-document their experiences visually, especially for capturing contexts that are difficult for researchers to access.",
+    steps: ["Define the photo assignment and themes","Provide cameras or smartphone instructions","Give participants 3-7 days to take photos","Conduct photo elicitation interviews","Analyze images and narratives for themes"],
+    strengths: ["Captures context you can't visit","Participant-driven perspective","Images stimulate rich discussion"],
+    limitations: ["Photo quality and coverage may vary","Participants may self-censor","Requires photo elicitation to understand meaning"]
+  },
+  {
+    name: "Picture Cards",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase1","phase2","phase3"],
+    effort: "low",
+    description: "Sets of evocative images used as prompts in research sessions to help participants express abstract feelings, preferences, or associations.",
+    whenToUse: "When you need participants to express abstract concepts, emotions, or preferences that are difficult to articulate in words.",
+    steps: ["Curate a diverse set of evocative images","Present images to participants","Ask them to select images that represent their feelings or preferences","Have participants explain their choices","Analyze selections and explanations for patterns"],
+    strengths: ["Helps articulate abstract concepts","Engaging and accessible to all participants","Can reveal emotional and aspirational dimensions"],
+    limitations: ["Image selection influences results","Interpretation is subjective","May not yield precise insights"]
+  },
+  {
+    name: "Prototyping",
+    dataType: ["qualitative"],
+    approach: ["generative","evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "Creating preliminary versions of a product at various levels of fidelity to explore ideas, communicate concepts, and test with users before committing to development.",
+    whenToUse: "At any stage when you need to make ideas tangible for evaluation, communication, or further development, from early paper sketches to high-fidelity interactive mockups.",
+    steps: ["Determine appropriate fidelity for your purpose","Choose tools and materials","Build the prototype focusing on key interactions","Test with users and gather feedback","Iterate based on findings"],
+    strengths: ["Makes abstract ideas tangible","Cheap to change compared to built products","Facilitates meaningful user feedback"],
+    limitations: ["Prototypes may set unrealistic expectations","Time invested may create attachment to ideas","Fidelity choices affect feedback received"]
+  },
+  {
+    name: "Questionnaires & Evaluation",
+    dataType: ["quantitative","qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase4","phase5"],
+    effort: "low",
+    description: "Structured sets of questions designed to collect standardized data about user satisfaction, preferences, or experiences with a product or service.",
+    whenToUse: "When you need to collect standardized feedback from a large number of users, track satisfaction over time, or quantify qualitative impressions.",
+    steps: ["Define what you need to measure","Write clear, unbiased questions","Choose appropriate scales and formats","Pilot test the questionnaire","Distribute, collect, and analyze responses"],
+    strengths: ["Scalable to many respondents","Standardized and comparable over time","Can be administered remotely"],
+    limitations: ["Cannot probe for deeper understanding","Response bias and social desirability","Question design strongly affects results"]
+  },
+  {
+    name: "Rapid Iterative Testing",
+    dataType: ["qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "A fast-paced cycle of testing a design, identifying issues, making immediate fixes, and testing again within a compressed timeframe.",
+    whenToUse: "When working under tight deadlines and you need to improve a design quickly through multiple short test-and-fix cycles.",
+    steps: ["Prepare the design and key tasks to test","Test with 3-5 users in short sessions","Identify the top 3-5 critical issues","Make immediate design changes","Repeat the cycle (aim for 2-3 rounds in a week)"],
+    strengths: ["Rapid improvement cycles","Practical for tight timelines","Focuses on most critical issues first"],
+    limitations: ["May miss subtle issues","Fixes between rounds may be superficial","Participants need to be readily available"]
+  },
+  {
+    name: "Remote Moderated Research",
+    dataType: ["qualitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase2","phase3","phase4"],
+    effort: "medium",
+    description: "Conducting live research sessions with participants via video conferencing tools, allowing the researcher to observe, guide, and probe in real time.",
+    whenToUse: "When you need the depth of moderated research but participants are geographically dispersed, or when in-person research is not feasible.",
+    steps: ["Set up video conferencing and screen-sharing tools","Recruit and schedule remote participants","Send preparation instructions and technology requirements","Conduct the session with screen sharing and think-aloud","Record, analyze, and share findings"],
+    strengths: ["Reaches geographically dispersed users","Cost-effective (no travel)","Can observe users in their natural environment"],
+    limitations: ["Technology issues can disrupt sessions","Harder to build rapport remotely","Cannot observe physical context fully"]
+  },
+  {
+    name: "Research Through Design",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase2","phase3"],
+    effort: "high",
+    description: "Using the design process itself as a form of inquiry, where creating artifacts generates knowledge about a problem space and possible solutions.",
+    whenToUse: "When exploring novel problem spaces where traditional research methods are insufficient, and the act of designing can reveal new questions and insights.",
+    steps: ["Frame the research question through a design lens","Create design artifacts that explore the question","Reflect on what the design process reveals","Document insights that emerge from making","Iterate between designing and reflecting"],
+    strengths: ["Generates unique insights through making","Integrates research and design seamlessly","Explores possibilities beyond current reality"],
+    limitations: ["May lack rigor of traditional research","Findings can be difficult to generalize","Requires skilled design researchers"]
+  },
+  {
+    name: "Role-Playing",
+    dataType: ["qualitative"],
+    approach: ["generative","exploratory"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "Acting out scenarios from a user's perspective to experience a service or interaction firsthand, generating empathy and revealing design opportunities.",
+    whenToUse: "When the team needs to build empathy for users, explore service interactions, or identify pain points in experiences that are difficult to prototype.",
+    steps: ["Define the scenario and roles","Brief participants on their characters","Act out the scenario in a simulated environment","Pause to discuss feelings and observations","Document insights and design implications"],
+    strengths: ["Builds deep empathy","Reveals service and interaction issues","Engaging and memorable for teams"],
+    limitations: ["Participants may not take it seriously","Can feel uncomfortable","Limited by imagination vs. reality"]
+  },
+  {
+    name: "Scenario Description Swimlanes",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "medium",
+    description: "Visual diagrams showing how different actors interact across time during a service scenario, with parallel swimlanes for each actor or system.",
+    whenToUse: "When mapping complex interactions between multiple actors (users, staff, systems) over time, especially for service design.",
+    steps: ["Identify the scenario and all actors involved","Create horizontal swimlanes for each actor","Map actions and interactions chronologically","Identify handoffs, wait times, and pain points","Use the diagram to discuss and improve the service"],
+    strengths: ["Visualizes multi-actor interactions clearly","Identifies coordination issues","Useful for service design and orchestration"],
+    limitations: ["Can become complex with many actors","Requires detailed knowledge of the process","Static representation of dynamic interactions"]
+  },
+  {
+    name: "Scenarios",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "Narrative descriptions of how a user would accomplish a goal using a product or service, told as realistic stories set in specific contexts.",
+    whenToUse: "When you need to communicate design ideas in context, align the team on user goals, or evaluate concepts against realistic use situations.",
+    steps: ["Identify the user and their goal","Describe the context and triggering event","Walk through the interaction step by step","Include user thoughts and emotions","Use the scenario to evaluate and refine the design"],
+    strengths: ["Makes design concepts concrete and relatable","Easy to create and understand","Grounds design in realistic context"],
+    limitations: ["Can be overly optimistic (happy path)","May not cover edge cases","Quality depends on understanding of users"]
+  },
+  {
+    name: "Secondary Research",
+    dataType: ["qualitative","quantitative"],
+    approach: ["exploratory"],
+    phases: ["phase1"],
+    effort: "low",
+    description: "Reviewing and synthesizing existing research, data, reports, and publications to understand a topic without conducting new primary research.",
+    whenToUse: "At the start of any project to leverage existing knowledge, when budgets are limited, or to contextualize primary research findings.",
+    steps: ["Define research questions","Identify relevant sources (academic, industry, government, internal)","Systematically review and extract relevant information","Synthesize findings across sources","Document gaps that require primary research"],
+    strengths: ["Fast and cost-effective","Builds on existing knowledge","Good starting point for any project"],
+    limitations: ["May not address your specific questions","Sources may be outdated or biased","Cannot replace primary user research"]
+  },
+  {
+    name: "Semantic Differential",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "low",
+    description: "A rating scale where participants evaluate a concept or design on multiple dimensions using pairs of opposing adjectives (e.g., modern-traditional, simple-complex).",
+    whenToUse: "When you need to measure subjective perceptions of a design along multiple dimensions, compare designs, or track perception changes over iterations.",
+    steps: ["Select relevant adjective pairs for your design domain","Create the rating scales (typically 5 or 7 points)","Present the design to participants","Have them rate on each dimension","Visualize and compare profiles across designs or groups"],
+    strengths: ["Quantifies subjective perceptions","Enables comparison across designs","Quick to administer"],
+    limitations: ["Adjective pairs may not capture all relevant dimensions","Cultural differences in interpretation","Numbers may give false sense of precision"]
+  },
+  {
+    name: "Shadowing",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "high",
+    description: "Following a user through their entire day or work shift, observing all activities and interactions to understand the full context of their experience.",
+    whenToUse: "When you need a holistic understanding of a user's complete experience, especially when key moments may be unpredictable or spread throughout a day.",
+    steps: ["Arrange full-day access with participants","Follow the participant through their complete routine","Take notes on activities, interactions, and environment","Ask brief clarifying questions without disrupting flow","Debrief with the participant at the end of the day"],
+    strengths: ["Complete picture of user's experience","Captures transitions and context switches","Reveals priorities and time allocation"],
+    limitations: ["Very time-intensive (full days per participant)","Observer fatigue","May make participants self-conscious"]
+  },
+  {
+    name: "Simulation Exercises",
+    dataType: ["qualitative"],
+    approach: ["evaluative","generative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "Creating realistic scenarios or environments for users to interact with, simulating real-world conditions to test designs or generate insights.",
+    whenToUse: "When the real environment is inaccessible, dangerous, or expensive to test in, or when you need to observe behavior in controlled but realistic conditions.",
+    steps: ["Define what aspects of reality to simulate","Design and set up the simulation environment","Brief participants on the scenario","Observe behavior during the simulation","Debrief and analyze findings"],
+    strengths: ["Tests behavior in realistic conditions","Safer and cheaper than field testing","Can simulate future scenarios"],
+    limitations: ["Simulations are never fully realistic","Setup can be complex and expensive","Participant behavior may differ from reality"]
+  },
+  {
+    name: "Site Search Analytics",
+    dataType: ["quantitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase1","phase4","phase5"],
+    effort: "low",
+    description: "Analyzing what users search for on your site, including search terms, frequency, and whether searches lead to results or dead ends.",
+    whenToUse: "When you need to understand what users are looking for on your site, identify content gaps, or improve navigation and information architecture.",
+    steps: ["Access site search analytics data","Analyze top search terms and frequency","Identify searches with no or poor results","Look for patterns in search behavior","Use findings to improve navigation and content"],
+    strengths: ["Uses existing data (no recruitment)","Reveals user intent directly","Identifies content and navigation gaps"],
+    limitations: ["Only captures searcher behavior (not all users)","Misspellings can skew data","Doesn't explain why users searched"]
+  },
+  {
+    name: "Speed Dating",
+    dataType: ["qualitative"],
+    approach: ["evaluative","generative"],
+    phases: ["phase3"],
+    effort: "medium",
+    description: "Rapidly presenting users with multiple design concepts through storyboards or quick prototypes to gauge reactions and identify the most promising directions.",
+    whenToUse: "When you have multiple concept directions and need quick user feedback to narrow down options before investing in detailed prototyping.",
+    steps: ["Develop storyboards or lightweight prototypes for each concept","Recruit users for quick feedback sessions","Present each concept briefly (2-5 minutes)","Capture immediate reactions and preferences","Compare reactions across concepts to identify winners"],
+    strengths: ["Tests many concepts quickly","Captures genuine first reactions","Efficient for concept selection"],
+    limitations: ["Shallow evaluation of each concept","First impressions may not reflect long-term preferences","Concepts may not be comparable at equal fidelity"]
+  },
+  {
+    name: "Stakeholder Maps",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1"],
+    effort: "low",
+    description: "Visual diagrams showing all the people, organizations, and systems involved in a project or service ecosystem and their relationships to each other.",
+    whenToUse: "At the start of a project to understand the ecosystem of stakeholders, their influence, and relationships, or when planning who to involve in research.",
+    steps: ["List all stakeholders (users, clients, partners, regulators, etc.)","Plot them on a visual map","Indicate relationships, influence, and interest levels","Identify key stakeholders and potential conflicts","Use the map to plan engagement strategy"],
+    strengths: ["Clarifies complex stakeholder ecosystems","Identifies hidden influencers","Informs research recruitment and engagement"],
+    limitations: ["Reflects a point-in-time view","Relationships can be hard to verify","May miss less visible stakeholders"]
+  },
+  {
+    name: "Stakeholder Walkthrough",
+    dataType: ["qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "low",
+    description: "Walking stakeholders through a design, prototype, or concept to gather feedback, build alignment, and identify concerns from different organizational perspectives.",
+    whenToUse: "When you need stakeholder buy-in before proceeding, want to identify business or technical constraints, or need cross-functional feedback on a design.",
+    steps: ["Prepare the design or prototype for presentation","Identify key stakeholders to involve","Walk through the design explaining rationale","Capture feedback, concerns, and questions","Synthesize feedback and plan revisions"],
+    strengths: ["Builds stakeholder alignment","Surfaces business and technical constraints early","Efficient way to gather diverse perspectives"],
+    limitations: ["Stakeholders are not end users","May be influenced by organizational politics","Feedback may prioritize business over user needs"]
+  },
+  {
+    name: "Storyboards",
+    dataType: ["qualitative"],
+    approach: ["generative"],
+    phases: ["phase2","phase3"],
+    effort: "low",
+    description: "Sequential illustrations showing how a user interacts with a product or service over time, depicting the context, actions, and emotional journey.",
+    whenToUse: "When you need to communicate a user scenario visually, explore service experiences, or share design concepts with stakeholders who respond to visual narratives.",
+    steps: ["Define the user scenario and key moments","Sketch frames showing the sequence of events","Include context, actions, and user emotions","Add captions or annotations for clarity","Share with the team and iterate"],
+    strengths: ["Communicates scenarios visually and engagingly","Shows context and emotion alongside actions","Accessible to non-designers"],
+    limitations: ["Drawing skill can affect clarity (though it shouldn't)","May oversimplify complex interactions","Static medium for dynamic experiences"]
+  },
+  {
+    name: "Surveys",
+    dataType: ["quantitative","qualitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase1","phase4","phase5"],
+    effort: "medium",
+    description: "Structured questionnaires distributed to a large number of people to collect data about attitudes, preferences, demographics, and self-reported behaviors.",
+    whenToUse: "When you need to quantify attitudes or behaviors across a large population, validate qualitative findings, or collect baseline data for a project.",
+    steps: ["Define research objectives and target population","Design the survey with clear, unbiased questions","Pilot test with a small sample","Distribute to a representative sample","Analyze results with appropriate statistical methods"],
+    strengths: ["Reaches large sample sizes efficiently","Quantifiable and statistically analyzable","Cost-effective for broad data collection"],
+    limitations: ["Self-report bias","Cannot probe for deeper understanding","Response rates can be low"]
+  },
+  {
+    name: "Task Analysis",
+    dataType: ["qualitative","quantitative"],
+    approach: ["exploratory","evaluative"],
+    phases: ["phase1","phase2","phase4"],
+    effort: "medium",
+    description: "Breaking down how users accomplish specific goals into detailed steps, decisions, and information needs to understand task structure and identify improvements.",
+    whenToUse: "When designing workflows, optimizing processes, or understanding complex tasks where detailed step-by-step understanding is essential.",
+    steps: ["Identify the task and its goal","Observe or interview users performing the task","Break the task into hierarchical steps and sub-steps","Identify decision points, errors, and information needs","Analyze for simplification or automation opportunities"],
+    strengths: ["Detailed understanding of task structure","Identifies specific improvement opportunities","Systematic and thorough"],
+    limitations: ["Time-consuming for complex tasks","May not capture the why behind steps","Real tasks are often more fluid than models suggest"]
+  },
+  {
+    name: "Territory Maps",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "Visual maps showing the competitive landscape, market segments, or conceptual territory of a design space, helping identify opportunities and white spaces.",
+    whenToUse: "When you need to understand the competitive or conceptual landscape, identify underserved market segments, or position a new product strategically.",
+    steps: ["Define the dimensions or axes for the map","Plot existing products, competitors, or concepts","Identify clusters and white spaces","Discuss opportunities in underserved areas","Use the map to guide design strategy"],
+    strengths: ["Visual overview of the landscape","Identifies strategic opportunities","Facilitates team alignment on positioning"],
+    limitations: ["Axis selection strongly influences insights","Can oversimplify market complexity","May miss emerging competitors or trends"]
+  },
+  {
+    name: "Thematic Analysis",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase2"],
+    effort: "medium",
+    description: "A method for identifying, analyzing, and reporting patterns (themes) within qualitative data, providing a rich and detailed account of the data.",
+    whenToUse: "When analyzing qualitative data from interviews, observations, or open-ended surveys and you need a systematic approach to identifying patterns.",
+    steps: ["Familiarize yourself with the data thoroughly","Generate initial codes from the data","Search for themes by grouping codes","Review themes against the coded data","Define and name each theme clearly"],
+    strengths: ["Flexible and accessible method","Works with various data types","Produces rich, detailed insights"],
+    limitations: ["Can be subjective without clear criteria","Time-consuming for large datasets","Requires iterative analysis"]
+  },
+  {
+    name: "Think-Aloud Protocol",
+    dataType: ["qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "Asking users to verbalize their thoughts, feelings, and reasoning while performing tasks with a product, providing real-time insight into their cognitive process.",
+    whenToUse: "During usability testing when you need to understand not just what users do, but what they're thinking and why they make certain decisions.",
+    steps: ["Prepare tasks for the participant","Instruct them to speak their thoughts aloud","Observe and note their actions and verbalizations","Gently prompt if they go silent ('What are you thinking?')","Analyze verbalizations alongside behavior for insights"],
+    strengths: ["Reveals reasoning behind user actions","Rich real-time data","Identifies confusion and misunderstanding"],
+    limitations: ["Unnatural behavior (thinking aloud)","May slow down task performance","Some participants struggle to verbalize"]
+  },
+  {
+    name: "Time-Aware Research",
+    dataType: ["quantitative","qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "medium",
+    description: "Research methods that specifically account for how user behavior and needs change over time, including longitudinal studies and temporal pattern analysis.",
+    whenToUse: "When user behavior has strong temporal components (seasonal, daily rhythms, lifecycle stages) or when you need to understand how experiences evolve over time.",
+    steps: ["Identify relevant time dimensions for your research","Design data collection across appropriate time intervals","Track changes in behavior and attitudes over time","Analyze temporal patterns and trends","Design for the temporal nature of user experience"],
+    strengths: ["Captures how experiences change over time","Reveals temporal patterns invisible in snapshots","More realistic than point-in-time studies"],
+    limitations: ["Longer data collection periods","Higher participant dropout risk","Complex analysis of temporal data"]
+  },
+  {
+    name: "Touchstone Tours",
+    dataType: ["qualitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase2"],
+    effort: "low",
+    description: "Having users give a guided tour of their workspace, home, or device, pointing out important objects, tools, and areas while explaining their significance.",
+    whenToUse: "When you want to understand users' environments and the meaningful objects within them, especially as part of a contextual inquiry or home visit.",
+    steps: ["Ask the user to give you a tour of their space","Have them point out important items and areas","Ask about the significance of each item","Probe for stories and routines connected to the space","Document with photos and notes"],
+    strengths: ["Reveals environmental context quickly","User-led and natural","Uncovers meaningful artifacts and routines"],
+    limitations: ["Users may skip 'obvious' things","Limited to what's visible at the time","May feel intrusive in personal spaces"]
+  },
+  {
+    name: "Triangulation",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase2","phase4"],
+    effort: "medium",
+    description: "Using multiple research methods, data sources, or researchers to study the same phenomenon, increasing confidence in findings through convergence.",
+    whenToUse: "When making high-stakes design decisions and you need to validate findings, or when a single method may not capture the full picture.",
+    steps: ["Identify the research questions","Select 2-3 complementary methods","Conduct research using each method","Compare findings across methods","Note convergences and divergences"],
+    strengths: ["Increases confidence in findings","Compensates for individual method weaknesses","Provides richer understanding"],
+    limitations: ["More resource-intensive","Divergent findings can be confusing","Not always feasible under time constraints"]
+  },
+  {
+    name: "Unobtrusive Measures",
+    dataType: ["quantitative"],
+    approach: ["exploratory"],
+    phases: ["phase1","phase5"],
+    effort: "low",
+    description: "Collecting data through traces of behavior (wear patterns, analytics, physical traces) without requiring direct interaction with or awareness of participants.",
+    whenToUse: "When you need behavioral data without observer effects, when direct research is not possible, or to supplement self-reported data.",
+    steps: ["Identify traces of behavior relevant to your question","Design data collection methods for these traces","Collect data without disturbing the environment","Analyze patterns in the trace data","Triangulate with other research methods"],
+    strengths: ["No participant recruitment needed","Zero observer effect on behavior","Often uses existing data"],
+    limitations: ["Cannot explain motivations","Limited to what leaves traces","Ethical considerations around consent"]
+  },
+  {
+    name: "Usability Testing",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "Observing representative users attempting realistic tasks with a product to identify usability issues, measure performance, and assess user satisfaction.",
+    whenToUse: "Whenever you have a design (any fidelity) and need to evaluate whether users can effectively and efficiently accomplish their goals with it.",
+    steps: ["Define goals and create realistic task scenarios","Recruit 5-8 representative users per round","Set up the test environment and recording","Observe users attempting tasks, noting issues","Analyze findings and prioritize recommendations"],
+    strengths: ["Gold standard for finding usability issues","Directly observes real behavior","Works at any fidelity level"],
+    limitations: ["Lab setting may not reflect real context","Task scenarios may not cover all use cases","5-8 users per round may miss rare issues"]
+  },
+  {
+    name: "User Journey Maps",
+    dataType: ["qualitative"],
+    approach: ["exploratory","evaluative"],
+    phases: ["phase2","phase4"],
+    effort: "medium",
+    description: "Visual representations of the step-by-step experience a user has with a product or service over time, including actions, thoughts, emotions, and touchpoints.",
+    whenToUse: "When you need to understand and communicate the end-to-end user experience, identify pain points and opportunities, or align a team on the current user experience.",
+    steps: ["Define the persona and scenario to map","Identify all stages and touchpoints","Map user actions, thoughts, and emotions at each stage","Identify pain points and moments of delight","Highlight opportunities for improvement"],
+    strengths: ["Holistic view of user experience over time","Identifies emotional highs and lows","Excellent communication tool for teams"],
+    limitations: ["Can oversimplify complex experiences","Requires good research data to be accurate","Multiple journeys may need multiple maps"]
+  },
+  {
+    name: "Value Opportunity Analysis",
+    dataType: ["qualitative","quantitative"],
+    approach: ["evaluative","generative"],
+    phases: ["phase1","phase3"],
+    effort: "medium",
+    description: "A systematic method for identifying where a product or service can deliver value across multiple dimensions (emotional, ergonomic, aesthetic, identity, impact, core technology, quality).",
+    whenToUse: "When evaluating product concepts or redesigning products and you need a structured framework for identifying value creation opportunities across multiple dimensions.",
+    steps: ["Define the value dimensions relevant to your product","Assess current performance on each dimension","Benchmark against competitors","Identify the biggest gaps and opportunities","Prioritize dimensions for design focus"],
+    strengths: ["Structured multi-dimensional evaluation","Identifies differentiation opportunities","Balances functional and emotional value"],
+    limitations: ["Dimension weighting can be subjective","May not capture all relevant value dimensions","Requires market and user knowledge"]
+  },
+  {
+    name: "Web Analytics",
+    dataType: ["quantitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase1","phase4","phase5"],
+    effort: "low",
+    description: "Analyzing website or app usage data (page views, user flows, bounce rates, conversion funnels) to understand how users interact with digital products.",
+    whenToUse: "When you need to understand actual usage patterns, identify drop-off points, validate design changes, or establish baseline metrics for a redesign.",
+    steps: ["Define key metrics aligned with user and business goals","Set up tracking and event logging","Analyze user flows, funnels, and engagement patterns","Identify anomalies, drop-offs, and trends","Generate hypotheses for further research or A/B testing"],
+    strengths: ["Based on actual behavior (not self-report)","Large-scale data","Continuous and real-time"],
+    limitations: ["Shows what, not why","Can be overwhelming without clear goals","Privacy regulations may limit data collection"]
+  },
+  {
+    name: "Weighted Matrix",
+    dataType: ["quantitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "low",
+    description: "A decision-making tool that scores design options against weighted criteria to make transparent, systematic comparisons between alternatives.",
+    whenToUse: "When you need to choose between multiple design options and want a transparent, systematic comparison based on defined criteria.",
+    steps: ["List design options to compare","Define evaluation criteria","Assign weights to each criterion based on importance","Score each option against each criterion","Calculate weighted totals and compare"],
+    strengths: ["Transparent and systematic decision-making","Accounts for different priority levels","Facilitates team discussion and alignment"],
+    limitations: ["Subjective scoring and weighting","Can give false sense of objectivity","May not capture qualitative nuances"]
+  },
+  {
+    name: "Wizard of Oz",
+    dataType: ["qualitative"],
+    approach: ["evaluative","generative"],
+    phases: ["phase3"],
+    effort: "medium",
+    description: "A prototyping technique where a human secretly simulates system responses behind the scenes while the user believes they are interacting with a working product.",
+    whenToUse: "When testing concepts that would be expensive to build (AI, voice interfaces, complex algorithms) and you want to evaluate the user experience before investing in development.",
+    steps: ["Design the interface the user will see","Plan how the 'wizard' will simulate system responses","Set up communication between wizard and interface","Conduct sessions with users (who don't know about the wizard)","Analyze user behavior and reactions to the simulated system"],
+    strengths: ["Tests complex concepts without building them","Realistic user experience evaluation","Flexible—wizard can handle edge cases"],
+    limitations: ["Requires skilled wizard operator","Deception raises ethical questions","Scalability is limited to one user at a time"]
+  },
+  {
+    name: "Questionnaires",
+    dataType: ["quantitative","qualitative"],
+    approach: ["evaluative","exploratory"],
+    phases: ["phase1","phase4","phase5"],
+    effort: "low",
+    description: "Standardized sets of questions (such as SUS, PSSUQ, or custom instruments) used to systematically collect user feedback on specific aspects of usability or experience.",
+    whenToUse: "When you need standardized, repeatable measurement of user experience metrics across sessions, versions, or products.",
+    steps: ["Select or design the appropriate questionnaire","Administer after relevant user interaction","Collect responses from a sufficient sample","Score and analyze according to the instrument's guidelines","Compare scores against benchmarks or previous versions"],
+    strengths: ["Standardized and repeatable","Benchmarkable across products and time","Quick to administer"],
+    limitations: ["Post-hoc recall may not reflect real-time experience","Limited depth of insight","Standard instruments may miss domain-specific issues"]
+  },
+  {
+    name: "Scenario-Based Evaluation",
+    dataType: ["qualitative"],
+    approach: ["evaluative"],
+    phases: ["phase3","phase4"],
+    effort: "medium",
+    description: "Evaluating a design by walking through realistic user scenarios to assess how well the design supports real-world tasks and goals.",
+    whenToUse: "When you have a design concept or prototype and want to evaluate it against realistic use cases before formal usability testing.",
+    steps: ["Develop realistic user scenarios from research data","Walk through each scenario with the design","Assess how well the design supports each step","Identify gaps, friction, and failure points","Recommend design improvements"],
+    strengths: ["Grounds evaluation in realistic use","Identifies gaps before user testing","Can involve stakeholders in evaluation"],
+    limitations: ["Limited to scenarios you define","May miss unexpected user behaviors","Evaluator perspective differs from user perspective"]
+  }
+];
+
+// State
+let selectedMethods = JSON.parse(localStorage.getItem('selectedMethods') || '[]');
+let currentView = 'grid';
+let currentTab = 'explore';
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const dataTypes = getChecked('dataTypeFilters');
+  const approaches = getChecked('approachFilters');
+  const phases = getChecked('phaseFilters');
+  const efforts = getChecked('effortFilters');
+
+  const filtered = methods.filter(m => {
+    if (search && !m.name.toLowerCase().includes(search) && !m.description.toLowerCase().includes(search)) return false;
+    if (dataTypes.length && !dataTypes.some(dt => m.dataType.includes(dt))) return false;
+    if (approaches.length && !approaches.some(a => m.approach.includes(a))) return false;
+    if (phases.length && !phases.some(p => m.phases.includes(p))) return false;
+    if (efforts.length && !efforts.includes(m.effort)) return false;
+    return true;
+  });
+
+  document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${methods.length} methods`;
+  renderMethods(filtered);
+}
+
+function getChecked(containerId) {
+  return [...document.querySelectorAll(`#${containerId} input:checked`)].map(cb => cb.value);
+}
+
+function clearGroup(type) {
+  const map = { dataType: 'dataTypeFilters', approach: 'approachFilters', phase: 'phaseFilters', effort: 'effortFilters' };
+  document.querySelectorAll(`#${map[type]} input`).forEach(cb => cb.checked = false);
+  applyFilters();
+}
+
+function renderMethods(list) {
+  const container = document.getElementById('methodsContainer');
+  if (currentView === 'grid') {
+    container.className = 'methods-grid';
+    container.innerHTML = list.map(m => `
+      <div class="method-card ${selectedMethods.includes(m.name)?'selected':''}" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+        <div class="card-top">
+          <h3>${m.name}</h3>
+          <button class="add-btn ${selectedMethods.includes(m.name)?'added':''}"
+            onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')"
+            title="${selectedMethods.includes(m.name)?'Remove from project':'Add to project'}">
+            ${selectedMethods.includes(m.name)?'✓':'+'}
+          </button>
+        </div>
+        <div class="card-tags">
+          ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+          ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+        </div>
+        <div class="card-desc">${m.description.substring(0,120)}...</div>
+        <div class="card-phases">
+          ${['phase1','phase2','phase3','phase4','phase5'].map(p =>
+            `<div class="phase-pip ${m.phases.includes(p)?'active':''}" style="background:var(--${p})"></div>`
+          ).join('')}
+        </div>
+      </div>
+    `).join('');
+  } else {
+    container.className = 'methods-list';
+    container.innerHTML = list.map(m => `
+      <div class="method-row" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+        <button class="add-btn ${selectedMethods.includes(m.name)?'added':''}"
+          onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')">${selectedMethods.includes(m.name)?'✓':'+'}</button>
+        <h3>${m.name}</h3>
+        <div class="card-tags">
+          ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+          ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+        </div>
+        <div class="card-phases">
+          ${['phase1','phase2','phase3','phase4','phase5'].map(p =>
+            `<div class="phase-pip ${m.phases.includes(p)?'active':''}" style="background:var(--${p})"></div>`
+          ).join('')}
+        </div>
+        <span style="font-size:.75rem;color:var(--textLight);min-width:60px">${cap(m.effort)}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+const phaseLabels = {
+  phase1: 'Planning, Scoping & Definition',
+  phase2: 'Exploration, Synthesis & Design Implication',
+  phase3: 'Concept Generation & Early Prototype Iteration',
+  phase4: 'Evaluation, Refinement & Production',
+  phase5: 'Launch & Monitor'
+};
+
+function openModal(name) {
+  const m = methods.find(x => x.name === name);
+  if (!m) return;
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2>${m.name}</h2>
+    <div class="card-tags" style="margin-bottom:.8rem">
+      ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+      ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+      <span class="tag" style="background:#f0f0f0;color:#555">Effort: ${cap(m.effort)}</span>
+    </div>
+    <div class="modal-phases">
+      ${m.phases.map(p => `<span class="modal-phase-tag" style="background:var(--${p});color:#333">${phaseLabels[p]}</span>`).join('')}
+    </div>
+    <div class="modal-section">
+      <h4>Description</h4>
+      <p>${m.description}</p>
+    </div>
+    <div class="modal-section">
+      <h4>When to Use</h4>
+      <p>${m.whenToUse}</p>
+    </div>
+    <div class="modal-section">
+      <h4>Steps</h4>
+      <ol>${m.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+    </div>
+    <div class="modal-section">
+      <h4>Strengths</h4>
+      <ul>${m.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+    <div class="modal-section">
+      <h4>Limitations</h4>
+      <ul>${m.limitations.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+    <button class="modal-add-btn ${selectedMethods.includes(m.name)?'added':''}"
+      onclick="toggleSelect('${m.name.replace(/'/g,"\\'")}');openModal('${m.name.replace(/'/g,"\\'")}')">
+      ${selectedMethods.includes(m.name)?'Remove from My Project':'Add to My Project'}
+    </button>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function toggleSelect(name) {
+  const idx = selectedMethods.indexOf(name);
+  if (idx >= 0) selectedMethods.splice(idx, 1);
+  else selectedMethods.push(name);
+  localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
+  document.getElementById('projectCount').textContent = selectedMethods.length;
+  applyFilters();
+  if (currentTab === 'project') renderProject();
+  if (currentTab === 'compare') renderCompare();
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('gridBtn').classList.toggle('active', v==='grid');
+  document.getElementById('listBtn').classList.toggle('active', v==='list');
+  applyFilters();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['explore','project','compare'][i]===tab));
+  document.getElementById('exploreView').style.display = tab==='explore' ? 'block' : 'none';
+  document.getElementById('projectView').style.display = tab==='project' ? 'block' : 'none';
+  document.getElementById('projectView').classList.toggle('visible', tab==='project');
+  document.getElementById('compareView').style.display = tab==='compare' ? 'block' : 'none';
+  document.getElementById('compareView').classList.toggle('visible', tab==='compare');
+  if (tab==='project') renderProject();
+  if (tab==='compare') renderCompare();
+}
+
+function renderProject() {
+  const container = document.getElementById('projectMethods');
+  const exportBtn = document.getElementById('exportBtn');
+  if (selectedMethods.length === 0) {
+    container.innerHTML = `<div class="project-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16m-8-8h16"/></svg>
+      <p>No methods selected yet.</p>
+      <p style="font-size:.85rem">Browse the Explore tab and click + to add methods to your project.</p>
+    </div>`;
+    exportBtn.style.display = 'none';
+    return;
+  }
+  exportBtn.style.display = 'block';
+
+  // Group by phase
+  const phaseGroups = {};
+  selectedMethods.forEach(name => {
+    const m = methods.find(x => x.name === name);
+    if (!m) return;
+    m.phases.forEach(p => {
+      if (!phaseGroups[p]) phaseGroups[p] = [];
+      if (!phaseGroups[p].includes(m)) phaseGroups[p].push(m);
+    });
+  });
+
+  let html = '';
+  ['phase1','phase2','phase3','phase4','phase5'].forEach(p => {
+    if (!phaseGroups[p]) return;
+    html += `<h3 style="margin:1rem 0 .5rem;font-size:.85rem;color:var(--textLight)">
+      <span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--${p});margin-right:.4rem"></span>
+      ${phaseLabels[p]}
+    </h3>`;
+    phaseGroups[p].forEach(m => {
+      html += `<div class="project-card" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+        <h3>${m.name}</h3>
+        <div class="card-tags">
+          ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+          ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+        </div>
+        <div class="card-desc">${m.description.substring(0,100)}...</div>
+        <button class="remove-btn" onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')">Remove</button>
+      </div>`;
+    });
+  });
+  container.innerHTML = html;
+}
+
+function renderCompare() {
+  const container = document.getElementById('compareMethods');
+  if (selectedMethods.length < 2) {
+    container.innerHTML = `<div class="project-empty">
+      <p>Select at least 2 methods in your project to compare them side by side.</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = selectedMethods.map(name => {
+    const m = methods.find(x => x.name === name);
+    if (!m) return '';
+    return `<div class="compare-card">
+      <h3>${m.name}</h3>
+      <div class="compare-row"><span class="compare-label">Data Type</span><span class="compare-value">${m.dataType.map(cap).join(', ')}</span></div>
+      <div class="compare-row"><span class="compare-label">Approach</span><span class="compare-value">${m.approach.map(cap).join(', ')}</span></div>
+      <div class="compare-row"><span class="compare-label">Effort</span><span class="compare-value">${cap(m.effort)}</span></div>
+      <div class="compare-row"><span class="compare-label">Phases</span><span class="compare-value">${m.phases.map(p => phaseLabels[p].split(',')[0]).join(', ')}</span></div>
+      <div class="compare-row"><span class="compare-label">Strengths</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.strengths[0]}</span></div>
+      <div class="compare-row"><span class="compare-label">Limitations</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.limitations[0]}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function exportProject() {
+  let text = 'MY PROJECT - SELECTED RESEARCH METHODS\n' + '='.repeat(45) + '\n\n';
+  selectedMethods.forEach(name => {
+    const m = methods.find(x => x.name === name);
+    if (!m) return;
+    text += `## ${m.name}\n`;
+    text += `Data Type: ${m.dataType.map(cap).join(', ')}\n`;
+    text += `Approach: ${m.approach.map(cap).join(', ')}\n`;
+    text += `Effort: ${cap(m.effort)}\n`;
+    text += `Phases: ${m.phases.map(p => phaseLabels[p]).join('; ')}\n`;
+    text += `Description: ${m.description}\n`;
+    text += `When to Use: ${m.whenToUse}\n\n`;
+  });
+  const blob = new Blob([text], {type: 'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'my-research-methods.txt';
+  a.click();
+}
+
+// Keyboard shortcut
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// Init
+document.getElementById('projectCount').textContent = selectedMethods.length;
+applyFilters();
+</script>
+</body>
+</html>
