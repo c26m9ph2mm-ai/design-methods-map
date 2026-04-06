@@ -190,6 +190,16 @@
   .modal-phase-tag {
     font-size:.75rem; padding:4px 12px; border-radius:8px; font-weight:600;
   }
+  .modal-section h4[class],
+  .modal-section:has(h4) h4 {
+    display:flex; align-items:center; gap:.4rem;
+  }
+  .modal-section h4::before {
+    font-size:.85rem;
+  }
+  .modal-section:nth-of-type(n+6) {
+    background:#F8FAFC; border-radius:8px; padding:.8rem 1rem; border-left:3px solid var(--accent);
+  }
   .modal-add-btn {
     width:100%; padding:.7rem; border:none; border-radius:10px;
     font-size:.9rem; font-weight:600; cursor:pointer; transition:.2s;
@@ -360,7 +370,10 @@ const methods = [
     whenToUse: "When you need to make data-driven decisions between two design alternatives, optimize conversion rates, or validate design changes before full rollout.",
     steps: ["Define the hypothesis and metric to measure","Create two variants (control and test)","Randomly split users between variants","Run the test for a statistically significant duration","Analyze results and implement the winner"],
     strengths: ["Provides statistically significant evidence","Removes subjective bias from design decisions","Easy to understand and communicate results"],
-    limitations: ["Only tests two options at a time","Requires significant traffic for meaningful results","Doesn't explain why one version performs better"]
+    limitations: ["Only tests two options at a time","Requires significant traffic for meaningful results","Doesn't explain why one version performs better"],
+    howToConduct: "Begin by formulating a clear hypothesis about what change will improve a specific metric. Create two versions of the design: a control (A) representing the current state and a variant (B) incorporating the proposed change. Set up your testing platform to randomly assign incoming users to either the control or test group, ensuring each user consistently sees only one version throughout the experiment. Define your primary success metric and any secondary metrics before launching. Use a power analysis calculator to determine the required sample size based on your expected effect size, baseline conversion rate, and desired statistical significance level (typically 95%). Run the experiment until you reach the predetermined sample size — do not peek at results and stop early, as this inflates false positive rates. Once the experiment concludes, perform statistical analysis to determine whether the observed difference is statistically significant. Document the results, including confidence intervals and practical significance, and make a data-informed decision about whether to implement the change.",
+    sampleSize: "Minimum 100-1,000+ users per variant depending on expected effect size. Use power analysis calculators to determine exact sample. Larger effects need fewer participants.",
+    analysisMethods: ["Chi-square test", "T-test", "Bayesian analysis", "Conversion rate analysis", "Confidence interval estimation"]
   },
   {
     name: "AEIOU Framework",
@@ -372,7 +385,10 @@ const methods = [
     whenToUse: "When conducting field observations and you need a systematic framework to organize your notes and ensure comprehensive coverage of contextual factors.",
     steps: ["Prepare observation sheets with AEIOU categories","Observe users in their natural environment","Document Activities, Environments, Interactions, Objects, and Users","Synthesize findings across categories","Identify patterns and insights"],
     strengths: ["Provides comprehensive observation structure","Easy to learn and apply","Ensures no key area is overlooked"],
-    limitations: ["Can feel rigid for some contexts","Requires skilled observers","Categories may overlap"]
+    limitations: ["Can feel rigid for some contexts","Requires skilled observers","Categories may overlap"],
+    howToConduct: "Prepare observation templates organized around the five AEIOU categories: Activities (goal-directed actions people take), Environments (the physical and social setting), Interactions (between people, and between people and objects), Objects (tools, devices, and artifacts present), and Users (the people being observed, their roles, values, and needs). Travel to the field site where the activity of interest naturally occurs. Spend time immersing yourself in the environment, systematically documenting observations under each of the five categories. Use photography, sketches, and detailed written notes to capture rich data. Pay attention to workarounds, unexpected behaviors, and environmental factors that shape how people act. After each session, review and organize your notes while memories are fresh. Conduct multiple observation sessions across different contexts, times, and user groups to capture variation. Synthesize findings by looking for patterns and themes that emerge across categories and sessions.",
+    sampleSize: "3-10 observation sessions across different contexts. Each session typically lasts 1-4 hours.",
+    analysisMethods: ["Thematic analysis", "Cross-case comparison", "Pattern coding", "Affinity diagramming"]
   },
   {
     name: "Affinity Diagramming",
@@ -384,7 +400,10 @@ const methods = [
     whenToUse: "After gathering qualitative data from interviews, usability tests, or brainstorming sessions and you need to synthesize findings into actionable themes.",
     steps: ["Write individual data points on sticky notes","Spread all notes on a large surface","Group related notes together silently","Label each group with a theme","Discuss and refine groupings as a team"],
     strengths: ["Reveals hidden patterns in data","Encourages team participation","Scalable to large data sets"],
-    limitations: ["Can be time-consuming with very large data sets","Groupings can be subjective","Requires physical or digital collaboration space"]
+    limitations: ["Can be time-consuming with very large data sets","Groupings can be subjective","Requires physical or digital collaboration space"],
+    howToConduct: "Begin by writing each individual data point, observation, or quote from your research onto a separate sticky note or card — one idea per card. Spread all cards out on a large wall or table so they are visible. Working silently (to avoid groupthink), team members sort the cards into clusters based on natural relationships or similarities they perceive. Cards that seem related are placed near each other. Continue until all cards are grouped. Once the silent sorting is complete, discuss the clusters as a team, moving cards that seem misplaced. Give each cluster a descriptive label that captures the shared theme or insight. Look for higher-order groupings by clustering the labeled groups into larger super-categories. Document the final structure by photographing the wall and recording the hierarchy of themes. The resulting structure reveals key patterns, unmet needs, and design opportunities emerging from the research data.",
+    sampleSize: "Typically synthesizes data from 5-30 participants' worth of research data. Best with 3-8 team members sorting 50-200+ data points.",
+    analysisMethods: ["Cluster analysis", "Theme identification", "Pattern recognition", "Hierarchical categorization"]
   },
   {
     name: "Artifact Analysis",
@@ -396,7 +415,10 @@ const methods = [
     whenToUse: "When you want to understand users' existing tools, workflows, and workarounds without direct observation or interviews.",
     steps: ["Identify relevant artifacts to collect","Gather physical or digital artifacts from users","Document and photograph each artifact","Analyze patterns, wear marks, customizations","Draw insights about user behavior and needs"],
     strengths: ["Reveals unconscious behaviors","Non-intrusive method","Provides tangible evidence"],
-    limitations: ["Artifacts may lack context without user explanation","Limited to what users share","Interpretation can be subjective"]
+    limitations: ["Artifacts may lack context without user explanation","Limited to what users share","Interpretation can be subjective"],
+    howToConduct: "Identify and collect the physical or digital artifacts that users interact with during the activities you are studying — these might include forms, tools, printouts, annotated documents, dashboards, or personal objects. Photograph each artifact in its natural context before collecting it, noting where and how it was positioned. Catalog each artifact with metadata including its owner, purpose, condition, and context of use. Examine artifacts closely for signs of wear patterns (indicating frequent use), customizations (showing personal adaptations), annotations (revealing mental models), and workarounds (highlighting unmet needs or system failures). Compare artifacts across participants to identify commonalities and variations. Create a taxonomy that organizes artifacts by type, function, or user group. Use artifacts as discussion prompts in follow-up interviews, asking users to explain how and why they use or modify these objects.",
+    sampleSize: "5-15 participants providing artifacts. Collect 3-10 artifacts per participant for sufficient variety.",
+    analysisMethods: ["Visual analysis", "Comparative analysis", "Semiotic analysis", "Content analysis", "Taxonomic classification"]
   },
   {
     name: "Automated Remote Research",
@@ -408,7 +430,10 @@ const methods = [
     whenToUse: "When you need quick usability feedback from a large number of geographically dispersed participants without the overhead of moderated sessions.",
     steps: ["Define research objectives and tasks","Set up the study on a remote testing platform","Write clear task instructions and questions","Recruit and screen participants","Review recordings and analyze results"],
     strengths: ["Fast turnaround time","Cost-effective at scale","Reaches diverse participants"],
-    limitations: ["No ability to probe or ask follow-up questions","Participants may misunderstand tasks","Lower engagement than moderated sessions"]
+    limitations: ["No ability to probe or ask follow-up questions","Participants may misunderstand tasks","Lower engagement than moderated sessions"],
+    howToConduct: "Select a remote research platform suited to your goals, such as UserTesting, Maze, Lookback, or dscout. Write a clear task script that outlines the scenario, specific tasks participants should attempt, and follow-up questions. Define screener criteria to recruit participants matching your target user profile, filtering by demographics, experience level, or other relevant attributes. Configure the study settings including task order, time limits, and recording options. Pilot the study with 2-3 participants to catch ambiguous instructions or technical issues. Launch the study to your target sample. As results come in, review video recordings and written responses, noting task completion, navigation patterns, verbal commentary, and emotional reactions. Tag and timestamp key moments in recordings for efficient team review. Compile quantitative metrics alongside qualitative observations for a comprehensive picture of the user experience.",
+    sampleSize: "15-50 participants for quantitative confidence. 5-10 for qualitative insights. Can scale to hundreds for statistical benchmarking.",
+    analysisMethods: ["Task completion rate analysis", "Time-on-task analysis", "Error rate analysis", "SUS/PSSUQ scoring", "Video interaction analysis"]
   },
   {
     name: "Behavioral Mapping",
@@ -420,7 +445,10 @@ const methods = [
     whenToUse: "When designing or redesigning physical spaces and you need to understand how people actually use and move through an environment.",
     steps: ["Obtain or create a floor plan of the space","Define behaviors and activities to track","Observe and record user positions and movements at intervals","Mark behaviors on the map","Analyze patterns of use and movement"],
     strengths: ["Provides objective spatial usage data","Reveals unexpected behavior patterns","Visual output is easy to communicate"],
-    limitations: ["Time-intensive to collect data","Limited to physical spaces","May miss the reasons behind behaviors"]
+    limitations: ["Time-intensive to collect data","Limited to physical spaces","May miss the reasons behind behaviors"],
+    howToConduct: "Obtain or create an accurate floor plan or site map of the space you are studying. Define your observation protocol: specify time intervals for recording (e.g., every 5 or 15 minutes), the behaviors and activities you will code, and the symbols or notation you will use. Position observers at vantage points where they can see the entire area without obstructing normal activity. At each predetermined interval, scan the space and record the location and activity of every person present, marking their position and behavior code on a fresh copy of the floor plan. Repeat observations across different times of day, days of the week, and seasons to capture temporal variation. After data collection, compile all individual observation maps onto a master map, using density indicators or color coding to show frequency of use and types of activity in each area. Analyze the compiled maps to identify high-traffic zones, underused areas, movement corridors, and spatial conflicts.",
+    sampleSize: "Observe 30-100+ people across 3-5 different time periods. Minimum 2-3 days of observation for reliable patterns.",
+    analysisMethods: ["Spatial frequency analysis", "Heat map generation", "Movement pattern analysis", "Time-based comparison", "Density mapping"]
   },
   {
     name: "Bodystorming",
@@ -432,7 +460,10 @@ const methods = [
     whenToUse: "When exploring physical interactions, spatial designs, or service experiences where traditional brainstorming fails to capture the embodied nature of the experience.",
     steps: ["Define the scenario or design challenge","Set up a rough physical simulation of the environment","Have participants act out the experience","Encourage improvisation and idea generation","Document observations and ideas that emerge"],
     strengths: ["Generates empathy through physical experience","Surfaces overlooked interaction details","Fun and engaging for teams"],
-    limitations: ["Requires physical space and props","Can feel uncomfortable for some participants","Difficult to simulate complex digital interactions"]
+    limitations: ["Requires physical space and props","Can feel uncomfortable for some participants","Difficult to simulate complex digital interactions"],
+    howToConduct: "Set up a rough physical simulation of the environment where the design solution will be used — this can range from a fully mocked-up room to a simple arrangement of furniture and props representing key elements. Brief participants on the scenario, the user roles they will play, and the goals they should try to accomplish. Encourage participants to physically act out the experience, moving through the space, handling props, and interacting with each other as they would in real life. Emphasize improvisation and allow the scenario to evolve naturally. Observers should take notes and capture video of interesting moments, workarounds, and breakdowns. After each scenario round, pause for a quick debrief where participants share what felt natural, awkward, or missing. Iterate by modifying the environment or scenario and running again. Conclude with a comprehensive debrief session to extract design insights, opportunity areas, and concrete ideas that emerged from the embodied experience.",
+    sampleSize: "4-12 participants per session. Run 2-3 sessions with different groups for diverse perspectives.",
+    analysisMethods: ["Thematic analysis of observations", "Video review", "Idea categorization", "Scenario comparison", "Insight extraction"]
   },
   {
     name: "Brainstorming",
@@ -444,7 +475,10 @@ const methods = [
     whenToUse: "When you need to generate a wide range of potential solutions early in the design process, especially when diverse perspectives would be valuable.",
     steps: ["Define a clear problem statement or 'How Might We' question","Set ground rules (no criticism, go for quantity)","Generate ideas individually or as a group","Build on others' ideas","Vote or cluster to identify the most promising ideas"],
     strengths: ["Generates many ideas quickly","Builds team engagement and buy-in","Low barrier to entry"],
-    limitations: ["Dominant personalities can take over","Quantity over quality without good facilitation","Ideas may lack feasibility"]
+    limitations: ["Dominant personalities can take over","Quantity over quality without good facilitation","Ideas may lack feasibility"],
+    howToConduct: "Start by framing a clear 'How Might We' question that is specific enough to guide thinking but broad enough to invite creative solutions. Establish ground rules: defer judgment (no criticism during ideation), encourage wild ideas, build on others' ideas, stay focused on topic, one conversation at a time, and go for quantity over quality. Begin with a short warm-up exercise to get creative energy flowing. Set a timer for 15-30 minutes and have participants generate as many ideas as possible, writing each on a separate sticky note. The facilitator should keep energy high, prompt with 'what else?' and redirect tangents. Once ideation time is up, have participants share and post all ideas on a wall. Silently read through all ideas, then collaboratively cluster related ideas into themes. Use dot voting (each person gets 3-5 votes) to surface the most promising ideas. Discuss the top-voted ideas and select a shortlist for further development and prototyping.",
+    sampleSize: "4-10 participants per session. Run 2-4 sessions for diverse input. Aim for 50-100+ ideas per session.",
+    analysisMethods: ["Dot voting", "Affinity clustering", "Feasibility-impact matrix", "Idea categorization", "Convergence analysis"]
   },
   {
     name: "Business Origami",
@@ -456,7 +490,10 @@ const methods = [
     whenToUse: "When mapping complex service ecosystems involving multiple stakeholders, touchpoints, and information flows to identify opportunities for improvement.",
     steps: ["Identify key actors, channels, and touchpoints","Create paper cut-outs representing each element","Arrange elements on a shared surface","Map interactions and information flows between elements","Identify gaps, redundancies, and opportunities"],
     strengths: ["Makes complex systems tangible","Highly collaborative and visual","Easy to reconfigure and explore alternatives"],
-    limitations: ["May oversimplify complex relationships","Requires knowledgeable participants","Time needed for setup"]
+    limitations: ["May oversimplify complex relationships","Requires knowledgeable participants","Time needed for setup"],
+    howToConduct: "Create small paper tokens or cutouts to represent each type of actor (customers, employees, partners), channel (website, store, call center), and touchpoint in the system you are modeling. Arrange participants around a large table and introduce the exercise, explaining that the goal is to model how information, money, and value flow through the system. Place the tokens on the table and begin connecting them with strings, lines, or arrows drawn on paper to show the relationships and flows between entities. Use different colors to represent different types of flows (e.g., red for money, blue for information, green for physical goods). As the model takes shape, discuss as a group: Where are the bottlenecks? Where does information get lost? Where are there redundant connections? Rearrange tokens to explore alternative configurations. Photograph each iteration. The tangible, spatial nature of the exercise makes complex systems visible and manipulable, enabling collaborative sensemaking and design.",
+    sampleSize: "4-8 participants per session including diverse stakeholders. 1-3 sessions to cover different scenarios.",
+    analysisMethods: ["Stakeholder network analysis", "Flow analysis", "Gap identification", "Touchpoint mapping", "Value stream analysis"]
   },
   {
     name: "Card Sorting",
@@ -468,7 +505,10 @@ const methods = [
     whenToUse: "When designing or restructuring navigation, menus, or content organization and you need to understand how users naturally categorize information.",
     steps: ["Prepare cards with content items or topics","Recruit representative participants","Ask participants to sort cards into groups","Have them label groups (open sort) or sort into predefined categories (closed sort)","Analyze groupings using similarity matrices or dendrograms"],
     strengths: ["Directly reflects user mental models","Quick and inexpensive","Can be done remotely with online tools"],
-    limitations: ["Results can vary widely between participants","Doesn't account for task context","Large card sets can overwhelm participants"]
+    limitations: ["Results can vary widely between participants","Doesn't account for task context","Large card sets can overwhelm participants"],
+    howToConduct: "Prepare 30-60 cards, each labeled with a content item, feature, or topic from your information space. Decide whether to conduct an open sort (participants create and name their own groups) or closed sort (participants sort into predefined categories). Recruit participants who represent your target users. For in-person sessions, use physical index cards and provide rubber bands and blank cards for group labels. For remote sessions, use tools like OptimalSort, Proven by Users, or UserZoom. In each session, ask the participant to review all cards and sort them into groups that make sense to them. For open sorts, ask them to label each group after sorting. Encourage thinking aloud to capture rationale. After completing the sort, conduct a brief interview to understand their reasoning, especially for cards they found difficult to place. Across all participants, compile the sorting data into a similarity matrix showing how often each pair of cards was grouped together.",
+    sampleSize: "15-20 participants for open sort. 30+ participants for closed sort for statistical reliability. Minimum 10 for qualitative patterns.",
+    analysisMethods: ["Similarity matrix", "Dendrogram analysis", "Category agreement analysis", "Standardized best-merge analysis", "First-click analysis"]
   },
   {
     name: "Case Studies",
@@ -480,7 +520,10 @@ const methods = [
     whenToUse: "When you need deep understanding of how a product or service works in a specific real-world context, or to document and share design outcomes.",
     steps: ["Define the case and research questions","Gather data from multiple sources (interviews, documents, observations)","Organize and analyze the data","Identify patterns and key findings","Write up the case with conclusions and implications"],
     strengths: ["Provides rich, contextual understanding","Reveals complexity of real-world use","Compelling for stakeholder communication"],
-    limitations: ["Time-intensive to conduct properly","Findings may not generalize","Risk of researcher bias"]
+    limitations: ["Time-intensive to conduct properly","Findings may not generalize","Risk of researcher bias"],
+    howToConduct: "Begin by defining the boundaries of the case — what is included and excluded, and what makes this case worthy of in-depth study (it may be typical, extreme, unique, or revelatory). Develop a case study protocol outlining your research questions, data collection procedures, and analysis plan. Collect data from multiple sources to enable triangulation: conduct interviews with key stakeholders, review relevant documents and archives, perform direct observation, and gather physical artifacts where relevant. Maintain a detailed case study database organizing all evidence. During analysis, use pattern matching to compare observed patterns with predicted ones, build explanations iteratively, and address rival interpretations. Write up the case with thick description that provides enough context for readers to judge the transferability of findings. For multiple case studies, conduct within-case analysis first, then cross-case synthesis to identify common patterns and points of divergence.",
+    sampleSize: "1-5 cases for in-depth analysis. Single case for unique/revelatory cases. 3-5 cases for cross-case comparison.",
+    analysisMethods: ["Within-case analysis", "Cross-case synthesis", "Pattern matching", "Explanation building", "Narrative analysis"]
   },
   {
     name: "Cognitive Walkthrough",
@@ -492,7 +535,10 @@ const methods = [
     whenToUse: "When you need a quick usability evaluation of a design without recruiting participants, especially for first-time use or onboarding flows.",
     steps: ["Define user goals and task sequences","Assemble evaluators with the interface","Walk through each step asking: Will the user try this? Can they find the control? Will they understand the feedback?","Document issues found at each step","Prioritize issues and recommend fixes"],
     strengths: ["Fast and low-cost","Focuses on learnability","Can be done with prototypes"],
-    limitations: ["Only covers evaluator-defined tasks","Misses issues real users would find","Subjective to evaluator expertise"]
+    limitations: ["Only covers evaluator-defined tasks","Misses issues real users would find","Subjective to evaluator expertise"],
+    howToConduct: "Begin by clearly defining the target user persona including their goals, knowledge level, and experience with similar systems. Specify the task to be evaluated and document the exact sequence of actions a user would need to perform to complete it. For each action step in the sequence, the evaluator answers four critical questions: (1) Will the user try to achieve the right effect at this point? (2) Will the user notice the correct action is available? (3) Will the user associate the correct action with the desired effect? (4) If the correct action is performed, will the user see that progress is being made toward the goal? Each evaluator works through the task independently, documenting success or failure stories at each step along with the reasoning. After individual walkthroughs, evaluators meet to compare findings, discuss disagreements, and compile a consolidated list of usability issues with severity ratings. The method is particularly effective for evaluating learnability and first-time use experiences.",
+    sampleSize: "3-5 expert evaluators. Each evaluates independently. No end users needed but experts should understand the target users.",
+    analysisMethods: ["Issue severity rating", "Heuristic categorization", "Success/failure scoring per step", "Gap analysis", "Comparative walkthrough analysis"]
   },
   {
     name: "Collage",
@@ -504,7 +550,10 @@ const methods = [
     whenToUse: "When exploring emotional, aspirational, or abstract aspects of user experience that are difficult to articulate verbally.",
     steps: ["Provide diverse visual materials (magazines, printed images, materials)","Define the prompt or theme","Have participants create collages expressing their perspective","Ask participants to present and explain their collage","Discuss themes and patterns across collages"],
     strengths: ["Accesses emotions and aspirations beyond words","Engaging and fun for participants","Reveals latent needs"],
-    limitations: ["Interpretation can be subjective","Some participants may resist creative activities","Difficult to quantify results"]
+    limitations: ["Interpretation can be subjective","Some participants may resist creative activities","Difficult to quantify results"],
+    howToConduct: "Prepare a rich collection of materials including diverse magazines, printed images, colored paper, markers, glue sticks, scissors, stickers, and other craft supplies. Set up a comfortable workspace with ample table space. Provide participants with a clear creative prompt related to your research question — for example, 'Create a collage showing your ideal morning routine' or 'Depict what trust looks like in your banking experience.' Allow 20-40 minutes for participants to browse materials, select images and elements that resonate with them, and compose their collage. Encourage participants not to overthink their choices but to follow their instincts. Once collages are complete, have each participant present and explain their creation to the group, describing why they chose specific images and what they represent. Ask probing questions about specific elements, spatial relationships, and emotional associations. Record these explanations as they often reveal deeper values, aspirations, and latent needs that are difficult to articulate through verbal methods alone.",
+    sampleSize: "6-15 participants. Can be done individually or in small groups of 3-4.",
+    analysisMethods: ["Visual thematic analysis", "Content analysis", "Metaphor analysis", "Narrative analysis of explanations", "Symbolic interpretation"]
   },
   {
     name: "Competitive Testing",
@@ -516,7 +565,10 @@ const methods = [
     whenToUse: "When you need to understand your product's strengths and weaknesses relative to competitors, or to establish usability benchmarks for your market.",
     steps: ["Identify key competitors to evaluate","Define common tasks across all products","Recruit representative users","Conduct usability tests with each product","Compare metrics (completion rate, time, satisfaction) across products"],
     strengths: ["Provides objective competitive benchmarks","Identifies industry best practices","Strong evidence for stakeholder decisions"],
-    limitations: ["Requires access to competitor products","Time-intensive to test multiple products","Competitors may change frequently"]
+    limitations: ["Requires access to competitor products","Time-intensive to test multiple products","Competitors may change frequently"],
+    howToConduct: "Identify 2-4 key competitors whose products serve a similar user need. Define 3-5 core tasks that are common across all products being tested, ensuring tasks are meaningful and representative of real user goals. Recruit participants who are relatively unfamiliar with all the products to minimize bias from prior experience. Use a within-subjects design where each participant tests all products, and counterbalance the order of products across participants to control for learning effects. For each product, have the participant attempt the same tasks while you measure task completion rate, time on task, errors, and satisfaction. After testing each product, administer a standardized usability questionnaire (such as SUS or PSSUQ). At the end of the session, ask participants to rank the products and explain their preferences. Compile results into a comparative scorecard showing how each product performs on each metric and task, highlighting competitive strengths and weaknesses.",
+    sampleSize: "8-12 participants per product being tested. Use within-subjects design where each participant tests all products.",
+    analysisMethods: ["Benchmarking analysis", "Comparative task analysis", "ANOVA/Friedman test", "Net Promoter Score comparison", "Feature gap analysis"]
   },
   {
     name: "Concept Mapping",
@@ -528,7 +580,10 @@ const methods = [
     whenToUse: "When synthesizing complex research findings, aligning team understanding, or exploring the structure of a problem space.",
     steps: ["Identify the focal question or topic","List key concepts related to the topic","Arrange concepts hierarchically or relationally","Draw and label connections between concepts","Refine the map collaboratively"],
     strengths: ["Makes abstract relationships visible","Facilitates shared understanding","Can reveal gaps in knowledge"],
-    limitations: ["Can become cluttered with complex topics","Subjective structure","Requires facilitation for group activities"]
+    limitations: ["Can become cluttered with complex topics","Subjective structure","Requires facilitation for group activities"],
+    howToConduct: "Begin with a clearly defined focal question that the concept map will address, such as 'How does our onboarding process work?' or 'What factors influence customer loyalty?' Brainstorm a list of key concepts related to the focal question — aim for 15-25 concepts for a manageable map. Write each concept on a separate card or sticky note. Arrange the concepts hierarchically with the most general, inclusive concepts at the top and more specific concepts below. Draw lines connecting related concepts, and label each connecting line with a linking phrase that describes the relationship (e.g., 'leads to,' 'requires,' 'is part of'). Look for cross-links — connections between concepts in different areas of the map — as these often represent creative insights. Review and revise the map collaboratively, discussing the meaning and accuracy of each relationship. The resulting map provides a visual representation of shared understanding and can reveal gaps, misconceptions, and opportunities for innovation.",
+    sampleSize: "3-8 team members collaborating. Can also be done with 10-20 individual participants whose maps are then compared.",
+    analysisMethods: ["Structural analysis", "Concept frequency analysis", "Link analysis", "Hierarchical comparison", "Knowledge structure assessment"]
   },
   {
     name: "Content Analysis",
@@ -540,7 +595,10 @@ const methods = [
     whenToUse: "When auditing existing content, analyzing user-generated content, or examining communication patterns in support tickets or reviews.",
     steps: ["Define the scope of content to analyze","Develop a coding scheme or categories","Systematically code content items","Analyze frequency and patterns of codes","Report findings and implications for design"],
     strengths: ["Works with existing data (no recruitment)","Can handle large volumes of content","Combines qualitative and quantitative insights"],
-    limitations: ["Time-consuming coding process","Coding reliability requires training","May miss context around content"]
+    limitations: ["Time-consuming coding process","Coding reliability requires training","May miss context around content"],
+    howToConduct: "Define the universe of content to be analyzed — this might include support tickets, social media posts, product reviews, interview transcripts, or any textual or visual material. Draw a representative sample from this universe using an appropriate sampling strategy (random, stratified, or purposive). Develop a detailed coding scheme with clear definitions and examples for each code, ensuring codes are mutually exclusive and exhaustive for your research questions. Train two or more coders using a subset of the data, iterating on code definitions until inter-rater reliability reaches acceptable levels (Cohen's Kappa above 0.7). Have coders independently code the full sample, then calculate inter-rater reliability to verify consistency. Resolve disagreements through discussion and reconciliation. Analyze the coded data by examining code frequencies, co-occurrences, and patterns. Perform statistical tests where appropriate to determine whether observed differences between groups or time periods are statistically significant.",
+    sampleSize: "Depends on content volume. Typically analyze 200-500+ content items. 10-20% of total corpus if very large. Need 2+ coders for reliability.",
+    analysisMethods: ["Frequency analysis", "Chi-square test", "Inter-rater reliability (Cohen's Kappa)", "Coding matrix analysis", "Trend analysis"]
   },
   {
     name: "Content Inventory",
@@ -552,7 +610,10 @@ const methods = [
     whenToUse: "When planning a website redesign or migration, auditing content quality, or establishing content governance processes.",
     steps: ["Define the scope (entire site or specific sections)","Create a spreadsheet with relevant attributes","Catalog each piece of content","Assess quality, accuracy, and relevance","Identify content gaps, redundancies, and issues"],
     strengths: ["Provides comprehensive content overview","Essential for redesign planning","Identifies content gaps and redundancies"],
-    limitations: ["Very time-consuming for large sites","Can become outdated quickly","Doesn't capture user perspective on content value"]
+    limitations: ["Very time-consuming for large sites","Can become outdated quickly","Doesn't capture user perspective on content value"],
+    howToConduct: "Begin by using a web crawling tool such as Screaming Frog, Sitebulb, or a custom script to systematically catalog every URL on the site or within the defined scope. Export the crawl results into a spreadsheet and add metadata columns for each page including: content owner, last updated date, content type (article, landing page, form, etc.), target audience, quality rating, traffic data, and notes. Work through each URL methodically, visiting the page and assessing its content against your criteria. Flag pages that are redundant, outdated, or trivial (ROT analysis). Identify gaps where expected content is missing. Note inconsistencies in voice, branding, and formatting. Cross-reference with analytics data to understand which pages receive traffic and which are essentially invisible. Create a summary dashboard showing the overall health of the content ecosystem and prioritized recommendations for content to keep, revise, consolidate, or remove.",
+    sampleSize: "Complete census of all content — no sampling. For large sites, may scope to specific sections. Inventory typically covers 100-10,000+ pages.",
+    analysisMethods: ["Content audit scoring", "ROT analysis (Redundant, Outdated, Trivial)", "Gap analysis", "Content quality metrics", "Traffic correlation analysis"]
   },
   {
     name: "Contextual Design",
@@ -564,7 +625,10 @@ const methods = [
     whenToUse: "For large-scale product design projects where deep understanding of work practices and user needs must drive the entire design process.",
     steps: ["Conduct contextual inquiries in the field","Build work models (flow, sequence, artifact, cultural, physical)","Consolidate data across users","Create a vision for the redesigned work","Prototype and test the new design"],
     strengths: ["Deeply grounded in user reality","Comprehensive end-to-end methodology","Strong emphasis on work context"],
-    limitations: ["Very resource-intensive","Requires extensive training","Can be slow for fast-paced environments"]
+    limitations: ["Very resource-intensive","Requires extensive training","Can be slow for fast-paced environments"],
+    howToConduct: "Begin with a series of contextual inquiry sessions where researchers observe and interview users in their actual work environments. From the raw data, build five work models for each user: a Flow model (showing communication and coordination), a Sequence model (detailing step-by-step task procedures), an Artifact model (documenting the tools and documents used), a Cultural model (capturing influences, pressures, and values), and a Physical model (mapping the workspace layout). Conduct interpretation sessions with your team after each inquiry to extract key insights. Once all individual models are complete, consolidate them across users to identify common patterns, creating unified work models that represent the user population. Use the consolidated models to run visioning sessions where the team imagines improved future work practices. Translate the vision into storyboards depicting how users will work with the new system, then create paper prototypes and validate them with users through iterative rounds of testing and refinement.",
+    sampleSize: "12-20 contextual inquiry sessions for a major project. 4-6 for smaller scope. 6-8 team members for consolidation and visioning.",
+    analysisMethods: ["Work model building", "Affinity diagramming", "Consolidation analysis", "Vision-to-feature mapping", "Contextual design modeling"]
   },
   {
     name: "Contextual Inquiry",
@@ -576,7 +640,10 @@ const methods = [
     whenToUse: "When you need to deeply understand how users actually work in their natural environment, including workarounds and tacit knowledge they can't articulate in interviews.",
     steps: ["Identify users and arrange visits to their workplace","Observe users performing their actual work","Ask questions about their actions in real-time","Focus on breakdowns, workarounds, and surprises","Debrief and document findings immediately after"],
     strengths: ["Reveals real behavior vs. reported behavior","Captures rich contextual detail","Uncovers tacit knowledge and workarounds"],
-    limitations: ["Time-intensive (2-3 hours per session)","Requires skilled interviewers","Can disrupt user's workflow"]
+    limitations: ["Time-intensive (2-3 hours per session)","Requires skilled interviewers","Can disrupt user's workflow"],
+    howToConduct: "Schedule 1-2 hour visits to the user's actual workplace or environment where they perform the activities you are studying. Arrive with a clear focus area but remain open to unexpected findings. Adopt the master-apprentice model: position the user as the expert who is teaching you their craft. Observe them performing their real work tasks — do not give them artificial assignments. As they work, periodically interrupt to ask questions about what they are doing and why: 'I noticed you just did X — can you tell me more about that?' and 'What would happen if you did it differently?' Take detailed notes on actions, tools used, the physical environment, and the user's explanations. Capture artifacts such as forms, checklists, or screen layouts. Avoid leading questions or projecting your assumptions. Immediately after each session, debrief with your team in an interpretation session while details are fresh, extracting key observations, insights, and design implications.",
+    sampleSize: "6-12 participants for identifying major themes. 15-20 for comprehensive understanding. Each session is 1-3 hours.",
+    analysisMethods: ["Interpretation session notes", "Sequence modeling", "Artifact modeling", "Work flow analysis", "Affinity diagramming"]
   },
   {
     name: "Creative Toolkits",
@@ -588,7 +655,10 @@ const methods = [
     whenToUse: "When you want participants to express latent needs, dreams, and desires that are difficult to access through traditional interviews or surveys.",
     steps: ["Design a toolkit appropriate to the research question","Prepare diverse materials and components","Introduce the activity with a clear prompt","Give participants time to create their constructions","Have participants present and explain what they made"],
     strengths: ["Accesses deep latent needs","Equalizes participation across personality types","Produces rich, tangible artifacts"],
-    limitations: ["Requires careful toolkit design","Some participants resist creative activities","Analysis can be complex"]
+    limitations: ["Requires careful toolkit design","Some participants resist creative activities","Analysis can be complex"],
+    howToConduct: "Design a generative toolkit composed of evocative, ambiguous components that participants can use to express their thoughts, feelings, and ideas. Components might include images, shapes, icons, connectors, figurines, fabric swatches, and labeled word tiles. Several days before the making session, send participants a sensitizing workbook with exercises that get them reflecting on the topic — this primes their thinking and surfaces deeper insights. During the facilitated making session, introduce the toolkit components and provide a clear prompt such as 'Build a model of your ideal healthcare experience.' Give participants 30-45 minutes to create their constructions using the toolkit materials. After building, each participant presents their creation to the group, narrating what each element represents and why they placed it where they did. The facilitator asks probing questions to uncover the meanings and motivations behind design choices. Record both the visual creations and the verbal narratives for analysis.",
+    sampleSize: "8-15 participants in groups of 3-5. Run 2-3 sessions for diverse perspectives.",
+    analysisMethods: ["Visual analysis", "Narrative analysis", "Thematic coding of explanations", "Cross-participant comparison", "Metaphor analysis"]
   },
   {
     name: "Critical Incident Technique",
@@ -600,7 +670,10 @@ const methods = [
     whenToUse: "When you need to identify the most impactful moments in a user experience, understand what makes or breaks satisfaction, or prioritize design improvements.",
     steps: ["Define the domain and type of incidents to collect","Interview users about specific memorable experiences","Probe for detailed context, actions, and outcomes","Categorize incidents by theme","Identify patterns that inform design priorities"],
     strengths: ["Focuses on high-impact moments","Rich, detailed stories","Actionable for prioritization"],
-    limitations: ["Subject to recall bias","May miss routine aspects of experience","Negative incidents may dominate"]
+    limitations: ["Subject to recall bias","May miss routine aspects of experience","Negative incidents may dominate"],
+    howToConduct: "During interviews, ask participants to recall a specific, concrete instance when something went particularly well or particularly poorly related to the experience you are studying. Use a structured probing approach: first, ask them to describe the context and what led up to the incident. Then, ask them to describe exactly what happened — what actions they and others took, and what the system or environment did. Next, ask about the outcome — what was the result of the incident and how did it affect them? Finally, ask what they believe could have been done to prevent a negative outcome or replicate a positive one. Encourage vivid, detailed accounts rather than generalizations. Collect incidents from enough participants to reach saturation, where new incidents begin to fit into already-established categories. Incidents are then sorted into categories based on their nature, and frequency counts reveal which types of incidents are most common and impactful.",
+    sampleSize: "15-30 participants to achieve saturation. Aim to collect 50-100 incidents total. 3-5 incidents per participant.",
+    analysisMethods: ["Incident categorization", "Frequency analysis", "Root cause analysis", "Impact assessment", "Thematic analysis"]
   },
   {
     name: "Crowdsourcing",
@@ -612,7 +685,10 @@ const methods = [
     whenToUse: "When you need diverse perspectives at scale, want to involve your user community in the design process, or need to gather many ideas quickly.",
     steps: ["Define the challenge or question clearly","Choose a platform for crowdsourcing","Launch the campaign with clear guidelines","Moderate and curate submissions","Synthesize and prioritize the best contributions"],
     strengths: ["Access to diverse perspectives","Can generate massive amounts of input","Engages community and builds loyalty"],
-    limitations: ["Quality varies widely","Requires significant moderation effort","May raise intellectual property concerns"]
+    limitations: ["Quality varies widely","Requires significant moderation effort","May raise intellectual property concerns"],
+    howToConduct: "Clearly define the challenge or question you want the crowd to address, being specific enough to guide contributions but open enough to invite diverse perspectives. Select an appropriate platform based on your audience — options include IdeaScale and UserVoice for structured ideation, social media for broad reach, or specialized platforms like Innocentive for technical challenges. Establish clear rules for participation, evaluation criteria, timelines, and incentives (prizes, recognition, or intrinsic motivation). Launch the campaign with compelling messaging that explains the purpose and impact of contributions. Actively moderate the platform, responding to questions, removing inappropriate content, and highlighting promising contributions to maintain engagement. Use voting, commenting, and rating mechanisms to let the community help surface the best ideas. After the campaign closes, curate and synthesize the top contributions, looking for patterns and novel approaches. Provide feedback to contributors about how their input was used to build trust and encourage future participation.",
+    sampleSize: "50-1,000+ contributors depending on platform reach. Quality submissions typically represent 10-20% of total.",
+    analysisMethods: ["Content analysis", "Voting/ranking analysis", "Sentiment analysis", "Theme clustering", "Feasibility assessment"]
   },
   {
     name: "Cultural Probes",
@@ -624,7 +700,10 @@ const methods = [
     whenToUse: "When you want to understand users' daily lives, values, and experiences in a way that is less intrusive than observation and richer than interviews alone.",
     steps: ["Design a probe kit with diverse self-documentation activities","Prepare compelling and inviting materials","Distribute kits with clear (but open-ended) instructions","Collect completed probes after 1-4 weeks","Analyze responses for inspiration and patterns"],
     strengths: ["Non-intrusive and respectful of participants","Captures experiences over time","Inspires design through unexpected responses"],
-    limitations: ["Completion rates can be low","Not designed for rigorous analysis","Responses may be hard to interpret"]
+    limitations: ["Completion rates can be low","Not designed for rigorous analysis","Responses may be hard to interpret"],
+    howToConduct: "Design an aesthetically appealing probe kit that invites creative self-documentation. Typical contents include a disposable camera or photo prompt cards, a diary with evocative daily questions, postcards with open-ended prompts to mail back, maps for marking meaningful locations, and small creative exercises. Package the materials thoughtfully — the visual quality and playfulness of the kit influences engagement. Meet with each participant individually to introduce the kit, walk through each item, and emphasize that there are no right or wrong responses. Give participants loose, open-ended instructions rather than rigid tasks. Allow 1-4 weeks for participants to complete the probes in their own time and natural context. Collect the returned materials and review them carefully, noting recurring themes, surprising entries, and emotionally charged responses. Use the returned probes as springboards for in-depth follow-up conversations where participants explain and elaborate on their entries, uncovering rich contextual and emotional insights.",
+    sampleSize: "5-10 participants. Expect 60-80% return rate. Plan for attrition by recruiting 15-20% more.",
+    analysisMethods: ["Visual analysis", "Narrative analysis", "Thematic interpretation", "Inspirational pattern identification", "Cross-probe comparison"]
   },
   {
     name: "Customer Experience Audit",
@@ -636,7 +715,10 @@ const methods = [
     whenToUse: "When you need to assess the current state of customer experience across all channels, identify pain points, and prioritize improvements.",
     steps: ["Map all customer touchpoints and channels","Define evaluation criteria for each touchpoint","Assess each touchpoint through multiple methods","Score and compare across touchpoints","Identify priority areas for improvement"],
     strengths: ["Holistic view of customer experience","Identifies cross-channel inconsistencies","Provides clear improvement priorities"],
-    limitations: ["Very resource-intensive","Requires cross-functional collaboration","Point-in-time snapshot that can age quickly"]
+    limitations: ["Very resource-intensive","Requires cross-functional collaboration","Point-in-time snapshot that can age quickly"],
+    howToConduct: "Begin by mapping all customer touchpoints across the entire journey — from first awareness through purchase, onboarding, usage, support, and renewal or exit. For each touchpoint, conduct a multi-method evaluation. Deploy mystery shoppers to experience each channel as a real customer would, following predefined scenarios and scoring their experience against established criteria. Review analytics data to understand traffic patterns, conversion rates, drop-off points, and digital behavior. Survey customers using standardized instruments to capture satisfaction, effort, and loyalty metrics at key journey stages. Interview frontline staff who interact with customers daily to understand recurring pain points and workarounds from the operational perspective. Score each touchpoint on defined criteria such as ease of use, consistency, emotional impact, and alignment with brand promise. Consolidate findings into a comprehensive scorecard that visualizes the customer experience across the entire journey, highlighting bright spots and critical pain points that need immediate attention.",
+    sampleSize: "Evaluate all key touchpoints (typically 15-50). 10-20 mystery shops per channel. Survey 200-500+ customers.",
+    analysisMethods: ["Touchpoint scoring", "Gap analysis", "Customer satisfaction metrics (CSAT, NPS)", "Journey-level analysis", "Benchmarking"]
   },
   {
     name: "Design Charette",
@@ -648,7 +730,10 @@ const methods = [
     whenToUse: "When facing a complex design challenge that benefits from multiple disciplines and perspectives working together under time pressure.",
     steps: ["Define the design challenge clearly","Assemble a diverse group of stakeholders","Present the challenge and constraints","Conduct timed rounds of sketching and presenting","Converge on the most promising directions"],
     strengths: ["Generates diverse solutions quickly","Builds cross-functional alignment","Creates energy and momentum"],
-    limitations: ["Requires skilled facilitation","Solutions may lack depth","Can be dominated by vocal participants"]
+    limitations: ["Requires skilled facilitation","Solutions may lack depth","Can be dominated by vocal participants"],
+    howToConduct: "Define a clear design brief that frames the challenge, target users, constraints, and success criteria. Invite 6-12 diverse stakeholders who bring different perspectives — designers, engineers, business analysts, customer support representatives, and ideally end users. Open the session by presenting relevant user research findings, technical constraints, and business goals to establish shared context. Structure the session into 3-4 timed rounds, each lasting 10-15 minutes. In each round, participants quickly sketch solutions individually, then present their concepts to the group in a brief show-and-tell. After each presentation round, the group critiques ideas constructively, identifying strengths to carry forward and weaknesses to address. Each successive round builds on the best elements from previous rounds, gradually converging toward stronger solutions. Between rounds, the facilitator may introduce additional constraints or provocations to push thinking further. Conclude by having the group select the most promising design directions through dot voting or discussion, and document all sketches and decisions for the design team to develop further.",
+    sampleSize: "6-15 participants per session representing diverse disciplines. Can run 1-3 sessions for complex challenges.",
+    analysisMethods: ["Design critique analysis", "Concept clustering", "Dot voting", "Feasibility ranking", "Theme synthesis"]
   },
   {
     name: "Design Ethnography",
@@ -660,7 +745,10 @@ const methods = [
     whenToUse: "When designing for unfamiliar user groups or cultural contexts, or when surface-level research has failed to reveal breakthrough insights.",
     steps: ["Define the research scope and community","Gain access and build trust with participants","Immerse yourself in the environment over extended periods","Document through field notes, photos, and video","Synthesize observations into cultural insights and design opportunities"],
     strengths: ["Deepest understanding of user context","Reveals hidden cultural factors","Generates breakthrough insights"],
-    limitations: ["Very time-intensive (weeks to months)","Requires trained ethnographers","Findings can be hard to translate into design"]
+    limitations: ["Very time-intensive (weeks to months)","Requires trained ethnographers","Findings can be hard to translate into design"],
+    howToConduct: "Immerse in users' environment for days/weeks. Participate in daily activities, build trust, take field notes, photos, video. Keep reflexive journal. Conduct informal interviews. Focus on cultural patterns, rituals, and meaning-making.",
+    sampleSize: "5-15 participants over 2-8 weeks of fieldwork. Fewer participants but much deeper engagement per person.",
+    analysisMethods: ["Ethnographic coding", "Thick description writing", "Cultural pattern analysis", "Narrative analysis", "Grounded theory"]
   },
   {
     name: "Design Workshops",
@@ -672,7 +760,10 @@ const methods = [
     whenToUse: "When you need to align a team on a design direction, generate ideas collaboratively, or make progress on a complex design challenge as a group.",
     steps: ["Define workshop objectives and agenda","Prepare activities, materials, and templates","Facilitate warm-up and framing activities","Guide participants through structured design exercises","Capture outputs and define next steps"],
     strengths: ["Builds team alignment and ownership","Generates diverse perspectives","Creates momentum and shared understanding"],
-    limitations: ["Quality depends on facilitation","Can be derailed by group dynamics","Outputs need refinement after workshop"]
+    limitations: ["Quality depends on facilitation","Can be derailed by group dynamics","Outputs need refinement after workshop"],
+    howToConduct: "Define objectives, create structured agenda with warm-up/diverge/converge flow, prepare templates and materials, facilitate each activity with clear timeboxes, capture all outputs, synthesize and share back.",
+    sampleSize: "6-12 participants per workshop including mix of designers, stakeholders, and users. Run 1-3 workshops for complex problems.",
+    analysisMethods: ["Output synthesis", "Dot voting analysis", "Theme clustering", "Priority matrix", "Opportunity scoring"]
   },
   {
     name: "Desirability Testing",
@@ -684,7 +775,10 @@ const methods = [
     whenToUse: "When you need to evaluate the aesthetic appeal and emotional impact of visual designs, branding, or overall look and feel.",
     steps: ["Prepare the design(s) to evaluate","Create a word list with positive, negative, and neutral terms","Present the design to participants","Ask them to select words that describe the design","Analyze word frequency and sentiment patterns"],
     strengths: ["Captures emotional response quantitatively","Quick to administer","Compares designs objectively on 'feel'"],
-    limitations: ["Word list influences results","Doesn't explain why users feel a certain way","Limited to surface-level emotional assessment"]
+    limitations: ["Word list influences results","Doesn't explain why users feel a certain way","Limited to surface-level emotional assessment"],
+    howToConduct: "Present design to participants, provide Microsoft Product Reaction Cards (118 words) or custom word list (60-90 words mixing positive/negative/neutral), ask to select 5 words, then explain why for each. Track word frequencies across participants.",
+    sampleSize: "20-30 participants per design variant. Minimum 12 for meaningful word frequency patterns.",
+    analysisMethods: ["Word frequency analysis", "Sentiment classification", "Chi-square comparison between variants", "Qualitative coding of explanations", "Word cloud visualization"]
   },
   {
     name: "Diary Studies",
@@ -696,7 +790,10 @@ const methods = [
     whenToUse: "When you need to understand experiences that unfold over time, capture in-the-moment reactions, or study behaviors in context without observation.",
     steps: ["Define the study duration and entry frequency","Design the diary format (paper, digital, or app)","Recruit and onboard participants","Remind and motivate participants throughout the study","Analyze entries for patterns and temporal changes"],
     strengths: ["Captures experience over time","In-context, in-the-moment data","Reveals patterns invisible in one-time studies"],
-    limitations: ["Participant fatigue and dropout","Self-report bias","Time-intensive to analyze"]
+    limitations: ["Participant fatigue and dropout","Self-report bias","Time-intensive to analyze"],
+    howToConduct: "Define study duration (1-4 weeks), create diary template (paper/app like dscout or Indeemo), onboard participants with practice entry, send reminders, conduct follow-up interviews to discuss entries, compensate well for sustained effort.",
+    sampleSize: "10-15 participants for qualitative insights. 20-30 for identifying patterns with confidence. Expect 15-25% dropout.",
+    analysisMethods: ["Longitudinal thematic analysis", "Temporal pattern analysis", "Critical incident extraction", "Experience curve mapping", "Content coding"]
   },
   {
     name: "Directed Storytelling",
@@ -708,7 +805,10 @@ const methods = [
     whenToUse: "When you need rich, contextual accounts of user experiences quickly, especially when time constraints prevent full contextual inquiry.",
     steps: ["Prepare prompts targeting key experience areas","Ask participants to recall specific instances","Listen actively and probe for details (who, what, where, when, why)","Follow the story rather than a rigid script","Document key moments, emotions, and breakdowns"],
     strengths: ["Elicits rich contextual detail quickly","Reveals emotional dimensions of experience","More natural than structured interviews"],
-    limitations: ["Subject to recall bias","Participants may embellish stories","Requires skilled interviewing to probe effectively"]
+    limitations: ["Subject to recall bias","Participants may embellish stories","Requires skilled interviewing to probe effectively"],
+    howToConduct: "Prepare story prompts targeting key experience areas ('Tell me about the last time you...'). Listen actively without interrupting. Probe for sensory details, emotions, other people involved, sequence of events. Audio record with permission.",
+    sampleSize: "8-15 participants to reach thematic saturation. Each session lasts 30-60 minutes.",
+    analysisMethods: ["Narrative analysis", "Thematic coding", "Story arc analysis", "Emotional journey extraction", "Cross-narrative comparison"]
   },
   {
     name: "Elito Method",
@@ -720,7 +820,10 @@ const methods = [
     whenToUse: "When transitioning from research findings to design implications and you need a rigorous method to ensure designs are grounded in evidence.",
     steps: ["List key observations from research","For each observation, record a judgment (interpretation)","Derive a design principle from the judgment","Generate a design concept addressing the principle","Trace each concept back to its original observation"],
     strengths: ["Maintains clear traceability from data to design","Structured yet creative process","Ensures research drives design decisions"],
-    limitations: ["Can feel mechanical for some teams","Works best with rich qualitative data","Requires practice to master"]
+    limitations: ["Can feel mechanical for some teams","Works best with rich qualitative data","Requires practice to master"],
+    howToConduct: "Create a spreadsheet with columns: Observation | Judgment | Design Value | Solution Direction. Fill observations from research, add interpretive judgments for each, derive design values/principles, then brainstorm solution directions. Trace each solution back.",
+    sampleSize: "3-6 team members working together. Synthesizes data from any number of research participants.",
+    analysisMethods: ["Traceability analysis", "Design principle extraction", "Solution-evidence mapping", "Value hierarchy analysis", "Cross-reference validation"]
   },
   {
     name: "Ergonomic Analysis",
@@ -732,7 +835,10 @@ const methods = [
     whenToUse: "When designing physical products, workstations, or interfaces where physical comfort, safety, and prolonged use are critical concerns.",
     steps: ["Identify tasks and user populations to assess","Select appropriate ergonomic assessment methods","Evaluate posture, force, repetition, and environment","Compare findings against ergonomic standards","Recommend design modifications for comfort and safety"],
     strengths: ["Grounded in scientific standards","Addresses safety and legal compliance","Improves user comfort and productivity"],
-    limitations: ["Requires specialized expertise","May conflict with aesthetic goals","Focus on physical aspects may miss emotional factors"]
+    limitations: ["Requires specialized expertise","May conflict with aesthetic goals","Focus on physical aspects may miss emotional factors"],
+    howToConduct: "Select assessment method (RULA, REBA, NIOSH lifting equation, or cognitive task load). Observe or video-record users performing tasks. Score postures, forces, repetitions. Compare against ergonomic standards and guidelines.",
+    sampleSize: "10-20 users performing the assessed tasks. Observe 3-5 repetitions of each task per user. Compare across user anthropometrics.",
+    analysisMethods: ["RULA/REBA scoring", "Posture analysis", "Force measurement analysis", "NASA-TLX cognitive load scoring", "Anthropometric data comparison"]
   },
   {
     name: "Evaluative Research",
@@ -744,7 +850,10 @@ const methods = [
     whenToUse: "When you have a design (prototype or live product) and need to assess its effectiveness, efficiency, and user satisfaction.",
     steps: ["Define evaluation objectives and success criteria","Select appropriate evaluation methods","Recruit representative users","Conduct the evaluation sessions","Analyze findings and prioritize issues"],
     strengths: ["Directly measures design effectiveness","Identifies specific issues to fix","Can be adapted to any fidelity level"],
-    limitations: ["Only evaluates what exists, doesn't generate new ideas","Requires a testable artifact","Results depend on task and scenario selection"]
+    limitations: ["Only evaluates what exists, doesn't generate new ideas","Requires a testable artifact","Results depend on task and scenario selection"],
+    howToConduct: "Define success criteria tied to user goals. Select methods (usability testing, expert review, analytics). Create realistic task scenarios. Run evaluation sessions. Document issues with severity ratings. Prioritize and recommend fixes.",
+    sampleSize: "5-8 participants per round of usability testing. 3-5 expert evaluators for expert reviews. Multiple rounds recommended.",
+    analysisMethods: ["Task success rate analysis", "Error categorization", "Severity rating", "SUS/PSSUQ scoring", "Issue frequency analysis"]
   },
   {
     name: "Evidence-Based Design",
@@ -756,7 +865,10 @@ const methods = [
     whenToUse: "When designing in domains where decisions must be justified with evidence (healthcare, education, safety-critical systems) or for high-stakes design choices.",
     steps: ["Formulate specific design questions","Search for relevant research and evidence","Critically appraise the quality of evidence","Integrate evidence with design expertise and user needs","Evaluate outcomes and document for future reference"],
     strengths: ["Decisions backed by credible evidence","Reduces reliance on opinion or trend","Particularly valuable in regulated industries"],
-    limitations: ["Relevant research may not exist","Can slow down the design process","May conflict with innovation or creativity"]
+    limitations: ["Relevant research may not exist","Can slow down the design process","May conflict with innovation or creativity"],
+    howToConduct: "Formulate specific PICO questions (Population, Intervention, Comparison, Outcome). Search databases (PubMed, ACM DL, Google Scholar). Critically appraise study quality. Create evidence summaries. Apply findings with contextual adaptation.",
+    sampleSize: "Review 20-50+ studies per design question. No participant recruitment needed — synthesizes existing research.",
+    analysisMethods: ["Systematic review methodology", "Meta-analysis", "Evidence quality grading (GRADE framework)", "Narrative synthesis", "Best evidence synthesis"]
   },
   {
     name: "Experience Sampling",
@@ -768,7 +880,10 @@ const methods = [
     whenToUse: "When you need to understand users' real-time experiences in daily life, capturing momentary emotions and behaviors as they naturally occur.",
     steps: ["Design the questionnaire for each sampling moment","Determine sampling frequency and schedule","Deploy via mobile app or messaging","Collect responses over the study period (typically 1-2 weeks)","Analyze temporal patterns and contextual factors"],
     strengths: ["Captures real-time data in context","Minimizes recall bias","Reveals temporal patterns"],
-    limitations: ["Can be intrusive for participants","Response rates may decline over time","Brief responses may lack depth"]
+    limitations: ["Can be intrusive for participants","Response rates may decline over time","Brief responses may lack depth"],
+    howToConduct: "Design brief survey (2-5 questions, under 2 min). Deploy via ESM app (ExpiWell, PACO). Set random or event-contingent prompts (5-8 per day). Run for 1-2 weeks. Incentivize completion rate above 70%.",
+    sampleSize: "20-50 participants over 7-14 days. Each generating 5-8 data points per day = 700-5,600 total data points.",
+    analysisMethods: ["Multilevel modeling (HLM)", "Time series analysis", "Contextual pattern analysis", "Ecological momentary assessment", "Within-person variation analysis"]
   },
   {
     name: "Experiments",
@@ -780,7 +895,10 @@ const methods = [
     whenToUse: "When you need to prove that a specific design change causes a measurable improvement, especially for high-stakes or contentious design decisions.",
     steps: ["Define the hypothesis to test","Identify independent and dependent variables","Design the experimental protocol with controls","Recruit sufficient participants","Analyze results with appropriate statistical methods"],
     strengths: ["Establishes causality, not just correlation","Results are statistically rigorous","Highly credible evidence for stakeholders"],
-    limitations: ["Artificial conditions may not reflect real use","Requires significant time and resources","Ethical considerations may limit what can be tested"]
+    limitations: ["Artificial conditions may not reflect real use","Requires significant time and resources","Ethical considerations may limit what can be tested"],
+    howToConduct: "Formulate hypothesis, define IV/DV, select between-subjects or within-subjects design, control confounds, randomize assignment, standardize procedure, collect data, run statistical tests, report effect sizes.",
+    sampleSize: "20-50+ per condition based on power analysis (typically 80% power, alpha .05). Use G*Power to calculate exact sample.",
+    analysisMethods: ["ANOVA", "T-test", "Regression analysis", "Chi-square test", "Effect size calculation (Cohen's d)", "Power analysis"]
   },
   {
     name: "Exploratory Research",
@@ -792,7 +910,10 @@ const methods = [
     whenToUse: "At the beginning of a new project when the problem space is unclear and you need to discover what to design, not just how to design it.",
     steps: ["Define broad areas of inquiry","Choose appropriate exploratory methods","Conduct research with an open mind","Look for patterns, surprises, and contradictions","Synthesize findings into design opportunities"],
     strengths: ["Discovers unknown unknowns","Prevents designing for wrong problems","Builds deep empathy with users"],
-    limitations: ["Findings may be ambiguous","Can feel unfocused to stakeholders","Requires comfort with uncertainty"]
+    limitations: ["Findings may be ambiguous","Can feel unfocused to stakeholders","Requires comfort with uncertainty"],
+    howToConduct: "Start broad with secondary research, then conduct open-ended interviews and observations. Follow interesting leads. Use progressive focusing — narrow scope as patterns emerge. Iterate between data collection and analysis.",
+    sampleSize: "8-15 participants for interviews. 3-5 observation sites. Continue until theoretical saturation — no new themes emerge.",
+    analysisMethods: ["Open coding", "Grounded theory analysis", "Thematic analysis", "Constant comparison method", "Memo writing"]
   },
   {
     name: "Eye Tracking",
@@ -804,7 +925,10 @@ const methods = [
     whenToUse: "When you need objective data about visual attention, reading patterns, or whether users notice specific interface elements.",
     steps: ["Define research questions about visual attention","Set up eye tracking equipment and calibrate","Design tasks for participants to complete","Record eye movement data during tasks","Analyze heat maps, gaze plots, and fixation metrics"],
     strengths: ["Objective measure of visual attention","Reveals what users actually look at vs. what they say","Powerful heat map visualizations for stakeholders"],
-    limitations: ["Expensive equipment and expertise","Doesn't explain why users look at something","Lab environment may affect behavior"]
+    limitations: ["Expensive equipment and expertise","Doesn't explain why users look at something","Lab environment may affect behavior"],
+    howToConduct: "Select eye tracker (Tobii, EyeLink for lab; webcam-based for remote). Calibrate per participant. Design task scenarios. Record gaze data during tasks. Analyze fixations, saccades, and scan paths. Generate heat maps and AOI metrics.",
+    sampleSize: "30-50 participants for quantitative heat map reliability. 10-15 for qualitative gaze pattern insights.",
+    analysisMethods: ["Fixation duration analysis", "AOI (Area of Interest) analysis", "Heat map generation", "Scan path analysis", "Time to first fixation", "Gaze plot analysis"]
   },
   {
     name: "Flexible Modeling",
@@ -816,7 +940,10 @@ const methods = [
     whenToUse: "When exploring three-dimensional design concepts or when teams need a hands-on, tactile approach to ideation and concept development.",
     steps: ["Provide diverse modeling materials","Define the design challenge or scenario","Have participants build models representing their ideas","Present and explain models to the group","Iterate and combine ideas from different models"],
     strengths: ["Tangible and engaging ideation process","Accessible to non-designers","Encourages spatial and systems thinking"],
-    limitations: ["Material constraints may limit expression","Models may be over-interpreted","Difficult to document and share digitally"]
+    limitations: ["Material constraints may limit expression","Models may be over-interpreted","Difficult to document and share digitally"],
+    howToConduct: "Provide diverse materials (clay, LEGO, pipe cleaners, foam, cardboard). Set a design challenge. Give 20-40 minutes for building. Have participants present their models and explain design rationale. Photograph all models.",
+    sampleSize: "6-12 participants working individually or in pairs. Run 2-3 sessions for diverse solutions.",
+    analysisMethods: ["Physical model comparison", "Feature cataloging", "Design rationale analysis", "Cross-model theme analysis", "Photographic documentation analysis"]
   },
   {
     name: "Fly-on-the-Wall Observation",
@@ -828,7 +955,10 @@ const methods = [
     whenToUse: "When you need to understand natural behavior without the influence of researcher presence, especially for sensitive or routine activities.",
     steps: ["Identify the environment and activities to observe","Gain access and negotiate a non-intrusive observation spot","Observe silently, taking detailed notes","Focus on behaviors, sequences, and interactions","Analyze observations for patterns and insights"],
     strengths: ["Captures unbiased natural behavior","No participant recruitment needed","Reveals what people actually do vs. say"],
-    limitations: ["Cannot ask questions or probe","May miss context and motivations","Observer may still influence behavior despite passivity"]
+    limitations: ["Cannot ask questions or probe","May miss context and motivations","Observer may still influence behavior despite passivity"],
+    howToConduct: "Identify location and time windows for observation. Get permission from site manager (not from individuals being observed). Position unobtrusively. Take detailed field notes on behaviors, not interpretations. Use a structured observation form.",
+    sampleSize: "Observe 20-50+ people across 3-5 separate sessions at different times/days. Each session 1-4 hours.",
+    analysisMethods: ["Behavioral coding", "Frequency counting", "Time sampling analysis", "Spatial analysis", "Activity categorization"]
   },
   {
     name: "Focus Groups",
@@ -840,7 +970,10 @@ const methods = [
     whenToUse: "When you want to explore a range of perspectives quickly, understand social dynamics around a topic, or generate ideas through group interaction.",
     steps: ["Define research objectives and discussion topics","Develop a moderator guide with open-ended questions","Recruit diverse but relevant participants","Facilitate the discussion encouraging all voices","Analyze transcripts for themes and areas of agreement/disagreement"],
     strengths: ["Efficient way to gather multiple perspectives","Group dynamics can spark new ideas","Reveals social norms and language people use"],
-    limitations: ["Groupthink can suppress individual opinions","Dominant participants can skew discussion","Doesn't predict actual behavior"]
+    limitations: ["Groupthink can suppress individual opinions","Dominant participants can skew discussion","Doesn't predict actual behavior"],
+    howToConduct: "Recruit 6-10 participants per group with screener survey. Prepare discussion guide with 5-8 open-ended questions. Use experienced moderator. Record audio/video. Run for 60-90 minutes. Conduct 2-4 groups for comparison.",
+    sampleSize: "6-10 participants per group. Run 3-5 groups to reach saturation. Total of 18-50 participants.",
+    analysisMethods: ["Thematic analysis", "Discourse analysis", "Constant comparison", "Content analysis", "Social interaction analysis"]
   },
   {
     name: "Graffiti Walls",
@@ -852,7 +985,10 @@ const methods = [
     whenToUse: "When you want to capture spontaneous ideas and reactions over time, especially in shared spaces during workshops or extended research activities.",
     steps: ["Set up a large visible surface in a shared space","Provide writing/drawing materials","Post a provocative prompt or question","Encourage everyone to contribute freely at any time","Periodically photograph and analyze contributions"],
     strengths: ["Lowers barriers to participation","Captures ideas that might be lost in discussion","Builds on others' contributions over time"],
-    limitations: ["Contributions may be shallow","Can become cluttered without curation","Some people may not participate"]
+    limitations: ["Contributions may be shallow","Can become cluttered without curation","Some people may not participate"],
+    howToConduct: "Set up large paper surface or whiteboard in high-traffic area. Post provocative question or prompt. Provide markers in multiple colors. Leave up for days or duration of a workshop. Photograph regularly. Optionally add themed sections.",
+    sampleSize: "Open to any number of contributors. Works best with 10-50+ people passing through. No formal recruitment.",
+    analysisMethods: ["Content analysis", "Theme identification", "Contribution frequency analysis", "Sentiment analysis", "Visual analysis"]
   },
   {
     name: "Graphic Organizers",
@@ -864,7 +1000,10 @@ const methods = [
     whenToUse: "When you need to structure and communicate complex information, compare alternatives, or help participants organize their thinking visually.",
     steps: ["Select the appropriate organizer type for your purpose","Prepare the template or framework","Populate with data, ideas, or findings collaboratively","Discuss patterns revealed by the visualization","Refine and use to guide design decisions"],
     strengths: ["Makes complex information accessible","Multiple formats for different purposes","Facilitates comparison and analysis"],
-    limitations: ["Can oversimplify nuanced information","Format may constrain thinking","Requires appropriate template selection"]
+    limitations: ["Can oversimplify nuanced information","Format may constrain thinking","Requires appropriate template selection"],
+    howToConduct: "Select organizer type matching your goal (Venn diagram for comparison, matrix for multi-criteria evaluation, flowchart for process, timeline for temporal data). Prepare template. Populate collaboratively with team or participants.",
+    sampleSize: "3-8 team members in collaborative sessions. Can also be completed by 10-20 individual participants for comparison.",
+    analysisMethods: ["Structural comparison", "Gap analysis", "Pattern identification", "Relationship mapping", "Category analysis"]
   },
   {
     name: "Heuristic Evaluation",
@@ -876,7 +1015,10 @@ const methods = [
     whenToUse: "When you need a quick, cost-effective usability assessment without recruiting users, especially in early design stages or between user testing rounds.",
     steps: ["Select appropriate heuristics (e.g., Nielsen's 10)","Assemble 3-5 evaluators","Each evaluator reviews the interface independently","Rate severity of each issue found","Compile and deduplicate findings across evaluators"],
     strengths: ["Fast and cost-effective","Finds many usability issues","Can be done at any design stage"],
-    limitations: ["Misses issues real users would find","Evaluators may have false alarms","Requires UI/UX expertise"]
+    limitations: ["Misses issues real users would find","Evaluators may have false alarms","Requires UI/UX expertise"],
+    howToConduct: "Brief evaluators on the product and target users. Have each evaluator independently review the interface against chosen heuristics (Nielsen's 10 most common). Document each violation with heuristic number, severity (0-4), location, and screenshot. Merge findings.",
+    sampleSize: "3-5 expert evaluators working independently. Each evaluator finds about 35% of issues; 5 evaluators find approximately 75%.",
+    analysisMethods: ["Severity rating analysis", "Issue frequency aggregation", "Heuristic violation categorization", "False positive filtering", "Priority matrix"]
   },
   {
     name: "Image Boards",
@@ -888,7 +1030,10 @@ const methods = [
     whenToUse: "When establishing visual direction, communicating design intent to stakeholders, or aligning a team on the aesthetic and emotional qualities of a design.",
     steps: ["Define the mood or theme to explore","Collect diverse visual references","Curate and arrange images into coherent boards","Present to stakeholders and gather reactions","Refine based on feedback to establish visual direction"],
     strengths: ["Communicates abstract qualities effectively","Aligns teams on visual direction","Quick to create and iterate"],
-    limitations: ["Subjective interpretation","May anchor thinking too early","Gap between inspiration and implementation"]
+    limitations: ["Subjective interpretation","May anchor thinking too early","Gap between inspiration and implementation"],
+    howToConduct: "Collect 20-50 images per board from diverse sources (Pinterest, magazines, photography sites). Arrange by theme or mood. Create 2-3 alternative boards representing different directions. Present to stakeholders and users for reaction and preference.",
+    sampleSize: "Review with 5-10 stakeholders and 8-15 users for reaction testing. No fixed sample — primarily a communication and alignment tool.",
+    analysisMethods: ["Preference ranking", "Reaction coding", "Semantic differential rating", "Mood/attribute association analysis", "Comparative board analysis"]
   },
   {
     name: "Interviews",
@@ -900,7 +1045,10 @@ const methods = [
     whenToUse: "When you need to deeply understand individual user perspectives, explore complex experiences, or investigate sensitive topics that require trust and rapport.",
     steps: ["Define research objectives","Develop a semi-structured interview guide","Recruit representative participants","Conduct interviews with active listening and probing","Analyze transcripts for themes and insights"],
     strengths: ["Deep, rich qualitative data","Flexible to follow unexpected threads","Builds empathy with users"],
-    limitations: ["Time-intensive to conduct and analyze","Self-reported data may differ from behavior","Interviewer bias can influence responses"]
+    limitations: ["Time-intensive to conduct and analyze","Self-reported data may differ from behavior","Interviewer bias can influence responses"],
+    howToConduct: "Write semi-structured guide with 8-12 open-ended questions plus probes. Start with rapport building. Move from general to specific. Use active listening — pause, mirror, probe. Record with permission. Transcribe for analysis. 45-90 min each.",
+    sampleSize: "5-8 for focused topics. 12-20 for broader exploration. Continue until saturation (typically 12-15 for most topics).",
+    analysisMethods: ["Thematic analysis", "Grounded theory coding", "Framework analysis", "IPA (Interpretative Phenomenological Analysis)", "Content analysis"]
   },
   {
     name: "KJ Technique",
@@ -912,7 +1060,10 @@ const methods = [
     whenToUse: "When a team needs to reach consensus on priorities or themes from a large amount of qualitative data, especially when there are diverse opinions.",
     steps: ["Write ideas or data points on individual cards","Silently group related cards (no discussion during sorting)","Collaboratively label each group","Vote to prioritize the most important groups","Discuss and plan actions for top priorities"],
     strengths: ["Democratic process equalizes voices","Builds consensus without lengthy debate","Efficient for large groups"],
-    limitations: ["Silent sorting can be frustrating","May produce shallow groupings if rushed","Requires clear data inputs"]
+    limitations: ["Silent sorting can be frustrating","May produce shallow groupings if rushed","Requires clear data inputs"],
+    howToConduct: "Each team member writes ideas/data on individual cards. Place all cards on table. In SILENCE, group related cards together (anyone can move any card). After grouping stabilizes, collaboratively name each group. Vote on priority groups.",
+    sampleSize: "4-8 team members per session. Synthesizes data from any upstream research. 50-200 data cards typical.",
+    analysisMethods: ["Cluster frequency analysis", "Priority voting tallying", "Theme hierarchy mapping", "Inter-group relationship analysis", "Consensus measurement"]
   },
   {
     name: "Kano Analysis",
@@ -924,7 +1075,10 @@ const methods = [
     whenToUse: "When prioritizing features for development and you need to understand which features are expected, which drive satisfaction, and which create delight.",
     steps: ["List features to evaluate","Create functional/dysfunctional question pairs for each feature","Survey users with the paired questions","Classify features into Kano categories","Prioritize features based on their category"],
     strengths: ["Distinguishes between different types of value","Prevents over-investing in expected features","Identifies delight opportunities"],
-    limitations: ["Feature categories can shift over time","Requires careful survey design","May not capture feature interactions"]
+    limitations: ["Feature categories can shift over time","Requires careful survey design","May not capture feature interactions"],
+    howToConduct: "List 15-25 features. For each, write functional question ('How would you feel if this feature was present?') and dysfunctional question ('How would you feel if this was absent?'). Use 5-point scale. Classify each feature into Must-be/One-dimensional/Attractive/Indifferent/Reverse.",
+    sampleSize: "50-200+ survey respondents for statistical reliability. Minimum 30 for initial patterns.",
+    analysisMethods: ["Kano classification matrix", "Customer satisfaction coefficient", "Category strength analysis", "Better-Worse analysis", "Segment-level Kano comparison"]
   },
   {
     name: "Key Performance Indicators",
@@ -936,7 +1090,10 @@ const methods = [
     whenToUse: "When you need to define success metrics for a product, track design impact over time, or align team efforts around measurable outcomes.",
     steps: ["Identify key business and user objectives","Define specific, measurable indicators for each objective","Establish baseline measurements","Set targets and thresholds","Monitor and report regularly, taking action on trends"],
     strengths: ["Aligns team on measurable goals","Tracks design impact over time","Facilitates data-driven decisions"],
-    limitations: ["Risk of optimizing for metrics vs. user value","Can be gamed or misinterpreted","Lagging indicators may miss emerging issues"]
+    limitations: ["Risk of optimizing for metrics vs. user value","Can be gamed or misinterpreted","Lagging indicators may miss emerging issues"],
+    howToConduct: "Identify business and user objectives. Define SMART metrics for each (Specific, Measurable, Achievable, Relevant, Time-bound). Establish baseline measurements. Set up dashboards and tracking. Review weekly/monthly.",
+    sampleSize: "Measured across the entire user base — no sampling needed. Establish baselines with at least 2-4 weeks of data before measuring changes.",
+    analysisMethods: ["Trend analysis", "Cohort analysis", "Funnel analysis", "Statistical process control", "Benchmarking against industry standards"]
   },
   {
     name: "Laddering",
@@ -948,7 +1105,10 @@ const methods = [
     whenToUse: "When you need to understand the deeper motivations and values behind user preferences, not just what they prefer but why it matters to them.",
     steps: ["Start with a concrete preference or attribute","Ask 'Why is that important to you?'","Continue asking 'why' to move up the ladder","Map the chain: Attribute → Consequence → Value","Identify common value patterns across participants"],
     strengths: ["Reveals deep motivations and values","Simple technique to learn","Powerful insights for positioning and messaging"],
-    limitations: ["Can feel repetitive or interrogative","Participants may not know why","Requires skilled probing to avoid leading"]
+    limitations: ["Can feel repetitive or interrogative","Participants may not know why","Requires skilled probing to avoid leading"],
+    howToConduct: "Start with a concrete preference ('You said you prefer product X — why?'). For each answer, ask 'Why is that important to you?' Repeat 3-5 times up the ladder from Attributes → Consequences → Values. Map chains across participants.",
+    sampleSize: "15-25 participants for identifying common value chains. Each interview lasts 30-60 minutes.",
+    analysisMethods: ["Hierarchical value map construction", "Means-end chain analysis", "Implication matrix", "Content coding at attribute/consequence/value levels", "Frequency analysis of chains"]
   },
   {
     name: "Literature Review",
@@ -960,7 +1120,10 @@ const methods = [
     whenToUse: "At the start of a project to understand the existing body of knowledge, when designing in specialized domains, or when evidence-based justification is needed.",
     steps: ["Define the scope and research questions","Search academic databases and industry sources","Screen and select relevant publications","Extract and synthesize key findings","Summarize implications for the design project"],
     strengths: ["Builds on existing knowledge","Cost-effective (uses existing data)","Establishes credibility with stakeholders"],
-    limitations: ["Published research may be outdated","Academic findings may not apply to your context","Time-consuming to do thoroughly"]
+    limitations: ["Published research may be outdated","Academic findings may not apply to your context","Time-consuming to do thoroughly"],
+    howToConduct: "Define search terms and inclusion/exclusion criteria. Search databases (Google Scholar, ACM DL, Scopus). Screen titles/abstracts, then full text. Extract key findings into a matrix. Synthesize themes across sources. Identify gaps.",
+    sampleSize: "Review 30-100+ publications. No participant recruitment. Scope depends on breadth of research questions.",
+    analysisMethods: ["Systematic synthesis", "Narrative review", "Scoping review methodology", "Evidence mapping", "Gap analysis"]
   },
   {
     name: "Love & the Breakup Letter",
@@ -972,7 +1135,10 @@ const methods = [
     whenToUse: "When you want to understand users' emotional relationship with a product in a more engaging way than traditional satisfaction surveys.",
     steps: ["Explain the activity and provide letter templates","Ask users to write a 'love letter' to the product","Then ask them to write a 'breakup letter'","Have participants share and discuss their letters","Analyze for emotional themes and priority issues"],
     strengths: ["Elicits genuine emotional responses","Fun and engaging for participants","Reveals both positive and negative sentiments"],
-    limitations: ["Some participants may feel silly doing this","Skews toward emotional rather than functional issues","Results are qualitative and hard to quantify"]
+    limitations: ["Some participants may feel silly doing this","Skews toward emotional rather than functional issues","Results are qualitative and hard to quantify"],
+    howToConduct: "Explain the metaphor — participants write two letters to the product as if it were a person. First, a love letter about what they adore. Then a breakup letter about what's unbearable. Allow 10-15 min per letter. Share and discuss.",
+    sampleSize: "8-20 participants. Can be done individually or in workshop setting. Works well as part of a larger session.",
+    analysisMethods: ["Sentiment analysis", "Thematic coding", "Emotional intensity mapping", "Feature extraction from letters", "Priority ranking of pain/delight points"]
   },
   {
     name: "Mental Model Diagrams",
@@ -984,7 +1150,10 @@ const methods = [
     whenToUse: "When you need to understand the gap between how users think about a task and how your product supports it, revealing missing features or misaligned solutions.",
     steps: ["Conduct in-depth interviews about user approaches to a task","Extract and group user behaviors and philosophies","Build the top half: user mental model towers","Build the bottom half: product features aligned underneath","Identify gaps where user needs lack product support"],
     strengths: ["Reveals gaps between user thinking and product","Provides strategic direction for features","Deeply grounded in user behavior"],
-    limitations: ["Very time-intensive to create","Requires many interviews (15-30+)","Complex diagrams can be hard to communicate"]
+    limitations: ["Very time-intensive to create","Requires many interviews (15-30+)","Complex diagrams can be hard to communicate"],
+    howToConduct: "Conduct 15-30 in-depth interviews about how users approach a domain/task. Extract action/belief/feeling statements. Sort into towers (groups). Arrange towers into mental spaces. Align product features underneath. Identify gaps.",
+    sampleSize: "15-30 interview participants for robust mental model. Minimum 10. Each interview 45-90 minutes.",
+    analysisMethods: ["Behavioral coding", "Tower construction analysis", "Gap analysis between user model and product", "Cluster analysis", "Pattern identification across participants"]
   },
   {
     name: "Mind Mapping",
@@ -996,7 +1165,10 @@ const methods = [
     whenToUse: "When brainstorming, organizing thoughts, planning research, or exploring the scope of a design challenge in a free-form, visual way.",
     steps: ["Write the central topic in the middle","Branch out with main themes or categories","Add sub-branches with related ideas","Use colors, images, and keywords","Review for patterns and areas to explore further"],
     strengths: ["Quick and intuitive to create","Encourages free association","Visual overview of complex topics"],
-    limitations: ["Can become messy with complex topics","Difficult to capture nuanced relationships","May reinforce existing thinking patterns"]
+    limitations: ["Can become messy with complex topics","Difficult to capture nuanced relationships","May reinforce existing thinking patterns"],
+    howToConduct: "Write central topic in center. Branch main themes outward. Add sub-branches with related ideas. Use single keywords, colors, and images. Can be done solo or collaboratively. Digital tools: Miro, MindMeister, XMind.",
+    sampleSize: "1-8 participants collaboratively, or individual exercise. Can have 10-20 participants create individual maps for comparison.",
+    analysisMethods: ["Branch frequency analysis", "Theme identification", "Structural comparison across maps", "Keyword extraction", "Relationship mapping"]
   },
   {
     name: "Observation",
@@ -1008,7 +1180,10 @@ const methods = [
     whenToUse: "When you need to understand how users actually behave (vs. what they say they do) in real or simulated use contexts.",
     steps: ["Define what to observe and where","Develop an observation protocol or checklist","Position yourself appropriately in the environment","Record behaviors, sequences, and notable events","Analyze observations for patterns and design implications"],
     strengths: ["Captures real behavior","Reveals workarounds and unexpected uses","Non-reliance on self-report"],
-    limitations: ["Observer effect may change behavior","Cannot access thoughts and motivations","Requires significant time in the field"]
+    limitations: ["Observer effect may change behavior","Cannot access thoughts and motivations","Requires significant time in the field"],
+    howToConduct: "Define observation focus and setting. Choose structured (checklist-based) or unstructured approach. Position yourself appropriately. Take field notes using shorthand. Record behaviors, not interpretations. Supplement with photos/video where permitted. Debrief and expand notes immediately.",
+    sampleSize: "Observe 10-30 users. 3-5 observation sessions of 1-3 hours each across different times/contexts.",
+    analysisMethods: ["Behavioral coding", "Event logging", "Time-motion analysis", "Activity categorization", "Field note thematic analysis"]
   },
   {
     name: "Parallel Prototyping",
@@ -1020,7 +1195,10 @@ const methods = [
     whenToUse: "When you want to explore a wide solution space, avoid fixation on one idea, or when the design challenge has no clear best approach.",
     steps: ["Define the design challenge and constraints","Have designers independently create different solutions","Present all solutions to the team","Identify strengths of each approach","Combine the best elements into an integrated design"],
     strengths: ["Avoids premature commitment to one idea","Produces more innovative solutions","Enables comparison of fundamentally different approaches"],
-    limitations: ["More resource-intensive than single-path design","Can be difficult to combine different approaches","Requires team comfortable with ambiguity"]
+    limitations: ["More resource-intensive than single-path design","Can be difficult to combine different approaches","Requires team comfortable with ambiguity"],
+    howToConduct: "Give 2-4 designers the same brief. Each independently creates a different solution. Present all solutions. Team identifies best elements from each. Create an integrated design combining the best ideas. Test the combined version.",
+    sampleSize: "2-4 designers creating prototypes. Test integrated version with 5-8 users. No user involvement in creation phase.",
+    analysisMethods: ["Comparative design analysis", "Feature extraction", "Design principle identification", "User preference testing", "Pros-cons evaluation"]
   },
   {
     name: "Participant Observation",
@@ -1032,7 +1210,10 @@ const methods = [
     whenToUse: "When you need the deepest possible understanding of a user experience by actually living it, especially for complex social or physical activities.",
     steps: ["Gain access to the community or activity","Participate authentically while maintaining research awareness","Take detailed field notes during or after sessions","Balance insider participation with outsider analysis","Synthesize experiences into design insights"],
     strengths: ["Deepest form of experiential understanding","Builds genuine empathy","Reveals nuances invisible to outside observers"],
-    limitations: ["Risk of 'going native' and losing objectivity","Very time-intensive","Ethical considerations around disclosure"]
+    limitations: ["Risk of 'going native' and losing objectivity","Very time-intensive","Ethical considerations around disclosure"],
+    howToConduct: "Join the community or activity being studied. Participate authentically while maintaining researcher awareness. Keep detailed field notes daily. Conduct informal interviews with insiders. Manage the insider-outsider balance carefully. Spend weeks to months in the field.",
+    sampleSize: "Embed with 1-3 groups or communities. Interact with 15-30+ people within those groups. Duration: 2-12 weeks minimum.",
+    analysisMethods: ["Ethnographic coding", "Thick description", "Reflexive analysis", "Grounded theory", "Cultural domain analysis"]
   },
   {
     name: "Participatory Action Research",
@@ -1044,7 +1225,10 @@ const methods = [
     whenToUse: "When designing for communities where empowerment and ownership are important, or when traditional research approaches fail to capture marginalized perspectives.",
     steps: ["Partner with the community to define research questions","Train community members as co-researchers","Collect and analyze data collaboratively","Develop solutions together","Implement changes and evaluate outcomes collectively"],
     strengths: ["Empowers users as active partners","Produces highly relevant solutions","Builds community capacity"],
-    limitations: ["Time-intensive relationship building","Power dynamics can be complex","May lack traditional rigor"]
+    limitations: ["Time-intensive relationship building","Power dynamics can be complex","May lack traditional rigor"],
+    howToConduct: "Partner with the community from the start. Co-define research questions. Train community members as co-researchers. Collect data together (interviews, focus groups, photovoice). Analyze collaboratively. Develop and implement solutions together. Evaluate outcomes.",
+    sampleSize: "10-30 community co-researchers. Broader community involvement can reach 50-200+. Duration: 3-12 months.",
+    analysisMethods: ["Collaborative coding", "Photovoice analysis", "Community mapping", "Participatory analysis workshops", "Action-reflection cycle analysis"]
   },
   {
     name: "Participatory Design",
@@ -1056,7 +1240,10 @@ const methods = [
     whenToUse: "When the expertise of end users is essential for design success, especially for specialized work domains or when designing for diverse populations.",
     steps: ["Identify and recruit representative user-participants","Create design activities accessible to non-designers","Facilitate collaborative design sessions","Develop shared understanding between users and designers","Iterate on designs with continued user involvement"],
     strengths: ["Designs grounded in real user expertise","Builds user buy-in and ownership","Surfaces needs that designers might miss"],
-    limitations: ["Users may have limited design skills","Can be difficult to manage differing opinions","Takes more time than designer-led approaches"]
+    limitations: ["Users may have limited design skills","Can be difficult to manage differing opinions","Takes more time than designer-led approaches"],
+    howToConduct: "Recruit representative users as design partners. Prepare accessible design activities (collage, card-based, prototyping with low-fi materials). Facilitate sessions where users and designers create together as equals. Iterate with continued involvement.",
+    sampleSize: "6-12 user-participants across 2-5 sessions. Include 2-4 designers/researchers as facilitators.",
+    analysisMethods: ["Co-design output analysis", "Video analysis of collaboration", "Theme extraction from artifacts", "Participant feedback analysis", "Design rationale documentation"]
   },
   {
     name: "Personal Inventories",
@@ -1068,7 +1255,10 @@ const methods = [
     whenToUse: "When you want quick insight into users' daily lives, priorities, and the tools they rely on, especially as an ice-breaker or supplement to interviews.",
     steps: ["Ask users to display contents of a relevant personal space","Photograph the items","Have users explain each item's significance","Probe for stories and emotional connections","Analyze for patterns across participants"],
     strengths: ["Reveals values and priorities tangibly","Natural conversation starter","Quick and engaging for participants"],
-    limitations: ["Users may curate what they share","Limited to physical objects","May feel invasive to some"]
+    limitations: ["Users may curate what they share","Limited to physical objects","May feel invasive to some"],
+    howToConduct: "Ask participants to empty their bag, photograph their desk, or show their phone home screen. Photograph each item. Ask them to explain what each item is and why they carry/keep it. Probe for emotional significance and routines.",
+    sampleSize: "8-15 participants. Each session takes 15-30 minutes. Often combined with interviews.",
+    analysisMethods: ["Item categorization", "Frequency analysis of item types", "Narrative analysis of explanations", "Cross-participant comparison", "Value and priority mapping"]
   },
   {
     name: "Personas",
@@ -1080,7 +1270,10 @@ const methods = [
     whenToUse: "When you need to communicate user research to the team in a memorable, actionable way, or when making design decisions that affect different user types.",
     steps: ["Analyze user research for distinct patterns and segments","Define 3-5 primary persona profiles","Add realistic details, goals, frustrations, and behaviors","Validate personas against additional research","Introduce personas to the team and integrate into design process"],
     strengths: ["Makes user data memorable and shareable","Guides design decisions consistently","Builds team empathy for users"],
-    limitations: ["Can become stereotypical if not research-based","May oversimplify user diversity","Risk of designing for the persona, not real users"]
+    limitations: ["Can become stereotypical if not research-based","May oversimplify user diversity","Risk of designing for the persona, not real users"],
+    howToConduct: "Analyze research data for distinct behavioral patterns and segments. Define 3-5 primary personas with name, photo, demographics, goals, frustrations, behaviors, context, and a quote. Validate against additional data. Create visual one-pagers. Introduce to team with scenarios.",
+    sampleSize: "Based on synthesis of 12-30+ research participants' data. Typically create 3-5 primary personas and 2-3 secondary.",
+    analysisMethods: ["Behavioral variable mapping", "Cluster analysis", "Segment validation", "Goal-directed analysis", "Empathy map creation"]
   },
   {
     name: "Photo Studies",
@@ -1092,7 +1285,10 @@ const methods = [
     whenToUse: "When you want participants to self-document their experiences visually, especially for capturing contexts that are difficult for researchers to access.",
     steps: ["Define the photo assignment and themes","Provide cameras or smartphone instructions","Give participants 3-7 days to take photos","Conduct photo elicitation interviews","Analyze images and narratives for themes"],
     strengths: ["Captures context you can't visit","Participant-driven perspective","Images stimulate rich discussion"],
-    limitations: ["Photo quality and coverage may vary","Participants may self-censor","Requires photo elicitation to understand meaning"]
+    limitations: ["Photo quality and coverage may vary","Participants may self-censor","Requires photo elicitation to understand meaning"],
+    howToConduct: "Give participants a camera or smartphone assignment ('photograph everything you eat for a week' or 'capture moments of frustration at work'). Provide shot list or themes. Collect photos after 3-7 days. Conduct photo elicitation interviews where participants explain each image.",
+    sampleSize: "10-15 participants. Each takes 10-30 photos. Follow-up interview 30-60 minutes per participant.",
+    analysisMethods: ["Photo elicitation analysis", "Visual content analysis", "Thematic coding of images and narratives", "Photo sorting and categorization", "Cross-participant visual comparison"]
   },
   {
     name: "Picture Cards",
@@ -1104,7 +1300,10 @@ const methods = [
     whenToUse: "When you need participants to express abstract concepts, emotions, or preferences that are difficult to articulate in words.",
     steps: ["Curate a diverse set of evocative images","Present images to participants","Ask them to select images that represent their feelings or preferences","Have participants explain their choices","Analyze selections and explanations for patterns"],
     strengths: ["Helps articulate abstract concepts","Engaging and accessible to all participants","Can reveal emotional and aspirational dimensions"],
-    limitations: ["Image selection influences results","Interpretation is subjective","May not yield precise insights"]
+    limitations: ["Image selection influences results","Interpretation is subjective","May not yield precise insights"],
+    howToConduct: "Curate 30-50 diverse, evocative images (abstract and concrete). Present spread of cards to participant. Ask them to select 3-5 images that represent their experience/feelings about the topic. Have them explain each selection. Probe for deeper meaning.",
+    sampleSize: "8-15 participants individually, or groups of 4-6 in workshop setting.",
+    analysisMethods: ["Image selection frequency analysis", "Narrative analysis of explanations", "Metaphor identification", "Thematic coding", "Cross-participant pattern analysis"]
   },
   {
     name: "Prototyping",
@@ -1116,7 +1315,10 @@ const methods = [
     whenToUse: "At any stage when you need to make ideas tangible for evaluation, communication, or further development, from early paper sketches to high-fidelity interactive mockups.",
     steps: ["Determine appropriate fidelity for your purpose","Choose tools and materials","Build the prototype focusing on key interactions","Test with users and gather feedback","Iterate based on findings"],
     strengths: ["Makes abstract ideas tangible","Cheap to change compared to built products","Facilitates meaningful user feedback"],
-    limitations: ["Prototypes may set unrealistic expectations","Time invested may create attachment to ideas","Fidelity choices affect feedback received"]
+    limitations: ["Prototypes may set unrealistic expectations","Time invested may create attachment to ideas","Fidelity choices affect feedback received"],
+    howToConduct: "Choose fidelity based on purpose — paper sketches for early concepts, wireframes for layout, interactive prototypes (Figma, InVision) for detailed testing. Build only what you need to test. Focus on key user flows. Test and iterate rapidly.",
+    sampleSize: "Test each prototype iteration with 5-8 users. 3-5 iterations typical. No sample needed for creation phase.",
+    analysisMethods: ["Usability issue analysis", "Task completion analysis", "Think-aloud protocol analysis", "Iterative comparison", "Design critique feedback coding"]
   },
   {
     name: "Questionnaires & Evaluation",
@@ -1128,7 +1330,10 @@ const methods = [
     whenToUse: "When you need to collect standardized feedback from a large number of users, track satisfaction over time, or quantify qualitative impressions.",
     steps: ["Define what you need to measure","Write clear, unbiased questions","Choose appropriate scales and formats","Pilot test the questionnaire","Distribute, collect, and analyze responses"],
     strengths: ["Scalable to many respondents","Standardized and comparable over time","Can be administered remotely"],
-    limitations: ["Cannot probe for deeper understanding","Response bias and social desirability","Question design strongly affects results"]
+    limitations: ["Cannot probe for deeper understanding","Response bias and social desirability","Question design strongly affects results"],
+    howToConduct: "Select validated instrument (SUS for usability, PSSUQ for satisfaction, AttrakDiff for UX, UEQ for experience). Administer immediately after user interaction. Score according to instrument guidelines. Compare against published benchmarks.",
+    sampleSize: "20-30 for reliable SUS scores. 50+ for statistical comparisons between groups. Minimum 12 for initial assessment.",
+    analysisMethods: ["Descriptive statistics", "Percentile benchmarking", "T-test comparison between versions", "Reliability analysis (Cronbach's alpha)", "Item-level analysis"]
   },
   {
     name: "Rapid Iterative Testing",
@@ -1140,7 +1345,10 @@ const methods = [
     whenToUse: "When working under tight deadlines and you need to improve a design quickly through multiple short test-and-fix cycles.",
     steps: ["Prepare the design and key tasks to test","Test with 3-5 users in short sessions","Identify the top 3-5 critical issues","Make immediate design changes","Repeat the cycle (aim for 2-3 rounds in a week)"],
     strengths: ["Rapid improvement cycles","Practical for tight timelines","Focuses on most critical issues first"],
-    limitations: ["May miss subtle issues","Fixes between rounds may be superficial","Participants need to be readily available"]
+    limitations: ["May miss subtle issues","Fixes between rounds may be superficial","Participants need to be readily available"],
+    howToConduct: "Prepare design and 3-5 key tasks. Test with 3-5 users per round. Same day: identify top 3-5 critical issues, implement quick fixes. Next day: test again with new users. Repeat for 3-5 rounds within a 1-2 week sprint.",
+    sampleSize: "3-5 users per iteration round. 3-5 rounds = 9-25 total participants across the sprint.",
+    analysisMethods: ["Issue tracking across iterations", "Task success rate trending", "Severity-based prioritization", "Before/after comparison", "Fix verification analysis"]
   },
   {
     name: "Remote Moderated Research",
@@ -1152,7 +1360,10 @@ const methods = [
     whenToUse: "When you need the depth of moderated research but participants are geographically dispersed, or when in-person research is not feasible.",
     steps: ["Set up video conferencing and screen-sharing tools","Recruit and schedule remote participants","Send preparation instructions and technology requirements","Conduct the session with screen sharing and think-aloud","Record, analyze, and share findings"],
     strengths: ["Reaches geographically dispersed users","Cost-effective (no travel)","Can observe users in their natural environment"],
-    limitations: ["Technology issues can disrupt sessions","Harder to build rapport remotely","Cannot observe physical context fully"]
+    limitations: ["Technology issues can disrupt sessions","Harder to build rapport remotely","Cannot observe physical context fully"],
+    howToConduct: "Set up video conferencing (Zoom, Teams) with screen sharing. Send participant tech instructions in advance. Start with rapport building. Guide through tasks while observing and probing. Record session. Use collaborative tools (Miro) if needed.",
+    sampleSize: "5-8 participants per study round. Same as in-person moderated research. 45-90 minutes per session.",
+    analysisMethods: ["Thematic analysis", "Task analysis", "Usability issue logging", "Think-aloud analysis", "Behavioral coding from video"]
   },
   {
     name: "Research Through Design",
@@ -1164,7 +1375,10 @@ const methods = [
     whenToUse: "When exploring novel problem spaces where traditional research methods are insufficient, and the act of designing can reveal new questions and insights.",
     steps: ["Frame the research question through a design lens","Create design artifacts that explore the question","Reflect on what the design process reveals","Document insights that emerge from making","Iterate between designing and reflecting"],
     strengths: ["Generates unique insights through making","Integrates research and design seamlessly","Explores possibilities beyond current reality"],
-    limitations: ["May lack rigor of traditional research","Findings can be difficult to generalize","Requires skilled design researchers"]
+    limitations: ["May lack rigor of traditional research","Findings can be difficult to generalize","Requires skilled design researchers"],
+    howToConduct: "Frame a research question that can be explored through making. Create design artifacts (prototypes, products, installations) that probe the question. Deploy artifacts with users. Reflect on what the making and deployment reveals. Document knowledge generated. Iterate.",
+    sampleSize: "Deploy with 5-20 users depending on artifact type. The designer-researcher is also a key participant. Duration: weeks to months.",
+    analysisMethods: ["Reflective practice analysis", "Annotated portfolio method", "Design critique", "User interaction documentation", "Knowledge contribution framing"]
   },
   {
     name: "Role-Playing",
@@ -1176,7 +1390,10 @@ const methods = [
     whenToUse: "When the team needs to build empathy for users, explore service interactions, or identify pain points in experiences that are difficult to prototype.",
     steps: ["Define the scenario and roles","Brief participants on their characters","Act out the scenario in a simulated environment","Pause to discuss feelings and observations","Document insights and design implications"],
     strengths: ["Builds deep empathy","Reveals service and interaction issues","Engaging and memorable for teams"],
-    limitations: ["Participants may not take it seriously","Can feel uncomfortable","Limited by imagination vs. reality"]
+    limitations: ["Participants may not take it seriously","Can feel uncomfortable","Limited by imagination vs. reality"],
+    howToConduct: "Write a scenario with character cards describing the role, goals, and constraints. Brief participants on their characters. Set up a rough physical environment. Act out the scenario. Pause for reflection at key moments. Debrief the experience as a group.",
+    sampleSize: "4-10 participants per session. 2-3 sessions exploring different scenarios. Each session 30-60 minutes.",
+    analysisMethods: ["Observation coding", "Post-session debrief analysis", "Emotional response mapping", "Pain point identification", "Scenario comparison analysis"]
   },
   {
     name: "Scenario Description Swimlanes",
@@ -1188,7 +1405,10 @@ const methods = [
     whenToUse: "When mapping complex interactions between multiple actors (users, staff, systems) over time, especially for service design.",
     steps: ["Identify the scenario and all actors involved","Create horizontal swimlanes for each actor","Map actions and interactions chronologically","Identify handoffs, wait times, and pain points","Use the diagram to discuss and improve the service"],
     strengths: ["Visualizes multi-actor interactions clearly","Identifies coordination issues","Useful for service design and orchestration"],
-    limitations: ["Can become complex with many actors","Requires detailed knowledge of the process","Static representation of dynamic interactions"]
+    limitations: ["Can become complex with many actors","Requires detailed knowledge of the process","Static representation of dynamic interactions"],
+    howToConduct: "Identify the service scenario and all actors (user, staff, systems). Create horizontal lanes for each actor on a large surface. Map chronological actions and interactions across lanes. Use different colors for actions, communications, and wait times. Mark handoffs and pain points.",
+    sampleSize: "Created by 3-6 team members using research data. Validate with 3-5 stakeholders from each actor group.",
+    analysisMethods: ["Touchpoint analysis", "Handoff analysis", "Wait time identification", "Actor load analysis", "Service blueprint comparison"]
   },
   {
     name: "Scenarios",
@@ -1200,7 +1420,10 @@ const methods = [
     whenToUse: "When you need to communicate design ideas in context, align the team on user goals, or evaluate concepts against realistic use situations.",
     steps: ["Identify the user and their goal","Describe the context and triggering event","Walk through the interaction step by step","Include user thoughts and emotions","Use the scenario to evaluate and refine the design"],
     strengths: ["Makes design concepts concrete and relatable","Easy to create and understand","Grounds design in realistic context"],
-    limitations: ["Can be overly optimistic (happy path)","May not cover edge cases","Quality depends on understanding of users"]
+    limitations: ["Can be overly optimistic (happy path)","May not cover edge cases","Quality depends on understanding of users"],
+    howToConduct: "Base on persona and research data. Write narrative describing a specific user, their goal, context, and step-by-step interaction with the product. Include user thoughts and emotions. Create 3-5 scenarios covering key use cases. Review with team and users.",
+    sampleSize: "Write 3-8 scenarios based on research from 10-20+ participants. Validate scenarios with 5-10 users for realism.",
+    analysisMethods: ["Scenario walkthrough evaluation", "Coverage analysis", "Edge case identification", "Persona-scenario fit analysis", "Design requirement extraction"]
   },
   {
     name: "Secondary Research",
@@ -1212,7 +1435,10 @@ const methods = [
     whenToUse: "At the start of any project to leverage existing knowledge, when budgets are limited, or to contextualize primary research findings.",
     steps: ["Define research questions","Identify relevant sources (academic, industry, government, internal)","Systematically review and extract relevant information","Synthesize findings across sources","Document gaps that require primary research"],
     strengths: ["Fast and cost-effective","Builds on existing knowledge","Good starting point for any project"],
-    limitations: ["May not address your specific questions","Sources may be outdated or biased","Cannot replace primary user research"]
+    limitations: ["May not address your specific questions","Sources may be outdated or biased","Cannot replace primary user research"],
+    howToConduct: "Define research questions. Search industry reports (Forrester, Gartner, Nielsen Norman), government data, academic databases, competitor websites, app store reviews. Create a source tracking spreadsheet. Extract relevant findings. Synthesize and note gaps requiring primary research.",
+    sampleSize: "Review 20-50+ sources depending on scope. No participant recruitment. Typically 1-3 days of focused research.",
+    analysisMethods: ["Source triangulation", "Narrative synthesis", "Trend identification", "Gap analysis", "Competitive landscape mapping"]
   },
   {
     name: "Semantic Differential",
@@ -1224,7 +1450,10 @@ const methods = [
     whenToUse: "When you need to measure subjective perceptions of a design along multiple dimensions, compare designs, or track perception changes over iterations.",
     steps: ["Select relevant adjective pairs for your design domain","Create the rating scales (typically 5 or 7 points)","Present the design to participants","Have them rate on each dimension","Visualize and compare profiles across designs or groups"],
     strengths: ["Quantifies subjective perceptions","Enables comparison across designs","Quick to administer"],
-    limitations: ["Adjective pairs may not capture all relevant dimensions","Cultural differences in interpretation","Numbers may give false sense of precision"]
+    limitations: ["Adjective pairs may not capture all relevant dimensions","Cultural differences in interpretation","Numbers may give false sense of precision"],
+    howToConduct: "Select 10-15 pairs of opposite adjectives relevant to your design domain (e.g., modern-traditional, playful-serious, simple-complex). Create 5 or 7-point scales between each pair. Present design stimulus. Have participants rate. Plot profiles for comparison.",
+    sampleSize: "20-40 participants per design variant. Minimum 15 for stable profiles. Compare across 2-4 design alternatives.",
+    analysisMethods: ["Profile plotting", "Factor analysis", "MANOVA for comparing designs", "Reliability analysis", "Spider/radar chart visualization"]
   },
   {
     name: "Shadowing",
@@ -1236,7 +1465,10 @@ const methods = [
     whenToUse: "When you need a holistic understanding of a user's complete experience, especially when key moments may be unpredictable or spread throughout a day.",
     steps: ["Arrange full-day access with participants","Follow the participant through their complete routine","Take notes on activities, interactions, and environment","Ask brief clarifying questions without disrupting flow","Debrief with the participant at the end of the day"],
     strengths: ["Complete picture of user's experience","Captures transitions and context switches","Reveals priorities and time allocation"],
-    limitations: ["Very time-intensive (full days per participant)","Observer fatigue","May make participants self-conscious"]
+    limitations: ["Very time-intensive (full days per participant)","Observer fatigue","May make participants self-conscious"],
+    howToConduct: "Arrange full-day (6-8 hour) accompaniment with participant. Follow them through entire routine without directing their activities. Take notes on activities, interactions, tools used, and transitions. Ask brief clarifying questions when natural. Photograph contexts with permission. Debrief at end of day.",
+    sampleSize: "3-6 participants shadowed for 1-2 full days each. Very time-intensive per participant but yields deep insights.",
+    analysisMethods: ["Timeline mapping", "Activity categorization", "Transition analysis", "Contextual factor analysis", "Day-in-the-life narrative construction"]
   },
   {
     name: "Simulation Exercises",
@@ -1248,7 +1480,10 @@ const methods = [
     whenToUse: "When the real environment is inaccessible, dangerous, or expensive to test in, or when you need to observe behavior in controlled but realistic conditions.",
     steps: ["Define what aspects of reality to simulate","Design and set up the simulation environment","Brief participants on the scenario","Observe behavior during the simulation","Debrief and analyze findings"],
     strengths: ["Tests behavior in realistic conditions","Safer and cheaper than field testing","Can simulate future scenarios"],
-    limitations: ["Simulations are never fully realistic","Setup can be complex and expensive","Participant behavior may differ from reality"]
+    limitations: ["Simulations are never fully realistic","Setup can be complex and expensive","Participant behavior may differ from reality"],
+    howToConduct: "Design the simulation to replicate key aspects of the real environment. Brief participants on the scenario and their role. Run the simulation while observing behavior. Record video if possible. Debrief participants about their experience and decisions. Compare simulated vs. expected behavior.",
+    sampleSize: "8-15 participants per simulation scenario. Run 2-3 scenario variations. Each session 30-90 minutes.",
+    analysisMethods: ["Behavioral observation analysis", "Decision point analysis", "Performance metrics", "Post-simulation interview analysis", "Scenario comparison"]
   },
   {
     name: "Site Search Analytics",
@@ -1260,7 +1495,10 @@ const methods = [
     whenToUse: "When you need to understand what users are looking for on your site, identify content gaps, or improve navigation and information architecture.",
     steps: ["Access site search analytics data","Analyze top search terms and frequency","Identify searches with no or poor results","Look for patterns in search behavior","Use findings to improve navigation and content"],
     strengths: ["Uses existing data (no recruitment)","Reveals user intent directly","Identifies content and navigation gaps"],
-    limitations: ["Only captures searcher behavior (not all users)","Misspellings can skew data","Doesn't explain why users searched"]
+    limitations: ["Only captures searcher behavior (not all users)","Misspellings can skew data","Doesn't explain why users searched"],
+    howToConduct: "Access site search data via Google Analytics or your analytics platform. Export top search queries, null-result queries, and search-to-click patterns. Categorize queries by intent and topic. Identify content gaps where searches yield poor results. Track trends weekly/monthly.",
+    sampleSize: "Analyze all search data — typically thousands to millions of queries. Segment by time period (minimum 1 month of data). No participant recruitment.",
+    analysisMethods: ["Query frequency analysis", "Null-result analysis", "Search refinement analysis", "Topic clustering", "Conversion correlation analysis"]
   },
   {
     name: "Speed Dating",
@@ -1272,7 +1510,10 @@ const methods = [
     whenToUse: "When you have multiple concept directions and need quick user feedback to narrow down options before investing in detailed prototyping.",
     steps: ["Develop storyboards or lightweight prototypes for each concept","Recruit users for quick feedback sessions","Present each concept briefly (2-5 minutes)","Capture immediate reactions and preferences","Compare reactions across concepts to identify winners"],
     strengths: ["Tests many concepts quickly","Captures genuine first reactions","Efficient for concept selection"],
-    limitations: ["Shallow evaluation of each concept","First impressions may not reflect long-term preferences","Concepts may not be comparable at equal fidelity"]
+    limitations: ["Shallow evaluation of each concept","First impressions may not reflect long-term preferences","Concepts may not be comparable at equal fidelity"],
+    howToConduct: "Create storyboard cards for 5-10 design concepts (one scenario per card). Present each to users for 2-3 minutes. Capture immediate reactions: interest level, concerns, preferences. Compare reactions across concepts. Identify most promising directions.",
+    sampleSize: "6-12 participants per session. 2-3 sessions recommended. Each session 60-90 minutes.",
+    analysisMethods: ["Preference ranking analysis", "Reaction coding", "Comparative matrix", "Concept appeal scoring", "Qualitative feedback synthesis"]
   },
   {
     name: "Stakeholder Maps",
@@ -1284,7 +1525,10 @@ const methods = [
     whenToUse: "At the start of a project to understand the ecosystem of stakeholders, their influence, and relationships, or when planning who to involve in research.",
     steps: ["List all stakeholders (users, clients, partners, regulators, etc.)","Plot them on a visual map","Indicate relationships, influence, and interest levels","Identify key stakeholders and potential conflicts","Use the map to plan engagement strategy"],
     strengths: ["Clarifies complex stakeholder ecosystems","Identifies hidden influencers","Informs research recruitment and engagement"],
-    limitations: ["Reflects a point-in-time view","Relationships can be hard to verify","May miss less visible stakeholders"]
+    limitations: ["Reflects a point-in-time view","Relationships can be hard to verify","May miss less visible stakeholders"],
+    howToConduct: "Brainstorm all stakeholders (internal, external, users, influencers, regulators). Plot on a visual map using axes like influence/interest or power/proximity. Draw relationship lines. Color-code by type or sentiment. Identify key players and potential conflicts. Revisit and update regularly.",
+    sampleSize: "Created by 3-6 team members. Validate with 5-10 interviews of key stakeholders. No large sample needed.",
+    analysisMethods: ["Network analysis", "Influence-interest matrix analysis", "Relationship mapping", "Stakeholder segmentation", "Political landscape analysis"]
   },
   {
     name: "Stakeholder Walkthrough",
@@ -1296,7 +1540,10 @@ const methods = [
     whenToUse: "When you need stakeholder buy-in before proceeding, want to identify business or technical constraints, or need cross-functional feedback on a design.",
     steps: ["Prepare the design or prototype for presentation","Identify key stakeholders to involve","Walk through the design explaining rationale","Capture feedback, concerns, and questions","Synthesize feedback and plan revisions"],
     strengths: ["Builds stakeholder alignment","Surfaces business and technical constraints early","Efficient way to gather diverse perspectives"],
-    limitations: ["Stakeholders are not end users","May be influenced by organizational politics","Feedback may prioritize business over user needs"]
+    limitations: ["Stakeholders are not end users","May be influenced by organizational politics","Feedback may prioritize business over user needs"],
+    howToConduct: "Prepare a clear presentation of the design (prototype, wireframes, or concept deck). Schedule 30-60 min with each stakeholder group. Walk through the design explaining user research rationale. Capture feedback structured by concerns, suggestions, and approvals. Synthesize cross-stakeholder themes.",
+    sampleSize: "5-15 stakeholders across 2-5 sessions (grouped by department or role). No end-user recruitment needed.",
+    analysisMethods: ["Feedback categorization", "Concern priority matrix", "Requirement extraction", "Cross-stakeholder comparison", "Decision log analysis"]
   },
   {
     name: "Storyboards",
@@ -1308,7 +1555,10 @@ const methods = [
     whenToUse: "When you need to communicate a user scenario visually, explore service experiences, or share design concepts with stakeholders who respond to visual narratives.",
     steps: ["Define the user scenario and key moments","Sketch frames showing the sequence of events","Include context, actions, and user emotions","Add captions or annotations for clarity","Share with the team and iterate"],
     strengths: ["Communicates scenarios visually and engagingly","Shows context and emotion alongside actions","Accessible to non-designers"],
-    limitations: ["Drawing skill can affect clarity (though it shouldn't)","May oversimplify complex interactions","Static medium for dynamic experiences"]
+    limitations: ["Drawing skill can affect clarity (though it shouldn't)","May oversimplify complex interactions","Static medium for dynamic experiences"],
+    howToConduct: "Define the user scenario based on research. Sketch 6-12 frames showing the key moments. Include setting, user actions, product interface, and emotional reactions. Add captions. Use stick figures — drawing skill doesn't matter. Share with team for feedback. Refine narrative.",
+    sampleSize: "Created by 1-3 designers. Review with 5-10 stakeholders and 3-5 users for validation of realism.",
+    analysisMethods: ["Narrative analysis", "Scenario completeness assessment", "Emotional arc mapping", "Touchpoint identification", "Gap analysis against user research"]
   },
   {
     name: "Surveys",
@@ -1320,7 +1570,10 @@ const methods = [
     whenToUse: "When you need to quantify attitudes or behaviors across a large population, validate qualitative findings, or collect baseline data for a project.",
     steps: ["Define research objectives and target population","Design the survey with clear, unbiased questions","Pilot test with a small sample","Distribute to a representative sample","Analyze results with appropriate statistical methods"],
     strengths: ["Reaches large sample sizes efficiently","Quantifiable and statistically analyzable","Cost-effective for broad data collection"],
-    limitations: ["Self-report bias","Cannot probe for deeper understanding","Response rates can be low"]
+    limitations: ["Self-report bias","Cannot probe for deeper understanding","Response rates can be low"],
+    howToConduct: "Define objectives and target population. Write 15-30 questions mixing scales, multiple choice, and 2-3 open-ended items. Pilot with 5-10 people. Distribute via email, intercept, or panel (Prolific, UserTesting). Set a deadline. Clean data removing speeders and straight-liners.",
+    sampleSize: "100-300+ for generalizable quantitative results. 50 minimum for basic statistics. 400+ for subgroup analysis. Aim for 20-30% response rate.",
+    analysisMethods: ["Descriptive statistics", "Cross-tabulation", "Factor analysis", "Regression analysis", "Open-ended response coding", "Chi-square test"]
   },
   {
     name: "Task Analysis",
@@ -1332,7 +1585,10 @@ const methods = [
     whenToUse: "When designing workflows, optimizing processes, or understanding complex tasks where detailed step-by-step understanding is essential.",
     steps: ["Identify the task and its goal","Observe or interview users performing the task","Break the task into hierarchical steps and sub-steps","Identify decision points, errors, and information needs","Analyze for simplification or automation opportunities"],
     strengths: ["Detailed understanding of task structure","Identifies specific improvement opportunities","Systematic and thorough"],
-    limitations: ["Time-consuming for complex tasks","May not capture the why behind steps","Real tasks are often more fluid than models suggest"]
+    limitations: ["Time-consuming for complex tasks","May not capture the why behind steps","Real tasks are often more fluid than models suggest"],
+    howToConduct: "Identify the task and user goal. Observe 5-10 users performing the task. Create hierarchical task decomposition (HTA) showing goals, sub-goals, and operations. Document decision points, information needs, and error opportunities. Validate with users and SMEs.",
+    sampleSize: "Observe 5-10 users performing the task. Interview 3-5 subject matter experts. Validate with 3-5 additional users.",
+    analysisMethods: ["Hierarchical task analysis (HTA)", "GOMS analysis", "Cognitive task analysis", "Error analysis", "Critical path analysis"]
   },
   {
     name: "Territory Maps",
@@ -1344,7 +1600,10 @@ const methods = [
     whenToUse: "When you need to understand the competitive or conceptual landscape, identify underserved market segments, or position a new product strategically.",
     steps: ["Define the dimensions or axes for the map","Plot existing products, competitors, or concepts","Identify clusters and white spaces","Discuss opportunities in underserved areas","Use the map to guide design strategy"],
     strengths: ["Visual overview of the landscape","Identifies strategic opportunities","Facilitates team alignment on positioning"],
-    limitations: ["Axis selection strongly influences insights","Can oversimplify market complexity","May miss emerging competitors or trends"]
+    limitations: ["Axis selection strongly influences insights","Can oversimplify market complexity","May miss emerging competitors or trends"],
+    howToConduct: "Define 2 meaningful axes for comparison (e.g., price vs. complexity, playful vs. serious). Research and plot existing products/competitors. Identify clusters, outliers, and empty spaces. Discuss strategic positioning opportunities in white spaces.",
+    sampleSize: "Map 10-30 competitors/products. Created by 2-5 team members. Validate positioning with 10-20 user perceptions if possible.",
+    analysisMethods: ["Competitive positioning analysis", "White space identification", "Cluster analysis", "Perceptual mapping", "Strategic opportunity scoring"]
   },
   {
     name: "Thematic Analysis",
@@ -1356,7 +1615,10 @@ const methods = [
     whenToUse: "When analyzing qualitative data from interviews, observations, or open-ended surveys and you need a systematic approach to identifying patterns.",
     steps: ["Familiarize yourself with the data thoroughly","Generate initial codes from the data","Search for themes by grouping codes","Review themes against the coded data","Define and name each theme clearly"],
     strengths: ["Flexible and accessible method","Works with various data types","Produces rich, detailed insights"],
-    limitations: ["Can be subjective without clear criteria","Time-consuming for large datasets","Requires iterative analysis"]
+    limitations: ["Can be subjective without clear criteria","Time-consuming for large datasets","Requires iterative analysis"],
+    howToConduct: "Transcribe and read all data thoroughly. Generate initial codes line by line. Collate codes into potential themes. Review themes against coded data and full dataset. Define and name themes clearly. Write up with rich quotes as evidence. Follow Braun & Clarke's 6-phase approach.",
+    sampleSize: "Typically analyzes data from 6-30+ participants (interviews, observations, etc.). The method itself is an analysis technique, not a data collection method.",
+    analysisMethods: ["Initial coding", "Focused coding", "Theme mapping", "Code frequency analysis", "Thematic network analysis"]
   },
   {
     name: "Think-Aloud Protocol",
@@ -1368,7 +1630,10 @@ const methods = [
     whenToUse: "During usability testing when you need to understand not just what users do, but what they're thinking and why they make certain decisions.",
     steps: ["Prepare tasks for the participant","Instruct them to speak their thoughts aloud","Observe and note their actions and verbalizations","Gently prompt if they go silent ('What are you thinking?')","Analyze verbalizations alongside behavior for insights"],
     strengths: ["Reveals reasoning behind user actions","Rich real-time data","Identifies confusion and misunderstanding"],
-    limitations: ["Unnatural behavior (thinking aloud)","May slow down task performance","Some participants struggle to verbalize"]
+    limitations: ["Unnatural behavior (thinking aloud)","May slow down task performance","Some participants struggle to verbalize"],
+    howToConduct: "Prepare 4-6 realistic tasks. Demonstrate thinking aloud yourself first. Ask participant to continuously verbalize thoughts while performing tasks. Gently prompt if they go silent ('Keep talking' or 'What are you thinking?'). Record screen and audio. Note behavior-verbalization pairs.",
+    sampleSize: "5-8 participants per round for concurrent think-aloud. 8-12 for retrospective think-aloud. 3-5 rounds over design iterations.",
+    analysisMethods: ["Protocol analysis", "Utterance coding", "Problem identification", "Cognitive process categorization", "Usability issue severity rating"]
   },
   {
     name: "Time-Aware Research",
@@ -1380,7 +1645,10 @@ const methods = [
     whenToUse: "When user behavior has strong temporal components (seasonal, daily rhythms, lifecycle stages) or when you need to understand how experiences evolve over time.",
     steps: ["Identify relevant time dimensions for your research","Design data collection across appropriate time intervals","Track changes in behavior and attitudes over time","Analyze temporal patterns and trends","Design for the temporal nature of user experience"],
     strengths: ["Captures how experiences change over time","Reveals temporal patterns invisible in snapshots","More realistic than point-in-time studies"],
-    limitations: ["Longer data collection periods","Higher participant dropout risk","Complex analysis of temporal data"]
+    limitations: ["Longer data collection periods","Higher participant dropout risk","Complex analysis of temporal data"],
+    howToConduct: "Identify relevant time dimensions (daily rhythms, weekly patterns, seasonal changes, user lifecycle stages). Design data collection across multiple time points. Use longitudinal methods (diary studies, repeated surveys, analytics). Track how behavior and attitudes change. Analyze temporal patterns.",
+    sampleSize: "15-30 participants tracked over 2-8 weeks. Minimum 3 measurement points per participant. Can supplement with analytics data from full user base.",
+    analysisMethods: ["Time series analysis", "Longitudinal comparison", "Phase analysis", "Rhythm detection", "Growth curve modeling"]
   },
   {
     name: "Touchstone Tours",
@@ -1392,7 +1660,10 @@ const methods = [
     whenToUse: "When you want to understand users' environments and the meaningful objects within them, especially as part of a contextual inquiry or home visit.",
     steps: ["Ask the user to give you a tour of their space","Have them point out important items and areas","Ask about the significance of each item","Probe for stories and routines connected to the space","Document with photos and notes"],
     strengths: ["Reveals environmental context quickly","User-led and natural","Uncovers meaningful artifacts and routines"],
-    limitations: ["Users may skip 'obvious' things","Limited to what's visible at the time","May feel intrusive in personal spaces"]
+    limitations: ["Users may skip 'obvious' things","Limited to what's visible at the time","May feel intrusive in personal spaces"],
+    howToConduct: "Ask the user to give you a guided tour of their relevant space (workspace, home, device). Let them lead — they choose what to show. Ask about each item: 'Tell me about this' and 'Why is this here?' Photograph items with permission. Probe for routines and stories connected to objects.",
+    sampleSize: "8-15 participants. Each tour takes 15-30 minutes. Often conducted as part of a longer contextual inquiry.",
+    analysisMethods: ["Artifact analysis", "Narrative analysis", "Environmental mapping", "Object significance coding", "Cross-tour pattern analysis"]
   },
   {
     name: "Triangulation",
@@ -1404,7 +1675,10 @@ const methods = [
     whenToUse: "When making high-stakes design decisions and you need to validate findings, or when a single method may not capture the full picture.",
     steps: ["Identify the research questions","Select 2-3 complementary methods","Conduct research using each method","Compare findings across methods","Note convergences and divergences"],
     strengths: ["Increases confidence in findings","Compensates for individual method weaknesses","Provides richer understanding"],
-    limitations: ["More resource-intensive","Divergent findings can be confusing","Not always feasible under time constraints"]
+    limitations: ["More resource-intensive","Divergent findings can be confusing","Not always feasible under time constraints"],
+    howToConduct: "Identify 2-4 complementary methods to study the same question (e.g., interviews + analytics + usability testing). Conduct each method independently. Compare findings — look for convergence (agreement) and divergence (contradictions). Use divergences as prompts for deeper investigation. Document confidence levels.",
+    sampleSize: "Varies by methods chosen. Minimum sample per method should meet that method's requirements. At least 2 methods required.",
+    analysisMethods: ["Convergence analysis", "Divergence investigation", "Method comparison matrix", "Confidence weighting", "Multi-source evidence synthesis"]
   },
   {
     name: "Unobtrusive Measures",
@@ -1416,7 +1690,10 @@ const methods = [
     whenToUse: "When you need behavioral data without observer effects, when direct research is not possible, or to supplement self-reported data.",
     steps: ["Identify traces of behavior relevant to your question","Design data collection methods for these traces","Collect data without disturbing the environment","Analyze patterns in the trace data","Triangulate with other research methods"],
     strengths: ["No participant recruitment needed","Zero observer effect on behavior","Often uses existing data"],
-    limitations: ["Cannot explain motivations","Limited to what leaves traces","Ethical considerations around consent"]
+    limitations: ["Cannot explain motivations","Limited to what leaves traces","Ethical considerations around consent"],
+    howToConduct: "Identify behavioral traces relevant to your question (wear patterns on physical products, analytics data, support ticket themes, social media mentions). Design collection protocol that doesn't disturb users. Gather trace data over time. Analyze patterns. Triangulate with other methods.",
+    sampleSize: "Can analyze traces from hundreds to millions of users. No direct participant recruitment. Larger samples provide more reliable patterns.",
+    analysisMethods: ["Trace analysis", "Wear pattern analysis", "Digital analytics", "Log file analysis", "Social media mining"]
   },
   {
     name: "Usability Testing",
@@ -1428,7 +1705,10 @@ const methods = [
     whenToUse: "Whenever you have a design (any fidelity) and need to evaluate whether users can effectively and efficiently accomplish their goals with it.",
     steps: ["Define goals and create realistic task scenarios","Recruit 5-8 representative users per round","Set up the test environment and recording","Observe users attempting tasks, noting issues","Analyze findings and prioritize recommendations"],
     strengths: ["Gold standard for finding usability issues","Directly observes real behavior","Works at any fidelity level"],
-    limitations: ["Lab setting may not reflect real context","Task scenarios may not cover all use cases","5-8 users per round may miss rare issues"]
+    limitations: ["Lab setting may not reflect real context","Task scenarios may not cover all use cases","5-8 users per round may miss rare issues"],
+    howToConduct: "Define 4-6 realistic task scenarios based on key user goals. Recruit 5-8 representative users per round. Use think-aloud protocol. Observe without helping. Measure task success, time, errors, and satisfaction (SUS). Debrief after each session. Compile findings into a prioritized report.",
+    sampleSize: "5-8 participants per round identifies ~80% of usability issues. 10-15 for quantitative metrics. Plan for 2-3 rounds across design iterations.",
+    analysisMethods: ["Task success rate analysis", "Time-on-task analysis", "Error analysis", "SUS scoring", "Issue severity rating", "Rainbow spreadsheet analysis"]
   },
   {
     name: "User Journey Maps",
@@ -1440,7 +1720,10 @@ const methods = [
     whenToUse: "When you need to understand and communicate the end-to-end user experience, identify pain points and opportunities, or align a team on the current user experience.",
     steps: ["Define the persona and scenario to map","Identify all stages and touchpoints","Map user actions, thoughts, and emotions at each stage","Identify pain points and moments of delight","Highlight opportunities for improvement"],
     strengths: ["Holistic view of user experience over time","Identifies emotional highs and lows","Excellent communication tool for teams"],
-    limitations: ["Can oversimplify complex experiences","Requires good research data to be accurate","Multiple journeys may need multiple maps"]
+    limitations: ["Can oversimplify complex experiences","Requires good research data to be accurate","Multiple journeys may need multiple maps"],
+    howToConduct: "Select a persona and scenario. Research actual user behavior through interviews/observation. Map stages of the experience chronologically. For each stage: document actions, touchpoints, thoughts, emotions, and pain points. Add an emotion curve. Identify moments of truth and improvement opportunities.",
+    sampleSize: "Based on research data from 10-20+ users. Validate the map with 5-8 additional users. Created by a team of 3-5.",
+    analysisMethods: ["Touchpoint analysis", "Emotion curve analysis", "Pain point prioritization", "Moment of truth identification", "Opportunity mapping"]
   },
   {
     name: "Value Opportunity Analysis",
@@ -1452,7 +1735,10 @@ const methods = [
     whenToUse: "When evaluating product concepts or redesigning products and you need a structured framework for identifying value creation opportunities across multiple dimensions.",
     steps: ["Define the value dimensions relevant to your product","Assess current performance on each dimension","Benchmark against competitors","Identify the biggest gaps and opportunities","Prioritize dimensions for design focus"],
     strengths: ["Structured multi-dimensional evaluation","Identifies differentiation opportunities","Balances functional and emotional value"],
-    limitations: ["Dimension weighting can be subjective","May not capture all relevant value dimensions","Requires market and user knowledge"]
+    limitations: ["Dimension weighting can be subjective","May not capture all relevant value dimensions","Requires market and user knowledge"],
+    howToConduct: "Define 7 value dimensions (emotion, ergonomics, aesthetics, identity, impact, core technology, quality). Rate your product and 2-3 competitors on each dimension (1-5 scale). Use expert evaluation and user input. Identify dimensions with biggest gaps. Prioritize dimensions where improvement would create most differentiation.",
+    sampleSize: "3-5 expert evaluators. Supplement with survey data from 20-50 users rating each dimension. Benchmark against 2-4 competitors.",
+    analysisMethods: ["Multi-dimensional scoring", "Gap analysis", "Radar chart comparison", "Competitive benchmarking", "Opportunity prioritization matrix"]
   },
   {
     name: "Web Analytics",
@@ -1464,7 +1750,10 @@ const methods = [
     whenToUse: "When you need to understand actual usage patterns, identify drop-off points, validate design changes, or establish baseline metrics for a redesign.",
     steps: ["Define key metrics aligned with user and business goals","Set up tracking and event logging","Analyze user flows, funnels, and engagement patterns","Identify anomalies, drop-offs, and trends","Generate hypotheses for further research or A/B testing"],
     strengths: ["Based on actual behavior (not self-report)","Large-scale data","Continuous and real-time"],
-    limitations: ["Shows what, not why","Can be overwhelming without clear goals","Privacy regulations may limit data collection"]
+    limitations: ["Shows what, not why","Can be overwhelming without clear goals","Privacy regulations may limit data collection"],
+    howToConduct: "Set up comprehensive tracking (Google Analytics, Mixpanel, Amplitude, or Hotjar). Define key events and conversion funnels. Segment users by behavior, source, or demographics. Analyze user flows, drop-offs, and engagement patterns. Generate regular reports. Combine with qualitative research for the 'why'.",
+    sampleSize: "Analyze data from entire user base — typically thousands to millions of sessions. Segment analysis requires minimum 100+ users per segment.",
+    analysisMethods: ["Funnel analysis", "Cohort analysis", "Segmentation analysis", "A/B test analysis", "Behavioral flow analysis", "Retention analysis"]
   },
   {
     name: "Weighted Matrix",
@@ -1476,7 +1765,10 @@ const methods = [
     whenToUse: "When you need to choose between multiple design options and want a transparent, systematic comparison based on defined criteria.",
     steps: ["List design options to compare","Define evaluation criteria","Assign weights to each criterion based on importance","Score each option against each criterion","Calculate weighted totals and compare"],
     strengths: ["Transparent and systematic decision-making","Accounts for different priority levels","Facilitates team discussion and alignment"],
-    limitations: ["Subjective scoring and weighting","Can give false sense of objectivity","May not capture qualitative nuances"]
+    limitations: ["Subjective scoring and weighting","Can give false sense of objectivity","May not capture qualitative nuances"],
+    howToConduct: "List all design options as columns. Define evaluation criteria as rows. Assign weights (1-5) to each criterion reflecting importance. Score each option against each criterion (1-5). Multiply scores by weights. Sum weighted scores per option. Compare totals. Discuss and validate with team.",
+    sampleSize: "3-8 team members scoring collaboratively. Can incorporate scores from 10-20 stakeholders for broader input.",
+    analysisMethods: ["Weighted scoring analysis", "Sensitivity analysis", "Rank-order comparison", "Criteria validation", "Decision confidence assessment"]
   },
   {
     name: "Wizard of Oz",
@@ -1488,7 +1780,10 @@ const methods = [
     whenToUse: "When testing concepts that would be expensive to build (AI, voice interfaces, complex algorithms) and you want to evaluate the user experience before investing in development.",
     steps: ["Design the interface the user will see","Plan how the 'wizard' will simulate system responses","Set up communication between wizard and interface","Conduct sessions with users (who don't know about the wizard)","Analyze user behavior and reactions to the simulated system"],
     strengths: ["Tests complex concepts without building them","Realistic user experience evaluation","Flexible—wizard can handle edge cases"],
-    limitations: ["Requires skilled wizard operator","Deception raises ethical questions","Scalability is limited to one user at a time"]
+    limitations: ["Requires skilled wizard operator","Deception raises ethical questions","Scalability is limited to one user at a time"],
+    howToConduct: "Design the user-facing interface (can be low-fi). Set up a hidden 'wizard' station where a researcher manually produces system responses. Establish a protocol for how the wizard responds. Conduct sessions where the user believes the system works autonomously. Debrief with user afterward. Record all sessions.",
+    sampleSize: "5-10 participants per concept. Each session 20-45 minutes. Run multiple variants if testing different concepts.",
+    analysisMethods: ["Interaction analysis", "Wizard response logging", "User expectation analysis", "Behavioral observation", "Post-session interview analysis"]
   },
   {
     name: "Questionnaires",
@@ -1500,7 +1795,10 @@ const methods = [
     whenToUse: "When you need standardized, repeatable measurement of user experience metrics across sessions, versions, or products.",
     steps: ["Select or design the appropriate questionnaire","Administer after relevant user interaction","Collect responses from a sufficient sample","Score and analyze according to the instrument's guidelines","Compare scores against benchmarks or previous versions"],
     strengths: ["Standardized and repeatable","Benchmarkable across products and time","Quick to administer"],
-    limitations: ["Post-hoc recall may not reflect real-time experience","Limited depth of insight","Standard instruments may miss domain-specific issues"]
+    limitations: ["Post-hoc recall may not reflect real-time experience","Limited depth of insight","Standard instruments may miss domain-specific issues"],
+    howToConduct: "Select a standardized instrument (SUS, PSSUQ, UMUX-LITE, NASA-TLX, etc.) or create a custom questionnaire. Administer immediately after user interaction with the product. Ensure consistent administration conditions. Score using the instrument's published methodology. Compare against published norms and benchmarks.",
+    sampleSize: "20-30 participants for reliable scores on standardized instruments. 50-100+ for comparing between groups. Minimum 12 for directional data.",
+    analysisMethods: ["Instrument-specific scoring", "Benchmark comparison", "Percentile ranking", "Internal consistency analysis", "Item-level analysis"]
   },
   {
     name: "Scenario-Based Evaluation",
@@ -1512,7 +1810,10 @@ const methods = [
     whenToUse: "When you have a design concept or prototype and want to evaluate it against realistic use cases before formal usability testing.",
     steps: ["Develop realistic user scenarios from research data","Walk through each scenario with the design","Assess how well the design supports each step","Identify gaps, friction, and failure points","Recommend design improvements"],
     strengths: ["Grounds evaluation in realistic use","Identifies gaps before user testing","Can involve stakeholders in evaluation"],
-    limitations: ["Limited to scenarios you define","May miss unexpected user behaviors","Evaluator perspective differs from user perspective"]
+    limitations: ["Limited to scenarios you define","May miss unexpected user behaviors","Evaluator perspective differs from user perspective"],
+    howToConduct: "Develop 5-8 realistic user scenarios from research data covering common and edge cases. Walk through each scenario step-by-step with the design. At each step, assess: Can the user complete this? What might go wrong? Is information sufficient? Document gaps and issues. Prioritize fixes.",
+    sampleSize: "2-4 evaluators walking through scenarios. Validate with 3-5 real users afterwards. Evaluate 5-8 scenarios minimum.",
+    analysisMethods: ["Scenario coverage analysis", "Gap identification", "Issue severity rating", "Walkthrough protocol analysis", "Scenario-requirement mapping"]
   }
 ];
 
@@ -1644,6 +1945,18 @@ function openModal(name) {
       <h4>Limitations</h4>
       <ul>${m.limitations.map(s => `<li>${s}</li>`).join('')}</ul>
     </div>
+    ${m.howToConduct ? `<div class="modal-section">
+      <h4>How to Conduct</h4>
+      <p>${m.howToConduct}</p>
+    </div>` : ''}
+    ${m.sampleSize ? `<div class="modal-section">
+      <h4>Sample Size</h4>
+      <p>${m.sampleSize}</p>
+    </div>` : ''}
+    ${m.analysisMethods && m.analysisMethods.length ? `<div class="modal-section">
+      <h4>Analysis Methods</h4>
+      <ul>${m.analysisMethods.map(s => '<li>'+s+'</li>').join('')}</ul>
+    </div>` : ''}
     <button class="modal-add-btn ${selectedMethods.includes(m.name)?'added':''}"
       onclick="toggleSelect('${m.name.replace(/'/g,"\\'")}');openModal('${m.name.replace(/'/g,"\\'")}')">
       ${selectedMethods.includes(m.name)?'Remove from My Project':'Add to My Project'}
@@ -1750,6 +2063,8 @@ function renderCompare() {
       <div class="compare-row"><span class="compare-label">Approach</span><span class="compare-value">${m.approach.map(cap).join(', ')}</span></div>
       <div class="compare-row"><span class="compare-label">Effort</span><span class="compare-value">${cap(m.effort)}</span></div>
       <div class="compare-row"><span class="compare-label">Phases</span><span class="compare-value">${m.phases.map(p => phaseLabels[p].split(',')[0]).join(', ')}</span></div>
+      ${m.sampleSize ? `<div class="compare-row"><span class="compare-label">Sample Size</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.sampleSize}</span></div>` : ''}
+      ${m.analysisMethods ? `<div class="compare-row"><span class="compare-label">Analysis</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.analysisMethods.slice(0,3).join(', ')}</span></div>` : ''}
       <div class="compare-row"><span class="compare-label">Strengths</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.strengths[0]}</span></div>
       <div class="compare-row"><span class="compare-label">Limitations</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.limitations[0]}</span></div>
     </div>`;
@@ -1767,7 +2082,11 @@ function exportProject() {
     text += `Effort: ${cap(m.effort)}\n`;
     text += `Phases: ${m.phases.map(p => phaseLabels[p]).join('; ')}\n`;
     text += `Description: ${m.description}\n`;
-    text += `When to Use: ${m.whenToUse}\n\n`;
+    text += `When to Use: ${m.whenToUse}\n`;
+    if (m.howToConduct) text += `How to Conduct: ${m.howToConduct}\n`;
+    if (m.sampleSize) text += `Sample Size: ${m.sampleSize}\n`;
+    if (m.analysisMethods) text += `Analysis Methods: ${m.analysisMethods.join(', ')}\n`;
+    text += '\n';
   });
   const blob = new Blob([text], {type: 'text/plain'});
   const a = document.createElement('a');
