@@ -277,6 +277,7 @@
   </div>
   <div class="tabs">
     <button class="tab active" onclick="switchTab('explore')">Explore</button>
+    <button class="tab" onclick="switchTab('advisor')">✨ Method Advisor</button>
     <button class="tab" onclick="switchTab('project')">My Project <span class="badge" id="projectCount">0</span></button>
     <button class="tab" onclick="switchTab('compare')">Compare</button>
   </div>
@@ -339,6 +340,25 @@
         </div>
       </div>
       <div class="methods-grid" id="methodsContainer"></div>
+    </div>
+    <div id="advisorView" class="project-panel">
+      <h2 style="margin-bottom:.4rem;font-size:1.2rem;">✨ Method Advisor</h2>
+      <p style="font-size:.9rem;color:var(--textLight);margin-bottom:1rem;max-width:640px;">
+        Describe your project and what you want to learn from your users in plain language.
+        We'll suggest research methods that fit.
+      </p>
+      <textarea id="advisorInput" rows="4" placeholder="e.g. We're building a mobile banking app for older adults. We want to understand their daily money habits and find out why they avoid online banking, then test some early designs with them."
+        style="width:100%;max-width:640px;padding:.9rem 1rem;border:1px solid var(--border);border-radius:10px;font-size:.92rem;font-family:inherit;resize:vertical;outline:none;line-height:1.6;"
+        oninput="this.style.borderColor='var(--border)'"></textarea>
+      <div style="margin:.6rem 0 1rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;">
+        <button onclick="runAdvisor()"
+          style="padding:.6rem 1.4rem;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:600;font-size:.9rem;cursor:pointer;">
+          Suggest methods
+        </button>
+        <span style="font-size:.78rem;color:var(--textLight);">Tip: mention your stage (early exploration, ideation, testing), and whether you care about numbers or reasons.</span>
+      </div>
+      <div style="margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;" id="advisorExamples"></div>
+      <div id="advisorResults"></div>
     </div>
     <div id="projectView" class="project-panel">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Selected Methods</h2>
@@ -1941,6 +1961,110 @@ function renderMethods(list, activeFilters) {
 
 function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
 
+/* ---------- Method Advisor (plain-language recommendations) ---------- */
+const phaseShort = {
+  phase1:'Planning & Scoping', phase2:'Exploration & Synthesis',
+  phase3:'Concept Generation', phase4:'Evaluation & Refinement', phase5:'Launch & Monitor'
+};
+
+// Intent signals: keyword patterns -> desired data types / approaches / phases
+const advisorSignals = [
+  { label:'exploratory discovery', kw:['understand','discover','explore','uncover','learn about','insight','motivation','need','needs','pain ?point','frustrat','context','daily','routine','habit','behaviou?r','experience','journey','ethnograph','field'], approach:['exploratory'], phase:['phase1','phase2'] },
+  { label:'idea generation', kw:['idea','brainstorm','generat','concept','ideat','co-?design','co-?create','innovat','imagine','possibilit','inspire','divergent'], approach:['generative'], phase:['phase2','phase3'] },
+  { label:'evaluation & testing', kw:['test','testing','evaluat','validat','usabilit','assess','works','improve','refine','prototyp','iterate','check if','find issues','problems with'], approach:['evaluative'], phase:['phase3','phase4'] },
+  { label:'quantitative measurement', kw:['how many','how much','metric','number','statistic','quantif','measur','\\brate\\b','percentage','\\bscale','benchmark','data-?driven','significan','a/b','conversion','\\btrack','analytics'], data:['quantitative'] },
+  { label:'qualitative depth', kw:['why','reason','opinion','in-?depth','rich','story','stories','perception','perceiv','deep'], data:['qualitative'] },
+  { label:'observed behavior', kw:['observ','what they do','watch','in the field','natural','real use','workflow','task','action','usage'], data:['behavioral'] },
+  { label:'stated attitudes', kw:['what they say','attitude','prefer','satisfaction','feel','emotion','desire','aspiration','believe','think','opinion','survey'], data:['attitudinal'] },
+  { label:'early planning', kw:['planning','scope','scoping','define','definition','requirement','stakeholder','kick-?off','at the start','beginning','new project','from scratch'], phase:['phase1'] },
+  { label:'post-launch monitoring', kw:['launch','monitor','live','in production','post-?launch','ongoing','in market','after release','already live'], phase:['phase5'] }
+];
+
+const advisorStop = new Set(['the','and','for','with','our','from','that','this','want','what','their','them','they','have','will','your','users','user','research','project','about','into','some','need','needs','would','could','when','then','also','very','make','find','like','using','use','people','want','trying']);
+
+const advisorExamplePrompts = [
+  "Understand why new users drop off during onboarding",
+  "Explore the daily routines of nurses in a hospital",
+  "Generate fresh ideas for a sustainability feature",
+  "Test whether our checkout flow is easy to use",
+  "Measure which of two homepage layouts converts better"
+];
+
+function initAdvisor() {
+  const ex = document.getElementById('advisorExamples');
+  if (ex.dataset.init) return;
+  ex.dataset.init = '1';
+  ex.innerHTML = `<span style="font-size:.78rem;color:var(--textLight);align-self:center;margin-right:.2rem;">Try:</span>` +
+    advisorExamplePrompts.map(p =>
+      `<button onclick="document.getElementById('advisorInput').value=this.dataset.p;runAdvisor()" data-p="${p}"
+        style="font-size:.76rem;padding:.3rem .7rem;border:1px solid var(--border);background:white;border-radius:20px;cursor:pointer;color:var(--text);">${p}</button>`
+    ).join('');
+}
+
+function runAdvisor() {
+  const q = document.getElementById('advisorInput').value.toLowerCase().trim();
+  const out = document.getElementById('advisorResults');
+  if (q.length < 8) {
+    out.innerHTML = `<p style="color:var(--textLight);font-size:.9rem;">Please describe your project and goals in a sentence or two, then click <strong>Suggest methods</strong>.</p>`;
+    return;
+  }
+
+  const want = { data:{}, approach:{}, phase:{} };
+  const matchedLabels = [];
+  advisorSignals.forEach(sig => {
+    if (!sig.kw.some(k => new RegExp(k).test(q))) return;
+    matchedLabels.push(sig.label);
+    ['data','approach','phase'].forEach(dim =>
+      (sig[dim]||[]).forEach(tag => { want[dim][tag] = (want[dim][tag]||0)+1; })
+    );
+  });
+
+  const tokens = [...new Set(q.replace(/[^a-z\s]/g,' ').split(/\s+/).filter(w => w.length>3 && !advisorStop.has(w)))];
+
+  const scored = methods.map(m => {
+    let score = 0; const reasons = new Set();
+    Object.entries(want.approach).forEach(([tag,w]) => { if (m.approach.includes(tag)) { score += w*3; reasons.add(cap(tag)); } });
+    Object.entries(want.data).forEach(([tag,w]) => { if (m.dataType.includes(tag)) { score += w*2; reasons.add(cap(tag)); } });
+    Object.entries(want.phase).forEach(([tag,w]) => { if (m.phases.includes(tag)) { score += w*2; reasons.add(phaseShort[tag]); } });
+    const text = (m.name+' '+m.description+' '+(m.whenToUse||'')).toLowerCase();
+    let kwHits = 0;
+    tokens.forEach(t => { if (text.includes(t)) kwHits++; });
+    if (kwHits) { score += Math.min(kwHits,4); if (kwHits>=2) reasons.add('Keyword match'); }
+    return { m, score, reasons:[...reasons] };
+  }).filter(x => x.score > 0).sort((a,b)=> b.score - a.score).slice(0, 8);
+
+  if (!scored.length) {
+    out.innerHTML = `<p style="color:var(--textLight);font-size:.9rem;">No strong matches found. Try describing your goal differently — for example mention whether you want to <em>explore</em>, <em>generate ideas</em>, or <em>test</em> something — or browse all methods in the Explore tab.</p>`;
+    return;
+  }
+
+  const summary = matchedLabels.length
+    ? `Based on your description, you seem to be focused on <strong>${matchedLabels.slice(0,3).join('</strong>, <strong>')}</strong>. Here are methods worth exploring:`
+    : `Here are methods that best match your description:`;
+
+  out.innerHTML = `<p style="font-size:.9rem;margin-bottom:1rem;max-width:640px;">${summary}</p>
+    <div class="methods-grid">` +
+    scored.map(({m,reasons}) => `
+      <div class="method-card ${selectedMethods.includes(m.name)?'selected':''}" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+        <div class="card-top">
+          <h3>${m.name}</h3>
+          <button class="add-btn ${selectedMethods.includes(m.name)?'added':''}"
+            onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}');runAdvisor()"
+            title="${selectedMethods.includes(m.name)?'Remove from project':'Add to project'}">${selectedMethods.includes(m.name)?'✓':'+'}</button>
+        </div>
+        <div class="card-tags">
+          ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+          ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+        </div>
+        <div class="card-desc">${m.description.substring(0,110)}...</div>
+        ${reasons.length ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accent);"><strong>Why:</strong> ${reasons.slice(0,4).join(' · ')}</div>` : ''}
+        <div class="card-phases" style="margin-top:.5rem;">
+          ${m.phases.map(p => `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`).join('')}
+        </div>
+      </div>
+    `).join('') + `</div>`;
+}
+
 const phaseLabels = {
   phase1: 'Planning, Scoping & Definition',
   phase2: 'Exploration, Synthesis & Design Implication',
@@ -2028,13 +2152,16 @@ function setView(v) {
 
 function switchTab(tab) {
   currentTab = tab;
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['explore','project','compare'][i]===tab));
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['explore','advisor','project','compare'][i]===tab));
   document.getElementById('exploreView').style.display = tab==='explore' ? 'block' : 'none';
+  document.getElementById('advisorView').style.display = tab==='advisor' ? 'block' : 'none';
+  document.getElementById('advisorView').classList.toggle('visible', tab==='advisor');
   document.getElementById('projectView').style.display = tab==='project' ? 'block' : 'none';
   document.getElementById('projectView').classList.toggle('visible', tab==='project');
   document.getElementById('compareView').style.display = tab==='compare' ? 'block' : 'none';
   document.getElementById('compareView').classList.toggle('visible', tab==='compare');
   document.querySelector('.sidebar').style.display = tab==='explore' ? '' : 'none';
+  if (tab==='advisor') initAdvisor();
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
 }
