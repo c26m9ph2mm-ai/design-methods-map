@@ -274,8 +274,8 @@
       <p>Explore, filter, and select the right user research methods for your project</p>
     </div>
     <div class="search-box">
-      <span class="search-icon">&#128269;</span>
-      <input type="text" id="searchInput" placeholder="Search methods..." oninput="applyFilters()">
+      <span class="search-icon" aria-hidden="true">&#128269;</span>
+      <input type="text" id="searchInput" aria-label="Search methods" placeholder="Search methods..." oninput="applyFilters()">
     </div>
   </div>
   <div class="tabs" id="tablist" role="tablist" aria-label="Views" onkeydown="tabsKeydown(event)">
@@ -340,8 +340,8 @@
         <div style="display:flex;align-items:center;gap:.6rem;">
           <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods you've added to your project">Deselect all</button>
           <div class="view-toggle">
-            <button class="view-btn active" onclick="setView('grid')" id="gridBtn">Grid</button>
-            <button class="view-btn" onclick="setView('list')" id="listBtn">List</button>
+            <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
+            <button class="view-btn" onclick="setView('list')" id="listBtn" aria-pressed="false">List</button>
           </div>
         </div>
       </div>
@@ -1956,6 +1956,7 @@ function renderMethods(list, activeFilters) {
           <h3>${m.name}</h3>
           <button class="add-btn ${selectedMethods.includes(m.name)?'added':''}"
             onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')"
+            aria-label="${selectedMethods.includes(m.name)?'Remove '+m.name+' from project':'Add '+m.name+' to project'}"
             title="${selectedMethods.includes(m.name)?'Remove from project':'Add to project'}">
             ${selectedMethods.includes(m.name)?'✓':'+'}
           </button>
@@ -1977,6 +1978,7 @@ function renderMethods(list, activeFilters) {
     container.innerHTML = list.map(m => `
       <div class="method-row" role="button" tabindex="0" aria-label="View details for ${m.name}" onclick="openModal('${m.name.replace(/'/g,"\\'")}')" onkeydown="cardKeydown(event,'${m.name.replace(/'/g,"\\'")}')">
         <button class="add-btn ${selectedMethods.includes(m.name)?'added':''}"
+          aria-label="${selectedMethods.includes(m.name)?'Remove '+m.name+' from project':'Add '+m.name+' to project'}"
           onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')">${selectedMethods.includes(m.name)?'✓':'+'}</button>
         <h3>${m.name}</h3>
         <div class="card-tags">
@@ -2093,6 +2095,7 @@ function runAdvisor() {
           <h3>${m.name}</h3>
           <button class="add-btn ${selectedMethods.includes(m.name)?'added':''}"
             onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}');runAdvisor()"
+            aria-label="${selectedMethods.includes(m.name)?'Remove '+m.name+' from project':'Add '+m.name+' to project'}"
             title="${selectedMethods.includes(m.name)?'Remove from project':'Add to project'}">${selectedMethods.includes(m.name)?'✓':'+'}</button>
         </div>
         <div class="card-tags">
@@ -2209,8 +2212,11 @@ function toggleSelect(name) {
 
 function setView(v) {
   currentView = v;
-  document.getElementById('gridBtn').classList.toggle('active', v==='grid');
-  document.getElementById('listBtn').classList.toggle('active', v==='list');
+  const gridBtn = document.getElementById('gridBtn'), listBtn = document.getElementById('listBtn');
+  gridBtn.classList.toggle('active', v==='grid');
+  listBtn.classList.toggle('active', v==='list');
+  gridBtn.setAttribute('aria-pressed', v==='grid' ? 'true' : 'false');
+  listBtn.setAttribute('aria-pressed', v==='list' ? 'true' : 'false');
   applyFilters();
 }
 
@@ -2274,6 +2280,7 @@ function renderProject() {
         <h3>${m.name}</h3>
         <button class="add-btn added"
           onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')"
+          aria-label="Remove ${m.name} from project"
           title="Remove from project">✓</button>
       </div>
       <div class="card-tags">
