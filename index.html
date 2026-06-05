@@ -2034,6 +2034,7 @@ function switchTab(tab) {
   document.getElementById('projectView').classList.toggle('visible', tab==='project');
   document.getElementById('compareView').style.display = tab==='compare' ? 'block' : 'none';
   document.getElementById('compareView').classList.toggle('visible', tab==='compare');
+  document.querySelector('.sidebar').style.display = tab==='explore' ? '' : 'none';
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
 }
