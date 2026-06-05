@@ -26,6 +26,7 @@
     --accent: #4A6CF7;
     --accentText: #3550D6;
     --accentHover: #3B5DE7;
+    --footer-h: 48px;   /* kept in sync with the fixed footer's real height by JS */
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -71,11 +72,11 @@
     border-radius:10px; margin-left:6px; vertical-align:middle;
   }
   /* Layout */
-  .layout { display:flex; min-height:calc(100vh - 140px); }
+  .layout { display:flex; min-height:calc(100vh - 140px - var(--footer-h)); }
   /* Sidebar */
   .sidebar {
     width:280px; min-width:280px; background:white; border-right:1px solid var(--border);
-    padding:1.2rem; overflow-y:auto; max-height:calc(100vh - 140px); position:sticky; top:140px;
+    padding:1.2rem; overflow-y:auto; max-height:calc(100vh - 140px - var(--footer-h)); position:sticky; top:140px;
   }
   /* Mobile filter drawer chrome — hidden on desktop, shown < 900px */
   .drawer-header, .drawer-apply, .drawer-backdrop, .filters-btn { display:none; }
@@ -109,7 +110,7 @@
   }
   .btn-clear:hover { text-decoration:underline; }
   /* Main area */
-  .main { flex:1; padding:1.5rem; overflow-y:auto; max-height:calc(100vh - 140px); }
+  .main { flex:1; padding:1.5rem; overflow-y:auto; max-height:calc(100vh - 140px - var(--footer-h)); }
   .results-bar {
     display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;
     font-size:.85rem; color:var(--textLight); flex-wrap:wrap; gap:.6rem;
@@ -282,7 +283,7 @@
   /* Responsive */
   @media(max-width:900px) {
     .layout { flex-direction:column; }
-    .main { max-height:none; }
+    .main { max-height:none; padding-bottom:calc(1.5rem + var(--footer-h)); }
     .sidebar {
       position:fixed; top:0; left:0; bottom:0; height:100%; max-height:none;
       width:86%; max-width:330px; min-width:0; z-index:300;
@@ -308,7 +309,7 @@
   ::-webkit-scrollbar-thumb { background:#CBD5E0; border-radius:3px; }
   /* Compare view — single matrix table */
   .compare-scroll {
-    overflow:auto; max-height:calc(100vh - 230px);
+    overflow:auto; max-height:calc(100vh - 230px - var(--footer-h));
     border:1px solid var(--border); border-radius:12px; background:white;
   }
   .compare-table { border-collapse:collapse; width:100%; min-width:520px; font-size:.82rem; }
@@ -472,8 +473,10 @@
   .bridge-adv-note { margin-top:.45rem; font-size:.72rem; color:var(--textLight); }
   /* Site footer: visitor count + copyright */
   .site-footer {
+    position:fixed; left:0; right:0; bottom:0; z-index:90;
     display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.4rem 1rem;
-    padding:.9rem 1.2rem; border-top:1px solid var(--border); background:white;
+    padding:.7rem 1.2rem; border-top:1px solid var(--border); background:white;
+    box-shadow:0 -2px 10px rgba(0,0,0,.05);
     font-size:.8rem; color:var(--textLight); text-align:center;
   }
   .site-footer .visits {
@@ -4160,6 +4163,16 @@ try { if (!localStorage.getItem('dmm_onboarded')) setTimeout(startTour, 600); } 
       if (el) { el.textContent = 'Visitors: ' + d.value.toLocaleString(); el.hidden = false; }
     })
     .catch(() => { /* leave the counter hidden if the service is unreachable */ });
+})();
+
+// Keep the reserved space in sync with the fixed footer's real height (it can wrap on mobile)
+(function () {
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+  const syncFooterH = () => document.documentElement.style.setProperty('--footer-h', footer.offsetHeight + 'px');
+  syncFooterH();
+  window.addEventListener('resize', syncFooterH);
+  if (window.ResizeObserver) new ResizeObserver(syncFooterH).observe(footer);
 })();
 </script>
 </body>
