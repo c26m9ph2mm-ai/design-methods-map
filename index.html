@@ -2840,6 +2840,7 @@ function openFilters() {
   sb.setAttribute('aria-labelledby','drawerTitle');
   document.getElementById('filtersBtn').setAttribute('aria-expanded','true');
   document.body.style.overflow = 'hidden';
+  setInertEls(DRAWER_INERT, true);   // background not reachable by keyboard/AT behind the drawer
   lastFocusedFilterTrigger = document.activeElement;
   const closeBtn = sb.querySelector('.drawer-close');
   (closeBtn || sb).focus();
@@ -2854,6 +2855,7 @@ function closeFilters() {
   sb.removeAttribute('aria-labelledby');
   document.getElementById('filtersBtn').setAttribute('aria-expanded','false');
   document.body.style.overflow = '';
+  setInertEls(DRAWER_INERT, false);   // restore background before returning focus to it
   if (lastFocusedFilterTrigger && typeof lastFocusedFilterTrigger.focus === 'function') lastFocusedFilterTrigger.focus();
   lastFocusedFilterTrigger = null;
 }
@@ -3505,6 +3507,7 @@ function openAnalysisModal(id) {
       </div>
     </div>` : ''}
   `;
+  setInertEls(MODAL_INERT, true);
   overlay.classList.add('open');
   const closeBtn = modal.querySelector('.modal-close');
   (closeBtn || modal).focus();
@@ -3567,6 +3570,7 @@ function openModal(name) {
       ${selectedMethods.includes(m.name)?'Remove from My Project':'Add to My Project'}
     </button>
   `;
+  setInertEls(MODAL_INERT, true);   // page behind the dialog is inert for keyboard/AT
   overlay.classList.add('open');
   // Move focus into the dialog
   const closeBtn = modal.querySelector('.modal-close');
