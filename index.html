@@ -1911,8 +1911,8 @@ function renderMethods(list, activeFilters) {
         </div>
         <div class="card-desc">${m.description.substring(0,120)}...</div>
         <div class="card-phases">
-          ${['phase1','phase2','phase3','phase4','phase5'].map(p =>
-            `<div class="phase-pip ${m.phases.includes(p)?'active':''}" style="background:var(--${p})"></div>`
+          ${m.phases.map(p =>
+            `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
           ).join('')}
         </div>
       </div>
@@ -1929,8 +1929,8 @@ function renderMethods(list, activeFilters) {
           ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
         </div>
         <div class="card-phases">
-          ${['phase1','phase2','phase3','phase4','phase5'].map(p =>
-            `<div class="phase-pip ${m.phases.includes(p)?'active':''}" style="background:var(--${p})"></div>`
+          ${m.phases.map(p =>
+            `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
           ).join('')}
         </div>
         <span style="font-size:.75rem;color:var(--textLight);min-width:60px">${cap(m.effort)}</span>
