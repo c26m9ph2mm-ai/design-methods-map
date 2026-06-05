@@ -2053,35 +2053,25 @@ function renderProject() {
   }
   exportBtn.style.display = 'block';
 
-  // Group by phase
-  const phaseGroups = {};
-  selectedMethods.forEach(name => {
-    const m = methods.find(x => x.name === name);
-    if (!m) return;
-    m.phases.forEach(p => {
-      if (!phaseGroups[p]) phaseGroups[p] = [];
-      if (!phaseGroups[p].includes(m)) phaseGroups[p].push(m);
-    });
-  });
-
-  let html = '';
-  ['phase1','phase2','phase3','phase4','phase5'].forEach(p => {
-    if (!phaseGroups[p]) return;
-    html += `<h3 style="margin:1rem 0 .5rem;font-size:.85rem;color:var(--textLight)">
-      <span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--${p});margin-right:.4rem"></span>
-      ${phaseLabels[p]}
-    </h3>`;
-    phaseGroups[p].forEach(m => {
-      html += `<div class="project-card" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+  const selected = selectedMethods.map(name => methods.find(x => x.name === name)).filter(Boolean);
+  let html = `<p style="font-size:.82rem;color:var(--textLight);margin-bottom:1rem;">${selected.length} method${selected.length===1?'':'s'} selected</p>`;
+  selected.forEach(m => {
+    html += `<div class="project-card" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+      <div class="card-top">
         <h3>${m.name}</h3>
-        <div class="card-tags">
-          ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
-          ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
-        </div>
-        <div class="card-desc">${m.description.substring(0,100)}...</div>
         <button class="remove-btn" onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')">Remove</button>
-      </div>`;
-    });
+      </div>
+      <div class="card-tags">
+        ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+        ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+      </div>
+      <div class="card-phases" style="margin:.5rem 0 .3rem;">
+        ${['phase1','phase2','phase3','phase4','phase5'].map(p =>
+          `<div class="phase-pip ${m.phases.includes(p)?'active':''}" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
+        ).join('')}
+      </div>
+      <div class="card-desc">${m.description.substring(0,100)}...</div>
+    </div>`;
   });
   container.innerHTML = html;
 }
