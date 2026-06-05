@@ -401,7 +401,18 @@
   }
   /* Keyboard-shortcut hint + help panel */
   .search-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:.1rem; }
-  .search-row { display:flex; align-items:center; gap:.5rem; }
+  .search-row { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:.5rem; }
+  .header-tour-btn {
+    display:inline-flex; align-items:center; gap:.35rem; padding:.45rem .85rem; white-space:nowrap;
+    border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.12); color:white;
+    border-radius:8px; font-size:.82rem; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  .header-tour-btn:hover { background:rgba(255,255,255,.22); }
+  .header-tour-btn:focus-visible { outline:2px solid white; outline-offset:2px; }
+  /* Narrow screens: search box takes the first line; tour + help wrap below it */
+  @media (max-width:600px) {
+    .search-box { flex:1 1 100%; min-width:0; }
+  }
   .help-btn {
     width:32px; height:32px; border-radius:50%; border:1px solid rgba(255,255,255,.3);
     background:rgba(255,255,255,.12); color:white; font-weight:700; font-size:.95rem;
@@ -559,11 +570,6 @@
     grid-column:1/-1; font-size:.82rem; color:var(--textLight); background:#F8FAFC;
     border:1px dashed var(--border); border-radius:10px; padding:.7rem .9rem; text-align:center;
   }
-  .site-footer .tour-link {
-    background:none; border:none; color:var(--accentText); font-size:.8rem; cursor:pointer;
-    text-decoration:underline; font-family:inherit; padding:0;
-  }
-  .site-footer .tour-link:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   /* ---------- Onboarding tour ---------- */
   #tourOverlay { position:fixed; inset:0; z-index:400; display:none; }
   #tourOverlay.open { display:block; }
@@ -626,6 +632,7 @@
           <span class="search-icon" aria-hidden="true">&#128269;</span>
           <input type="text" id="searchInput" aria-label="Search methods" placeholder="Search methods..." oninput="applyFilters()">
         </div>
+        <button class="header-tour-btn" id="tourBtnHeader" type="button" onclick="startTour()" title="Take a guided tour of the app"><span aria-hidden="true">✦</span> Take a tour</button>
         <button class="help-btn" id="helpBtn" onclick="toggleHelp()" aria-haspopup="dialog" aria-expanded="false" aria-controls="helpPanel" title="Keyboard shortcuts & help" aria-label="Keyboard shortcuts and help">?</button>
       </div>
       <div class="kbd-hint" aria-hidden="true">Press <kbd>/</kbd> to search · <kbd>Esc</kbd> to close</div>
@@ -845,7 +852,6 @@
 
 <footer class="site-footer">
   <span class="visits" id="visitorCount" hidden></span>
-  <button class="tour-link" type="button" onclick="startTour()">Take a tour</button>
   <span class="copyright">&copy; <span id="footerYear">2026</span> Dr. Sharmistha Banerjee, Department of Design, IIT Guwahati</span>
 </footer>
 
