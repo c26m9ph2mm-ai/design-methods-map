@@ -21,9 +21,10 @@
     --bg: #F7F8FA;
     --card: #FFFFFF;
     --text: #2D3748;
-    --textLight: #718096;
+    --textLight: #5A6577;
     --border: #E2E8F0;
     --accent: #4A6CF7;
+    --accentText: #3550D6;
     --accentHover: #3B5DE7;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -92,7 +93,7 @@
     width:12px; height:12px; border-radius:50%; flex-shrink:0;
   }
   .btn-clear {
-    font-size:.75rem; color:var(--accent); cursor:pointer; background:none; border:none;
+    font-size:.75rem; color:var(--accentText); cursor:pointer; background:none; border:none;
     float:right; margin-top:-1.2rem;
   }
   .btn-clear:hover { text-decoration:underline; }
@@ -143,10 +144,10 @@
   }
   .tag-qualitative { background:#FDECEA; color:#C0392B; }
   .tag-quantitative { background:#E8F4FD; color:#2471A3; }
-  .tag-behavioral { background:#EAF7E5; color:#27AE60; }
-  .tag-attitudinal { background:#FFF9E6; color:#D4A017; }
+  .tag-behavioral { background:#EAF7E5; color:#1E7E45; }
+  .tag-attitudinal { background:#FFF9E6; color:#8A6D0B; }
   .tag-exploratory { background:#F4ECF7; color:#8E44AD; }
-  .tag-generative { background:#FDF2E9; color:#CA6F1E; }
+  .tag-generative { background:#FDF2E9; color:#A85A14; }
   .tag-evaluative { background:#E8F8F5; color:#0E6655; }
   .card-desc { font-size:.8rem; color:var(--textLight); line-height:1.5; }
   .card-phases { display:flex; gap:3px; margin-top:.6rem; }
@@ -1942,7 +1943,7 @@ function renderMethods(list, activeFilters) {
           ${hints.length ? hints.map(h => `<p style="margin-bottom:.4rem;">${h}</p>`).join('') : '<p>Try adjusting your search or filters.</p>'}
         </div>
         <button onclick="document.getElementById('searchInput').value='';document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c=>c.checked=false);applyFilters();"
-          style="margin-top:1.2rem;padding:.5rem 1.2rem;border:1px solid var(--accent);background:white;color:var(--accent);border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;">
+          style="margin-top:1.2rem;padding:.5rem 1.2rem;border:1px solid var(--accent);background:white;color:var(--accentText);border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;">
           Clear all filters
         </button>
       </div>`;
@@ -2103,7 +2104,7 @@ function runAdvisor() {
           ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
         </div>
         <div class="card-desc">${m.description.substring(0,110)}...</div>
-        ${reasons.length ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accent);"><strong>Why:</strong> ${reasons.slice(0,4).join(' · ')}</div>` : ''}
+        ${reasons.length ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accentText);"><strong>Why:</strong> ${reasons.slice(0,4).join(' · ')}</div>` : ''}
         <div class="card-phases" style="margin-top:.5rem;">
           ${m.phases.map(p => `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`).join('')}
         </div>
