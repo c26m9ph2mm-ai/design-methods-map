@@ -362,7 +362,7 @@ const methods = [
   // Each method: { name, dataType:[], approach:[], phases:[], effort, description, whenToUse, steps, strengths, limitations }
   {
     name: "A/B Testing",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase4","phase5"],
     effort: "medium",
@@ -377,7 +377,7 @@ const methods = [
   },
   {
     name: "AEIOU Framework",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -392,7 +392,7 @@ const methods = [
   },
   {
     name: "Affinity Diagramming",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory","generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -407,7 +407,7 @@ const methods = [
   },
   {
     name: "Artifact Analysis",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -422,7 +422,7 @@ const methods = [
   },
   {
     name: "Automated Remote Research",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase4","phase5"],
     effort: "low",
@@ -437,7 +437,7 @@ const methods = [
   },
   {
     name: "Behavioral Mapping",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -452,7 +452,7 @@ const methods = [
   },
   {
     name: "Bodystorming",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["generative"],
     phases: ["phase3"],
     effort: "low",
@@ -467,7 +467,7 @@ const methods = [
   },
   {
     name: "Brainstorming",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -482,7 +482,7 @@ const methods = [
   },
   {
     name: "Business Origami",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -497,7 +497,7 @@ const methods = [
   },
   {
     name: "Card Sorting",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["evaluative","generative"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -512,7 +512,7 @@ const methods = [
   },
   {
     name: "Case Studies",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -527,7 +527,7 @@ const methods = [
   },
   {
     name: "Cognitive Walkthrough",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "low",
@@ -542,7 +542,7 @@ const methods = [
   },
   {
     name: "Collage",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -557,7 +557,7 @@ const methods = [
   },
   {
     name: "Competitive Testing",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase1","phase4"],
     effort: "medium",
@@ -572,7 +572,7 @@ const methods = [
   },
   {
     name: "Concept Mapping",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -587,7 +587,7 @@ const methods = [
   },
   {
     name: "Content Analysis",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["exploratory","evaluative"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -602,7 +602,7 @@ const methods = [
   },
   {
     name: "Content Inventory",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase1","phase4"],
     effort: "medium",
@@ -617,7 +617,7 @@ const methods = [
   },
   {
     name: "Contextual Design",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory","generative"],
     phases: ["phase1","phase2","phase3"],
     effort: "high",
@@ -632,7 +632,7 @@ const methods = [
   },
   {
     name: "Contextual Inquiry",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "high",
@@ -647,7 +647,7 @@ const methods = [
   },
   {
     name: "Creative Toolkits",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -662,7 +662,7 @@ const methods = [
   },
   {
     name: "Critical Incident Technique",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory","evaluative"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -677,7 +677,7 @@ const methods = [
   },
   {
     name: "Crowdsourcing",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase3"],
     effort: "medium",
@@ -692,7 +692,7 @@ const methods = [
   },
   {
     name: "Cultural Probes",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory","generative"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -707,7 +707,7 @@ const methods = [
   },
   {
     name: "Customer Experience Audit",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase1","phase4"],
     effort: "high",
@@ -722,7 +722,7 @@ const methods = [
   },
   {
     name: "Design Charette",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase3"],
     effort: "medium",
@@ -737,7 +737,7 @@ const methods = [
   },
   {
     name: "Design Ethnography",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "high",
@@ -752,7 +752,7 @@ const methods = [
   },
   {
     name: "Design Workshops",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -767,7 +767,7 @@ const methods = [
   },
   {
     name: "Desirability Testing",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "low",
@@ -782,7 +782,7 @@ const methods = [
   },
   {
     name: "Diary Studies",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "high",
@@ -797,7 +797,7 @@ const methods = [
   },
   {
     name: "Directed Storytelling",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -812,7 +812,7 @@ const methods = [
   },
   {
     name: "Elito Method",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -827,7 +827,7 @@ const methods = [
   },
   {
     name: "Ergonomic Analysis",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase4"],
     effort: "medium",
@@ -842,7 +842,7 @@ const methods = [
   },
   {
     name: "Evaluative Research",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "medium",
@@ -857,7 +857,7 @@ const methods = [
   },
   {
     name: "Evidence-Based Design",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","behavioral","attitudinal"],
     approach: ["exploratory","evaluative"],
     phases: ["phase1","phase2","phase4"],
     effort: "high",
@@ -872,7 +872,7 @@ const methods = [
   },
   {
     name: "Experience Sampling",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -887,7 +887,7 @@ const methods = [
   },
   {
     name: "Experiments",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase4"],
     effort: "high",
@@ -902,7 +902,7 @@ const methods = [
   },
   {
     name: "Exploratory Research",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1"],
     effort: "medium",
@@ -917,7 +917,7 @@ const methods = [
   },
   {
     name: "Eye Tracking",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase4"],
     effort: "high",
@@ -932,7 +932,7 @@ const methods = [
   },
   {
     name: "Flexible Modeling",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -947,7 +947,7 @@ const methods = [
   },
   {
     name: "Fly-on-the-Wall Observation",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -962,7 +962,7 @@ const methods = [
   },
   {
     name: "Focus Groups",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory","generative"],
     phases: ["phase1","phase2","phase3"],
     effort: "medium",
@@ -977,7 +977,7 @@ const methods = [
   },
   {
     name: "Graffiti Walls",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase2","phase3"],
     effort: "low",
@@ -992,7 +992,7 @@ const methods = [
   },
   {
     name: "Graphic Organizers",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -1007,7 +1007,7 @@ const methods = [
   },
   {
     name: "Heuristic Evaluation",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "low",
@@ -1022,7 +1022,7 @@ const methods = [
   },
   {
     name: "Image Boards",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase2","phase3"],
     effort: "low",
@@ -1037,7 +1037,7 @@ const methods = [
   },
   {
     name: "Interviews",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -1052,7 +1052,7 @@ const methods = [
   },
   {
     name: "KJ Technique",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -1067,7 +1067,7 @@ const methods = [
   },
   {
     name: "Kano Analysis",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase1","phase3"],
     effort: "medium",
@@ -1082,7 +1082,7 @@ const methods = [
   },
   {
     name: "Key Performance Indicators",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase4","phase5"],
     effort: "medium",
@@ -1097,7 +1097,7 @@ const methods = [
   },
   {
     name: "Laddering",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -1112,7 +1112,7 @@ const methods = [
   },
   {
     name: "Literature Review",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1"],
     effort: "medium",
@@ -1127,7 +1127,7 @@ const methods = [
   },
   {
     name: "Love & the Breakup Letter",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["evaluative","exploratory"],
     phases: ["phase1","phase4"],
     effort: "low",
@@ -1142,7 +1142,7 @@ const methods = [
   },
   {
     name: "Mental Model Diagrams",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase2"],
     effort: "high",
@@ -1157,7 +1157,7 @@ const methods = [
   },
   {
     name: "Mind Mapping",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase2","phase3"],
     effort: "low",
@@ -1172,7 +1172,7 @@ const methods = [
   },
   {
     name: "Observation",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -1187,7 +1187,7 @@ const methods = [
   },
   {
     name: "Parallel Prototyping",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["generative"],
     phases: ["phase3"],
     effort: "medium",
@@ -1202,7 +1202,7 @@ const methods = [
   },
   {
     name: "Participant Observation",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "high",
@@ -1217,7 +1217,7 @@ const methods = [
   },
   {
     name: "Participatory Action Research",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase2","phase3"],
     effort: "high",
@@ -1232,7 +1232,7 @@ const methods = [
   },
   {
     name: "Participatory Design",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -1247,7 +1247,7 @@ const methods = [
   },
   {
     name: "Personal Inventories",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -1262,7 +1262,7 @@ const methods = [
   },
   {
     name: "Personas",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -1277,7 +1277,7 @@ const methods = [
   },
   {
     name: "Photo Studies",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -1292,7 +1292,7 @@ const methods = [
   },
   {
     name: "Picture Cards",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase1","phase2","phase3"],
     effort: "low",
@@ -1307,7 +1307,7 @@ const methods = [
   },
   {
     name: "Prototyping",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["generative","evaluative"],
     phases: ["phase3","phase4"],
     effort: "medium",
@@ -1322,7 +1322,7 @@ const methods = [
   },
   {
     name: "Questionnaires & Evaluation",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase4","phase5"],
     effort: "low",
@@ -1337,7 +1337,7 @@ const methods = [
   },
   {
     name: "Rapid Iterative Testing",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "medium",
@@ -1352,7 +1352,7 @@ const methods = [
   },
   {
     name: "Remote Moderated Research",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["evaluative","exploratory"],
     phases: ["phase2","phase3","phase4"],
     effort: "medium",
@@ -1367,7 +1367,7 @@ const methods = [
   },
   {
     name: "Research Through Design",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["generative","exploratory"],
     phases: ["phase2","phase3"],
     effort: "high",
@@ -1382,7 +1382,7 @@ const methods = [
   },
   {
     name: "Role-Playing",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["generative","exploratory"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -1397,7 +1397,7 @@ const methods = [
   },
   {
     name: "Scenario Description Swimlanes",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "medium",
@@ -1412,7 +1412,7 @@ const methods = [
   },
   {
     name: "Scenarios",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -1427,7 +1427,7 @@ const methods = [
   },
   {
     name: "Secondary Research",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1"],
     effort: "low",
@@ -1442,7 +1442,7 @@ const methods = [
   },
   {
     name: "Semantic Differential",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "low",
@@ -1457,7 +1457,7 @@ const methods = [
   },
   {
     name: "Shadowing",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "high",
@@ -1472,7 +1472,7 @@ const methods = [
   },
   {
     name: "Simulation Exercises",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral"],
     approach: ["evaluative","generative"],
     phases: ["phase3","phase4"],
     effort: "medium",
@@ -1487,7 +1487,7 @@ const methods = [
   },
   {
     name: "Site Search Analytics",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative","exploratory"],
     phases: ["phase1","phase4","phase5"],
     effort: "low",
@@ -1502,7 +1502,7 @@ const methods = [
   },
   {
     name: "Speed Dating",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["evaluative","generative"],
     phases: ["phase3"],
     effort: "medium",
@@ -1517,7 +1517,7 @@ const methods = [
   },
   {
     name: "Stakeholder Maps",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1"],
     effort: "low",
@@ -1532,7 +1532,7 @@ const methods = [
   },
   {
     name: "Stakeholder Walkthrough",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "low",
@@ -1547,7 +1547,7 @@ const methods = [
   },
   {
     name: "Storyboards",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["generative"],
     phases: ["phase2","phase3"],
     effort: "low",
@@ -1562,7 +1562,7 @@ const methods = [
   },
   {
     name: "Surveys",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","attitudinal"],
     approach: ["evaluative","exploratory"],
     phases: ["phase1","phase4","phase5"],
     effort: "medium",
@@ -1577,7 +1577,7 @@ const methods = [
   },
   {
     name: "Task Analysis",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral"],
     approach: ["exploratory","evaluative"],
     phases: ["phase1","phase2","phase4"],
     effort: "medium",
@@ -1592,7 +1592,7 @@ const methods = [
   },
   {
     name: "Territory Maps",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -1607,7 +1607,7 @@ const methods = [
   },
   {
     name: "Thematic Analysis",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase2"],
     effort: "medium",
@@ -1622,7 +1622,7 @@ const methods = [
   },
   {
     name: "Think-Aloud Protocol",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "medium",
@@ -1637,7 +1637,7 @@ const methods = [
   },
   {
     name: "Time-Aware Research",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "medium",
@@ -1652,7 +1652,7 @@ const methods = [
   },
   {
     name: "Touchstone Tours",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory"],
     phases: ["phase1","phase2"],
     effort: "low",
@@ -1667,7 +1667,7 @@ const methods = [
   },
   {
     name: "Triangulation",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["evaluative","exploratory"],
     phases: ["phase2","phase4"],
     effort: "medium",
@@ -1682,7 +1682,7 @@ const methods = [
   },
   {
     name: "Unobtrusive Measures",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["exploratory"],
     phases: ["phase1","phase5"],
     effort: "low",
@@ -1697,7 +1697,7 @@ const methods = [
   },
   {
     name: "Usability Testing",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "medium",
@@ -1712,7 +1712,7 @@ const methods = [
   },
   {
     name: "User Journey Maps",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["exploratory","evaluative"],
     phases: ["phase2","phase4"],
     effort: "medium",
@@ -1727,7 +1727,7 @@ const methods = [
   },
   {
     name: "Value Opportunity Analysis",
-    dataType: ["qualitative","quantitative"],
+    dataType: ["qualitative","quantitative","behavioral","attitudinal"],
     approach: ["evaluative","generative"],
     phases: ["phase1","phase3"],
     effort: "medium",
@@ -1742,7 +1742,7 @@ const methods = [
   },
   {
     name: "Web Analytics",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","behavioral"],
     approach: ["evaluative","exploratory"],
     phases: ["phase1","phase4","phase5"],
     effort: "low",
@@ -1757,7 +1757,7 @@ const methods = [
   },
   {
     name: "Weighted Matrix",
-    dataType: ["quantitative"],
+    dataType: ["quantitative","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "low",
@@ -1772,7 +1772,7 @@ const methods = [
   },
   {
     name: "Wizard of Oz",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["evaluative","generative"],
     phases: ["phase3"],
     effort: "medium",
@@ -1787,7 +1787,7 @@ const methods = [
   },
   {
     name: "Questionnaires",
-    dataType: ["quantitative","qualitative"],
+    dataType: ["quantitative","qualitative","attitudinal"],
     approach: ["evaluative","exploratory"],
     phases: ["phase1","phase4","phase5"],
     effort: "low",
@@ -1802,7 +1802,7 @@ const methods = [
   },
   {
     name: "Scenario-Based Evaluation",
-    dataType: ["qualitative"],
+    dataType: ["qualitative","behavioral","attitudinal"],
     approach: ["evaluative"],
     phases: ["phase3","phase4"],
     effort: "medium",
