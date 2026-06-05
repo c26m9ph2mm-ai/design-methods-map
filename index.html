@@ -2043,6 +2043,7 @@ function renderProject() {
   const container = document.getElementById('projectMethods');
   const exportBtn = document.getElementById('exportBtn');
   if (selectedMethods.length === 0) {
+    container.className = '';
     container.innerHTML = `<div class="project-empty">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v16m-8-8h16"/></svg>
       <p>No methods selected yet.</p>
@@ -2054,26 +2055,27 @@ function renderProject() {
   exportBtn.style.display = 'block';
 
   const selected = selectedMethods.map(name => methods.find(x => x.name === name)).filter(Boolean);
-  let html = `<p style="font-size:.82rem;color:var(--textLight);margin-bottom:1rem;">${selected.length} method${selected.length===1?'':'s'} selected</p>`;
-  selected.forEach(m => {
-    html += `<div class="project-card" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
+  container.className = 'methods-grid';
+  container.innerHTML = selected.map(m => `
+    <div class="method-card selected" onclick="openModal('${m.name.replace(/'/g,"\\'")}')">
       <div class="card-top">
         <h3>${m.name}</h3>
-        <button class="remove-btn" onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')">Remove</button>
+        <button class="add-btn added"
+          onclick="event.stopPropagation();toggleSelect('${m.name.replace(/'/g,"\\'")}')"
+          title="Remove from project">✓</button>
       </div>
       <div class="card-tags">
         ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
         ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
       </div>
-      <div class="card-desc">${m.description.substring(0,100)}...</div>
-      <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem;">
+      <div class="card-desc">${m.description.substring(0,120)}...</div>
+      <div class="card-phases">
         ${m.phases.map(p =>
-          `<span class="tag" style="background:var(--${p});color:#333" title="Design phase">${phaseLabels[p]}</span>`
+          `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
         ).join('')}
       </div>
-    </div>`;
-  });
-  container.innerHTML = html;
+    </div>
+  `).join('');
 }
 
 function renderCompare() {
