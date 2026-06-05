@@ -459,6 +459,19 @@
   }
   /* Note shown when the advanced toggle has hidden some methods (non-silent) */
   .bridge-adv-note { margin-top:.45rem; font-size:.72rem; color:var(--textLight); }
+  /* Site footer: visitor count + copyright */
+  .site-footer {
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.4rem 1rem;
+    padding:.9rem 1.2rem; border-top:1px solid var(--border); background:white;
+    font-size:.8rem; color:var(--textLight); text-align:center;
+  }
+  .site-footer .visits {
+    display:inline-flex; align-items:center; gap:.35rem; font-weight:600; color:var(--accentText);
+    background:#EEF2FF; border:1px solid #C7D2FE; border-radius:14px; padding:.2rem .7rem;
+    font-variant-numeric:tabular-nums;
+  }
+  .site-footer .visits[hidden] { display:none; }
+  .site-footer .copyright { color:var(--textLight); }
   /* Explore toolbar: primary controls inline + a "More" overflow disclosure */
   .rb-controls { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
   .lens-info {
@@ -778,6 +791,11 @@
     </div>
   </main>
 </div>
+
+<footer class="site-footer">
+  <span class="visits" id="visitorCount" hidden></span>
+  <span class="copyright">&copy; <span id="footerYear">2026</span> Dr. Sharmistha Banerjee, Department of Design, IIT Guwahati</span>
+</footer>
 
 <!-- Detail Modal -->
 <div id="printArea" class="print-only" aria-hidden="true"></div>
@@ -2725,8 +2743,8 @@ let currentLens = 'collection';   // 'collection' | 'analysis' (Phase 4 lens)
 let mapClusters = {};             // cellKey -> [method names] for the landscape cluster popovers
 
 // Make background regions inert (keyboard + AT) behind an open dialog
-const MODAL_INERT = ['.header', '.phase-legend', '.layout'];
-const DRAWER_INERT = ['.header', '.phase-legend', '#mainContent'];
+const MODAL_INERT = ['.header', '.phase-legend', '.layout', '.site-footer'];
+const DRAWER_INERT = ['.header', '.phase-legend', '#mainContent', '.site-footer'];
 function setInertEls(selectors, on) {
   selectors.forEach(sel => {
     const el = document.querySelector(sel);
@@ -3948,6 +3966,24 @@ setShowAdvanced(showAdvanced, false);   // sets body class + checkbox before fir
 updateLensUI();           // reflects restored lens (chooser/sidebar/view-toggle visibility)
 setView(currentView);     // reflects restored view + runs applyFilters()
 switchTab(initialTab);    // reflects restored tab
+
+// Footer: current year + visitor counter (third-party hit counter; degrades silently)
+(function () {
+  const y = document.getElementById('footerYear');
+  if (y) y.textContent = new Date().getFullYear();
+  const NS = 'iitg-design-methods-map', KEY = 'visitors', BASE = 'https://abacus.jasoncameron.dev';
+  let counted = false;
+  try { counted = sessionStorage.getItem('dmm_visited') === '1'; } catch (e) {}
+  fetch(BASE + (counted ? '/get/' : '/hit/') + NS + '/' + KEY)
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      if (!d || typeof d.value !== 'number') return;
+      try { sessionStorage.setItem('dmm_visited', '1'); } catch (e) {}
+      const el = document.getElementById('visitorCount');
+      if (el) { el.textContent = 'Visitors: ' + d.value.toLocaleString(); el.hidden = false; }
+    })
+    .catch(() => { /* leave the counter hidden if the service is unreachable */ });
+})();
 </script>
 </body>
 </html>
