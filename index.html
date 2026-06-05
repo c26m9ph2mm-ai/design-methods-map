@@ -459,6 +459,29 @@
   }
   .feeds-chip:hover { border-color:var(--accent); background:#EEF2FF; color:var(--accentText); }
   .feeds-chip:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  /* Analysis Plan (My Project) */
+  .analysis-plan { margin-top:1.6rem; padding-top:1.2rem; border-top:1px solid var(--border); }
+  .plan-title { font-size:1.05rem; font-weight:700; margin-bottom:.2rem; }
+  .plan-sub { font-size:.85rem; color:var(--textLight); margin-bottom:1rem; max-width:640px; }
+  .plan-output {
+    font-size:.88rem; background:#F8FAFC; border:1px solid var(--border); border-radius:10px;
+    padding:.7rem .9rem; margin-bottom:1rem;
+  }
+  .plan-output .po-tag {
+    display:inline-block; font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:10px;
+    background:#EEF2FF; color:var(--accentText); margin:.15rem .25rem .15rem 0;
+  }
+  .plan-callout {
+    display:flex; gap:.6rem; align-items:flex-start; background:#FFF9E6; border:1px solid #F0D98A;
+    border-radius:10px; padding:.8rem .9rem; margin-bottom:1.2rem; font-size:.85rem; line-height:1.55;
+  }
+  .plan-callout .pc-icon { font-size:1.1rem; line-height:1.2; flex-shrink:0; }
+  .plan-callout .feeds-chip { margin-top:.4rem; }
+  .plan-group { margin-bottom:1rem; }
+  .plan-group-head { font-size:.85rem; font-weight:600; margin-bottom:.45rem; }
+  .plan-group-head .pg-tags { font-weight:400; color:var(--textLight); }
+  .plan-none { font-size:.8rem; color:var(--textLight); font-style:italic; }
+  .plan-adv-note { font-size:.76rem; color:var(--textLight); margin-top:.4rem; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -634,6 +657,7 @@
     <div id="projectView" class="project-panel" role="tabpanel" aria-labelledby="tab-project">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Project</h2>
       <div id="projectMethods"></div>
+      <div id="analysisPlan"></div>
       <div class="project-actions" id="projectActions" style="display:none">
         <button class="export-btn" onclick="exportProject()">Export (.txt)</button>
         <button class="export-btn" onclick="copyProject(this)">Copy to clipboard</button>
@@ -3102,6 +3126,97 @@ function setShowAdvanced(on) {
   if (cb) cb.checked = showAdvanced;
 }
 
+/* ---------- Analysis Plan (My Project) ---------- */
+const OUTPUT_ORDER = ["Themes","Model/Framework","Priorities/Ranking","Segments/Clusters","Scores/Measures","Statistical Significance","Map/Journey"];
+function orderOutputs(set) {
+  return [...set].sort((a, b) => {
+    const ia = OUTPUT_ORDER.indexOf(a), ib = OUTPUT_ORDER.indexOf(b);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+  });
+}
+function analysisPlanData() {
+  const selected = selectedMethods.map(n => methods.find(x => x.name === n)).filter(Boolean);
+  const groups = selected.map(m => ({ m, list: analysisForCollection(m.id) }));
+  const hasQual = selected.some(m => m.dataType.includes('qualitative'));
+  const hasQuant = selected.some(m => m.dataType.includes('quantitative'));
+  const outputs = orderOutputs(new Set(groups.flatMap(g => g.list.map(a => a.outputType))));
+  return { selected, groups, hasQual, hasQuant, outputs };
+}
+function renderAnalysisPlan() {
+  const el = document.getElementById('analysisPlan');
+  if (!el) return;
+  if (!selectedMethods.length) { el.innerHTML = ''; return; }
+  const { groups, hasQual, hasQuant, outputs } = analysisPlanData();
+
+  const outputHTML = outputs.length
+    ? `<div class="plan-output">Your project will produce: ${outputs.map(o => `<span class="po-tag">${escHtml(o)}</span>`).join('')}</div>`
+    : '';
+
+  const triMethod = analysisMethods.find(a => a.id === 'triangulation');
+  const triHTML = (hasQual && hasQuant) ? `<div class="plan-callout">
+      <span class="pc-icon" aria-hidden="true">&#128279;</span>
+      <div>You have both <strong>qualitative</strong> and <strong>quantitative</strong> data — consider <strong>triangulation</strong> / a joint display to integrate findings.${
+        triMethod ? `<br><button type="button" class="feeds-chip" onclick="openAnalysisModal('triangulation')" aria-label="Open Triangulation (Joint Displays)">Triangulation (Joint Displays) · ${escHtml(triMethod.outputType)}</button>` : ''
+      }</div>
+    </div>` : '';
+
+  const groupsHTML = groups.map(({ m, list }) => {
+    let body;
+    if (!list.length) {
+      body = `<p class="plan-none">No linked analysis methods yet.</p>`;
+    } else {
+      const allAdv = list.every(a => a.level === 'Advanced');
+      const show = allAdv ? [list[0]] : list;   // if only advanced matches exist, surface just the best one
+      body = `<div class="analysis-chips" role="list">${show.map(analysisChip).join('')}</div>`;
+      if (allAdv) body += `<p class="plan-adv-note">${escHtml(show[0].name)} is an advanced technique — the simplest option available for this kind of data.</p>`;
+    }
+    return `<div class="plan-group">
+      <div class="plan-group-head">For <strong>${escHtml(m.name)}</strong> <span class="pg-tags">— analyse with:</span></div>
+      ${body}
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `<div class="analysis-plan">
+    <h3 class="plan-title">Analysis Plan</h3>
+    <p class="plan-sub">Recommended ways to turn the data your selected methods produce into findings. Beginner-first; advanced techniques are badged.</p>
+    ${outputHTML}
+    ${triHTML}
+    ${groupsHTML}
+  </div>`;
+}
+function buildAnalysisPlanText() {
+  if (!selectedMethods.length) return '';
+  const { groups, hasQual, hasQuant, outputs } = analysisPlanData();
+  let t = '\nANALYSIS PLAN\n' + '='.repeat(45) + '\n\n';
+  if (outputs.length) t += 'Your project will produce: ' + outputs.join(', ') + '\n\n';
+  if (hasQual && hasQuant) t += 'Note: You have both qualitative and quantitative data — consider triangulation / a joint display to integrate findings.\n\n';
+  groups.forEach(({ m, list }) => {
+    t += `For ${m.name} — analyse with:\n`;
+    if (!list.length) { t += '  (no linked analysis methods yet)\n\n'; return; }
+    const allAdv = list.every(a => a.level === 'Advanced');
+    const show = allAdv ? [list[0]] : list;
+    show.forEach(a => { t += `  - ${a.name} [${a.level}] -> ${a.outputType}\n`; });
+    if (allAdv) t += `    (${show[0].name} is an advanced technique — the simplest option for this data)\n`;
+    t += '\n';
+  });
+  return t;
+}
+function buildAnalysisPlanHTML() {
+  if (!selectedMethods.length) return '';
+  const { groups, hasQual, hasQuant, outputs } = analysisPlanData();
+  let h = '<h2>Analysis Plan</h2>';
+  if (outputs.length) h += `<p><strong>Your project will produce:</strong> ${outputs.map(escHtml).join(', ')}</p>`;
+  if (hasQual && hasQuant) h += `<p><strong>Note:</strong> You have both qualitative and quantitative data — consider triangulation / a joint display to integrate findings.</p>`;
+  groups.forEach(({ m, list }) => {
+    h += `<p><strong>For ${escHtml(m.name)} — analyse with:</strong></p>`;
+    if (!list.length) { h += '<ul><li>(no linked analysis methods yet)</li></ul>'; return; }
+    const allAdv = list.every(a => a.level === 'Advanced');
+    const show = allAdv ? [list[0]] : list;
+    h += '<ul>' + show.map(a => `<li>${escHtml(a.name)} [${escHtml(a.level)}] &rarr; ${escHtml(a.outputType)}</li>`).join('') + '</ul>';
+  });
+  return h;
+}
+
 function openAnalysisModal(id) {
   const a = analysisMethods.find(x => x.id === id);
   if (!a) return;
@@ -3308,6 +3423,7 @@ function renderProject() {
       <p style="font-size:.85rem">Browse the Explore tab and click + to add methods to your project.</p>
     </div>`;
     actions.style.display = 'none';
+    renderAnalysisPlan();
     return;
   }
   actions.style.display = 'flex';
@@ -3335,6 +3451,7 @@ function renderProject() {
       </div>
     </div>
   `).join('');
+  renderAnalysisPlan();
 }
 
 function renderCompare() {
@@ -3381,7 +3498,7 @@ function buildProjectText() {
     if (m.analysisMethods) text += `Analysis Methods: ${m.analysisMethods.join(', ')}\n`;
     text += '\n';
   });
-  return text;
+  return text + buildAnalysisPlanText();
 }
 function exportProject() {
   const blob = new Blob([buildProjectText()], {type: 'text/plain'});
@@ -3405,7 +3522,7 @@ function buildProjectHTML() {
     if (m.sampleSize) h += `<p><strong>Sample size:</strong> ${escHtml(m.sampleSize)}</p>`;
     if (m.analysisMethods && m.analysisMethods.length) h += `<p><strong>Analysis methods:</strong> ${m.analysisMethods.map(escHtml).join(', ')}</p>`;
   });
-  return h;
+  return h + buildAnalysisPlanHTML();
 }
 function printProject() {
   if (!selectedMethods.length) return;
