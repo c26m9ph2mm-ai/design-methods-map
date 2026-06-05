@@ -417,6 +417,48 @@
     cursor:pointer; color:var(--textLight); width:24px; height:24px; line-height:1;
   }
   .filter-help.hidden { display:none; }
+  /* Collection -> Analysis bridge (chips on cards & modal) */
+  .analysis-bridge { margin-top:.7rem; padding-top:.6rem; border-top:1px dashed var(--border); }
+  /* In list view the row is a flex line; let the bridge wrap onto its own full-width line */
+  .method-row { flex-wrap:wrap; }
+  .method-row .analysis-bridge { flex-basis:100%; width:100%; }
+  .analysis-bridge-title {
+    font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--textLight); margin-bottom:.45rem;
+  }
+  .analysis-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
+  .analysis-chip {
+    display:inline-flex; align-items:center; gap:.3rem; font-size:.7rem; font-weight:600;
+    padding:.28rem .55rem; min-height:24px; border:1px solid var(--border); background:#F8FAFC;
+    color:var(--text); border-radius:14px; cursor:pointer; text-align:left; line-height:1.25;
+  }
+  .analysis-chip:hover { border-color:var(--accent); background:#EEF2FF; color:var(--accentText); }
+  .analysis-chip:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .analysis-chip .ac-out { color:var(--textLight); font-weight:500; }
+  .analysis-chip:hover .ac-out { color:var(--accentText); }
+  .analysis-chip .ac-adv {
+    font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    background:var(--attitudinal); color:#6B4E00; padding:0 .32rem; border-radius:6px; margin-left:.05rem;
+  }
+  /* Beginner-first: when advanced is hidden, Advanced chips stay visible but de-emphasised */
+  body:not(.show-advanced) .analysis-chip.adv { opacity:.5; }
+  body:not(.show-advanced) .analysis-chip.adv:hover,
+  body:not(.show-advanced) .analysis-chip.adv:focus-visible { opacity:1; }
+  /* "Show advanced methods" toggle */
+  .adv-toggle {
+    display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--textLight);
+    cursor:pointer; user-select:none; min-height:24px;
+  }
+  .adv-toggle input { accent-color:var(--accent); width:15px; height:15px; cursor:pointer; }
+  /* Reverse bridge in analysis modal */
+  .feeds-chips { display:flex; flex-wrap:wrap; gap:.4rem; }
+  .feeds-chip {
+    display:inline-flex; align-items:center; font-size:.78rem; font-weight:600; padding:.3rem .7rem;
+    min-height:24px; border:1px solid var(--border); background:white; color:var(--text);
+    border-radius:16px; cursor:pointer;
+  }
+  .feeds-chip:hover { border-color:var(--accent); background:#EEF2FF; color:var(--accentText); }
+  .feeds-chip:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 </style>
 </head>
 <body>
@@ -530,6 +572,9 @@
           <button class="view-btn" onclick="clearAllFilters()" id="clearFiltersBtn" title="Clear search and all filters">Clear all filters</button>
           <button class="view-btn" onclick="copyLink(this)" id="copyLinkBtn" title="Copy a shareable link to this filtered view">Copy link</button>
           <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods from My Project">Clear selection</button>
+          <label class="adv-toggle" title="Advanced analysis methods stay visible either way; this controls whether they are emphasised">
+            <input type="checkbox" id="advToggle" onchange="setShowAdvanced(this.checked)"> Show advanced methods
+          </label>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
             <button class="view-btn" onclick="setView('list')" id="listBtn" aria-pressed="false">List</button>
@@ -2172,6 +2217,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Affinity Diagramming (KJ Method)",
+    id: "affinity-diagramming",
     dataType: ["qualitative"],
     approach: [],
     phases: ["phase2","phase3"],
@@ -2194,6 +2240,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Thematic Analysis",
+    id: "thematic-analysis",
     dataType: ["qualitative"],
     approach: [],
     phases: ["phase2","phase4"],
@@ -2216,6 +2263,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Journey / Experience Mapping",
+    id: "journey-mapping",
     dataType: ["qualitative"],
     approach: [],
     phases: ["phase2","phase3"],
@@ -2238,6 +2286,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Persona Synthesis",
+    id: "persona-synthesis",
     dataType: ["qualitative"],
     approach: [],
     phases: ["phase2"],
@@ -2260,6 +2309,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Descriptive Statistics",
+    id: "descriptive-statistics",
     dataType: ["quantitative"],
     approach: [],
     phases: ["phase4","phase5"],
@@ -2282,6 +2332,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Qualitative Content Analysis",
+    id: "qualitative-content-analysis",
     dataType: ["qualitative","quantitative"],
     approach: [],
     phases: ["phase2","phase4"],
@@ -2304,6 +2355,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Framework Analysis",
+    id: "framework-analysis",
     dataType: ["qualitative"],
     approach: [],
     phases: ["phase2","phase4"],
@@ -2326,6 +2378,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Inferential Tests (t-test, ANOVA, chi-square, correlation, regression)",
+    id: "inferential-tests",
     dataType: ["quantitative"],
     approach: [],
     phases: ["phase4","phase5"],
@@ -2348,6 +2401,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Reliability Analysis (Cronbach's α, McDonald's ω)",
+    id: "reliability-analysis",
     dataType: ["quantitative","attitudinal"],
     approach: [],
     phases: ["phase4"],
@@ -2370,6 +2424,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Triangulation (Joint Displays)",
+    id: "triangulation",
     dataType: ["qualitative","quantitative"],
     approach: [],
     phases: ["phase2","phase4"],
@@ -2392,6 +2447,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Grounded-Theory Coding (open, axial, selective)",
+    id: "grounded-theory-coding",
     dataType: ["qualitative"],
     approach: [],
     phases: ["phase2"],
@@ -2414,6 +2470,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Exploratory Factor Analysis / PCA",
+    id: "factor-analysis-pca",
     dataType: ["quantitative","attitudinal"],
     approach: [],
     phases: ["phase4"],
@@ -2436,6 +2493,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Mokken Scale Analysis",
+    id: "mokken-scale-analysis",
     dataType: ["quantitative","attitudinal"],
     approach: [],
     phases: ["phase4"],
@@ -2458,6 +2516,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Rasch Analysis",
+    id: "rasch-analysis",
     dataType: ["quantitative","attitudinal"],
     approach: [],
     phases: ["phase4"],
@@ -2480,6 +2539,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Cluster Analysis",
+    id: "cluster-analysis",
     dataType: ["quantitative"],
     approach: [],
     phases: ["phase2","phase4"],
@@ -2502,6 +2562,7 @@ const analysisMethods = [
   {
     kind: "analysis",
     name: "Conjoint Analysis / MaxDiff",
+    id: "conjoint-maxdiff",
     dataType: ["quantitative","attitudinal"],
     approach: [],
     phases: ["phase3","phase4"],
@@ -2766,6 +2827,7 @@ function renderMethods(list, activeFilters) {
             `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`
           ).join('')}
         </div>
+        ${analysisBridgeHTML(m.id)}
       </div>
     `).join('');
   } else {
@@ -2786,6 +2848,7 @@ function renderMethods(list, activeFilters) {
           ).join('')}
         </div>
         <span style="font-size:.75rem;color:var(--textLight);min-width:60px">${cap(m.effort)}</span>
+        ${analysisBridgeHTML(m.id)}
       </div>
     `).join('');
   }
@@ -2867,6 +2930,7 @@ function swimlanesHTML(matched) {
 
 // Keyboard activation for clickable method cards/rows (Enter or Space opens the modal)
 function cardKeydown(e, name) {
+  if (e.target !== e.currentTarget) return; // ignore keys bubbling up from inner buttons/chips
   if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
     e.preventDefault();
     openModal(name);
@@ -2998,6 +3062,96 @@ const phaseLabels = {
   phase5: 'Launch & Monitor'
 };
 
+/* ---------- Collection <-> Analysis bridge ---------- */
+const LEVEL_ORDER = { Beginner:0, Intermediate:1, Advanced:2 };
+let showAdvanced = false;
+try { showAdvanced = localStorage.getItem('showAdvanced') === '1'; } catch (e) {}
+
+function analysisForCollection(collectionId) {
+  return analysisMethods
+    .filter(a => a.inputMethods.includes(collectionId))
+    .sort((a, b) => (LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]) || a.name.localeCompare(b.name));
+}
+
+function analysisChip(a) {
+  const adv = a.level === 'Advanced';
+  return `<button type="button" class="analysis-chip${adv ? ' adv' : ''}" role="listitem"
+      onclick="event.stopPropagation();openAnalysisModal('${a.id}')"
+      aria-label="Analyse with ${escHtml(a.name)}, produces ${escHtml(a.outputType)}${adv ? ' (advanced technique)' : ''}">
+      <span class="ac-name">${escHtml(a.name)}</span>
+      <span class="ac-out">· ${escHtml(a.outputType)}</span>
+      ${adv ? '<span class="ac-adv">Advanced</span>' : ''}
+    </button>`;
+}
+
+// Bridge section for a collection card/modal; '' when no analysis methods link to it
+function analysisBridgeHTML(collectionId) {
+  const list = analysisForCollection(collectionId);
+  if (!list.length) return '';
+  return `<div class="analysis-bridge">
+    <div class="analysis-bridge-title">Once you have this data, analyse it with</div>
+    <div class="analysis-chips" role="list">${list.map(analysisChip).join('')}</div>
+  </div>`;
+}
+
+function setShowAdvanced(on) {
+  showAdvanced = !!on;
+  try { localStorage.setItem('showAdvanced', showAdvanced ? '1' : '0'); } catch (e) {}
+  document.body.classList.toggle('show-advanced', showAdvanced);
+  const cb = document.getElementById('advToggle');
+  if (cb) cb.checked = showAdvanced;
+}
+
+function openAnalysisModal(id) {
+  const a = analysisMethods.find(x => x.id === id);
+  if (!a) return;
+  const overlay = document.getElementById('modalOverlay');
+  if (!overlay.classList.contains('open')) lastFocusedModalTrigger = document.activeElement;
+  const modal = document.getElementById('modal');
+  const feeds = a.inputMethods.map(cid => methods.find(m => m.id === cid)).filter(Boolean);
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h2 id="modalTitle">${escHtml(a.name)}</h2>
+    <div class="card-tags" style="margin-bottom:.8rem">
+      ${a.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+      <span class="tag" style="background:#EEF2FF;color:var(--accentText)">${escHtml(a.outputType)}</span>
+      <span class="tag" style="background:#f0f0f0;color:#555">Level: ${escHtml(a.level)}</span>
+      <span class="tag" style="background:#f0f0f0;color:#555">Effort: ${cap(a.effort)}</span>
+    </div>
+    <div class="modal-section">
+      <h4>What it is</h4>
+      <p>${escHtml(a.description)}</p>
+    </div>
+    <div class="modal-section">
+      <h4>Produces</h4>
+      <p>${escHtml(a.outputType)}</p>
+    </div>
+    ${a.rigourNote ? `<div class="modal-section">
+      <h4>Doing it rigorously</h4>
+      <p>${escHtml(a.rigourNote)}</p>
+    </div>` : ''}
+    ${a.softwareTools && a.softwareTools.length ? `<div class="modal-section">
+      <h4>Software / tools</h4>
+      <ul>${a.softwareTools.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>
+    </div>` : ''}
+    ${a.references && a.references.length ? `<div class="modal-section">
+      <h4>References</h4>
+      <ul>${a.references.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>
+    </div>` : ''}
+    ${feeds.length ? `<div class="modal-section">
+      <h4>Use this to analyse data from</h4>
+      <div class="feeds-chips" role="list">
+        ${feeds.map(m => `<button type="button" class="feeds-chip" role="listitem"
+            onclick="openModal('${m.name.replace(/'/g, "\\'")}')"
+            aria-label="Open ${escHtml(m.name)}">${escHtml(m.name)}</button>`).join('')}
+      </div>
+    </div>` : ''}
+  `;
+  overlay.classList.add('open');
+  const closeBtn = modal.querySelector('.modal-close');
+  (closeBtn || modal).focus();
+}
+
 let lastFocusedModalTrigger = null;
 function openModal(name) {
   const m = methods.find(x => x.name === name);
@@ -3049,6 +3203,7 @@ function openModal(name) {
       <h4>Analysis Methods</h4>
       <ul>${m.analysisMethods.map(s => '<li>'+s+'</li>').join('')}</ul>
     </div>` : ''}
+    ${analysisBridgeHTML(m.id)}
     <button class="modal-add-btn ${selectedMethods.includes(m.name)?'added':''}"
       onclick="toggleSelect('${m.name.replace(/'/g,"\\'")}');openModal('${m.name.replace(/'/g,"\\'")}')">
       ${selectedMethods.includes(m.name)?'Remove from My Project':'Add to My Project'}
@@ -3362,6 +3517,7 @@ const initialTab = restoreFromURL();
 if (localStorage.getItem('hideFilterHelp')) document.getElementById('filterHelp').classList.add('hidden');
 document.getElementById('projectCount').textContent = selectedMethods.length;
 updateDeselectBtn();
+setShowAdvanced(showAdvanced);   // sets body class + checkbox before first render
 setView(currentView);     // reflects restored view + runs applyFilters()
 switchTab(initialTab);    // reflects restored tab
 </script>
