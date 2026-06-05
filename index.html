@@ -246,7 +246,12 @@
     background:white; border-bottom:1px solid var(--border); font-size:.75rem;
   }
   .phase-legend-item { display:flex; align-items:center; gap:.3rem; }
-  .phase-legend-dot { width:10px; height:10px; border-radius:3px; }
+  .phase-legend-dot {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:22px; height:16px; padding:0 4px;
+    border-radius:4px; border:1px solid rgba(0,0,0,.28);
+    font-size:.62rem; font-weight:700; line-height:1; color:#2D3748;
+  }
   /* Responsive */
   @media(max-width:900px) {
     .sidebar { display:none; }
@@ -293,11 +298,11 @@
 </div>
 
 <div class="phase-legend" id="phaseLegend">
-  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase1)"></div> Planning, Scoping & Definition</div>
-  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase2)"></div> Exploration, Synthesis & Design Implication</div>
-  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase3)"></div> Concept Generation & Early Prototype Iteration</div>
-  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase4)"></div> Evaluation, Refinement & Production</div>
-  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase5)"></div> Launch & Monitor</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase1)" aria-hidden="true">P1</div> Planning, Scoping & Definition</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase2)" aria-hidden="true">P2</div> Exploration, Synthesis & Design Implication</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase3)" aria-hidden="true">P3</div> Concept Generation & Early Prototype Iteration</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase4)" aria-hidden="true">P4</div> Evaluation, Refinement & Production</div>
+  <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase5)" aria-hidden="true">P5</div> Launch & Monitor</div>
 </div>
 
 <div class="layout">
