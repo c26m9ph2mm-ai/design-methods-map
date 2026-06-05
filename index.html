@@ -457,10 +457,8 @@
     font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
     background:var(--attitudinal); color:#6B4E00; padding:0 .32rem; border-radius:6px; margin-left:.05rem;
   }
-  /* Beginner-first: when advanced is hidden, Advanced chips stay visible but de-emphasised */
-  body:not(.show-advanced) .analysis-chip.adv { opacity:.5; }
-  body:not(.show-advanced) .analysis-chip.adv:hover,
-  body:not(.show-advanced) .analysis-chip.adv:focus-visible { opacity:1; }
+  /* Note shown when the advanced toggle has hidden some methods (non-silent) */
+  .bridge-adv-note { margin-top:.45rem; font-size:.72rem; color:var(--textLight); }
   /* Explore toolbar: primary controls inline + a "More" overflow disclosure */
   .rb-controls { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
   .lens-info {
@@ -3281,12 +3279,25 @@ function analysisChip(a) {
 }
 
 // Bridge section for a collection card/modal; '' when no analysis methods link to it
+// Apply the "Show advanced analysis methods" toggle: hide Advanced when off,
+// but if a list is ALL advanced still surface the single best one (never empty/silent).
+function visibleAnalysis(list) {
+  if (showAdvanced) return { shown: list, hiddenAdv: 0, allAdvForced: false };
+  const nonAdv = list.filter(a => a.level !== 'Advanced');
+  if (nonAdv.length) return { shown: nonAdv, hiddenAdv: list.length - nonAdv.length, allAdvForced: false };
+  return { shown: list.slice(0, 1), hiddenAdv: list.length - 1, allAdvForced: true };
+}
 function analysisBridgeHTML(collectionId) {
   const list = analysisForCollection(collectionId);
   if (!list.length) return '';
+  const { shown, hiddenAdv } = visibleAnalysis(list);
+  const note = hiddenAdv > 0
+    ? `<div class="bridge-adv-note">+${hiddenAdv} advanced — turn on “Show advanced analysis methods”.</div>`
+    : '';
   return `<div class="analysis-bridge">
     <div class="analysis-bridge-title">Once you have this data, analyse it with</div>
-    <div class="analysis-chips" role="list">${list.map(analysisChip).join('')}</div>
+    <div class="analysis-chips" role="list">${shown.map(analysisChip).join('')}</div>
+    ${note}
   </div>`;
 }
 
@@ -3342,10 +3353,10 @@ function renderAnalysisPlan() {
     if (!list.length) {
       body = `<p class="plan-none">No linked analysis methods yet.</p>`;
     } else {
-      const allAdv = list.every(a => a.level === 'Advanced');
-      const show = allAdv ? [list[0]] : list;   // if only advanced matches exist, surface just the best one
-      body = `<div class="analysis-chips" role="list">${show.map(analysisChip).join('')}</div>`;
-      if (allAdv) body += `<p class="plan-adv-note">${escHtml(show[0].name)} is an advanced technique — the simplest option available for this kind of data.</p>`;
+      const { shown, hiddenAdv, allAdvForced } = visibleAnalysis(list);
+      body = `<div class="analysis-chips" role="list">${shown.map(analysisChip).join('')}</div>`;
+      if (allAdvForced) body += `<p class="plan-adv-note">${escHtml(shown[0].name)} is an advanced technique — the simplest option available for this kind of data.</p>`;
+      else if (hiddenAdv > 0) body += `<p class="plan-adv-note">+${hiddenAdv} advanced ${hiddenAdv > 1 ? 'methods' : 'method'} hidden — turn on “Show advanced analysis methods”.</p>`;
     }
     return `<div class="plan-group">
       <div class="plan-group-head">For <strong>${escHtml(m.name)}</strong> <span class="pg-tags">— analyse with:</span></div>
@@ -3444,10 +3455,10 @@ function applyAnalysisFilters() {
   const container = document.getElementById('methodsContainer');
   container.className = 'methods-grid';
   if (!filtered.length) {
-    container.innerHTML = `<div class="adv-hidden-note">No analysis methods match. Try “any” / “anything” in the chooser, or clear the filters.${hiddenAdv ? ` (${hiddenAdv} advanced hidden — enable “Show advanced methods”.)` : ''}</div>`;
+    container.innerHTML = `<div class="adv-hidden-note">No analysis methods match. Try “any” / “anything” in the chooser, or clear the filters.${hiddenAdv ? ` (${hiddenAdv} advanced hidden — enable “Show advanced analysis methods”.)` : ''}</div>`;
   } else {
     let html = filtered.map(a => analysisCardHTML(a)).join('');
-    if (hiddenAdv > 0) html += `<div class="adv-hidden-note">${hiddenAdv} advanced method${hiddenAdv > 1 ? 's' : ''} hidden. Enable “Show advanced methods” to include ${hiddenAdv > 1 ? 'them' : 'it'}.</div>`;
+    if (hiddenAdv > 0) html += `<div class="adv-hidden-note">${hiddenAdv} advanced method${hiddenAdv > 1 ? 's' : ''} hidden. Enable “Show advanced analysis methods” to include ${hiddenAdv > 1 ? 'them' : 'it'}.</div>`;
     container.innerHTML = html;
   }
   syncChoosers(f);
