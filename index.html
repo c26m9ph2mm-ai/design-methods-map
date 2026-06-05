@@ -77,6 +77,17 @@
     width:280px; min-width:280px; background:white; border-right:1px solid var(--border);
     padding:1.2rem; overflow-y:auto; max-height:calc(100vh - 140px); position:sticky; top:140px;
   }
+  /* Mobile filter drawer chrome — hidden on desktop, shown < 900px */
+  .drawer-header, .drawer-apply, .drawer-backdrop, .filters-btn { display:none; }
+  .drawer-header h2 { font-size:1.05rem; font-weight:700; }
+  .drawer-close {
+    width:32px; height:32px; border:none; background:#F0F0F0; border-radius:50%;
+    cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+  }
+  .drawer-apply button {
+    width:100%; padding:.7rem; border:none; border-radius:10px;
+    background:var(--accent); color:white; font-weight:600; font-size:.9rem; cursor:pointer;
+  }
   .filter-section { margin-bottom:1.4rem; }
   .filter-title {
     font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
@@ -254,9 +265,26 @@
   }
   /* Responsive */
   @media(max-width:900px) {
-    .sidebar { display:none; }
     .layout { flex-direction:column; }
     .main { max-height:none; }
+    .sidebar {
+      position:fixed; top:0; left:0; bottom:0; height:100%; max-height:none;
+      width:86%; max-width:330px; min-width:0; z-index:300;
+      box-shadow:2px 0 24px rgba(0,0,0,.22);
+      transform:translateX(-100%); transition:transform .25s ease; will-change:transform;
+    }
+    .sidebar.open { transform:translateX(0); }
+    .drawer-backdrop {
+      display:block; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:299;
+      opacity:0; pointer-events:none; transition:opacity .2s;
+    }
+    .drawer-backdrop.open { opacity:1; pointer-events:auto; }
+    .drawer-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+    .drawer-apply {
+      display:block; position:sticky; bottom:0; background:white;
+      padding:.8rem 0 .2rem; margin-top:.6rem; border-top:1px solid var(--border);
+    }
+    .filters-btn { display:inline-flex; }
   }
   /* Scrollbar */
   ::-webkit-scrollbar { width:6px; }
@@ -306,7 +334,11 @@
 </div>
 
 <div class="layout">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar" tabindex="-1">
+    <div class="drawer-header">
+      <h2 id="drawerTitle">Filters</h2>
+      <button class="drawer-close" onclick="closeFilters()" aria-label="Close filters">&times;</button>
+    </div>
     <div class="filter-section">
       <div class="filter-title">Data Type <button class="btn-clear" onclick="clearGroup('dataType')">Clear</button></div>
       <div class="filter-group" id="dataTypeFilters">
@@ -342,13 +374,18 @@
         <label class="filter-item"><input type="checkbox" value="high" onchange="applyFilters()"> High effort</label>
       </div>
     </div>
+    <div class="drawer-apply">
+      <button onclick="closeFilters()">Apply filters</button>
+    </div>
   </aside>
+  <div class="drawer-backdrop" id="filterBackdrop" onclick="closeFilters()"></div>
 
   <main class="main" id="mainContent">
     <div id="exploreView" role="tabpanel" aria-labelledby="tab-explore">
       <div class="results-bar">
         <span id="resultCount">Showing 100 methods</span>
         <div style="display:flex;align-items:center;gap:.6rem;">
+          <button class="view-btn filters-btn" onclick="openFilters()" id="filtersBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="sidebar">Filters</button>
           <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods you've added to your project">Deselect all</button>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
@@ -1877,6 +1914,11 @@ function applyFilters() {
   });
 
   document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${methods.length} methods`;
+  const fb = document.getElementById('filtersBtn');
+  if (fb) {
+    const n = dataTypes.length + approaches.length + phases.length + efforts.length;
+    fb.textContent = n ? `Filters (${n})` : 'Filters';
+  }
   renderMethods(filtered, { search, dataTypes, approaches, phases, efforts });
 }
 
@@ -1894,6 +1936,40 @@ function clearAllFilters() {
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.sidebar input[type=checkbox]').forEach(cb => cb.checked = false);
   applyFilters();
+}
+
+// Mobile filter drawer (below 900px) — accessible dialog with focus trap
+let lastFocusedFilterTrigger = null;
+function openFilters() {
+  const sb = document.getElementById('sidebar');
+  sb.classList.add('open');
+  document.getElementById('filterBackdrop').classList.add('open');
+  sb.setAttribute('role','dialog');
+  sb.setAttribute('aria-modal','true');
+  sb.setAttribute('aria-labelledby','drawerTitle');
+  document.getElementById('filtersBtn').setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden';
+  lastFocusedFilterTrigger = document.activeElement;
+  const closeBtn = sb.querySelector('.drawer-close');
+  (closeBtn || sb).focus();
+}
+function closeFilters() {
+  const sb = document.getElementById('sidebar');
+  if (!sb.classList.contains('open')) return;
+  sb.classList.remove('open');
+  document.getElementById('filterBackdrop').classList.remove('open');
+  sb.removeAttribute('role');
+  sb.removeAttribute('aria-modal');
+  sb.removeAttribute('aria-labelledby');
+  document.getElementById('filtersBtn').setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+  if (lastFocusedFilterTrigger && typeof lastFocusedFilterTrigger.focus === 'function') lastFocusedFilterTrigger.focus();
+  lastFocusedFilterTrigger = null;
+}
+function getFilterFocusable() {
+  const sb = document.getElementById('sidebar');
+  return [...sb.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter(el => !el.disabled && el.offsetParent !== null);
 }
 
 function clearAllSelected() {
@@ -2233,6 +2309,7 @@ function setView(v) {
 
 function switchTab(tab) {
   currentTab = tab;
+  closeFilters();
   document.querySelectorAll('#tablist [role="tab"]').forEach(t => {
     const isActive = t.dataset.tab === tab;
     t.classList.toggle('active', isActive);
@@ -2359,13 +2436,24 @@ function exportProject() {
 
 // Keyboard shortcut
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') { closeModal(); closeFilters(); }
   // Trap Tab focus inside the modal while it's open
   if (e.key === 'Tab' && document.getElementById('modalOverlay').classList.contains('open')) {
     const f = getModalFocusable();
     if (f.length) {
       const first = f[0], last = f[f.length - 1], modal = document.getElementById('modal');
       if (!modal.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    return;
+  }
+  // Trap Tab focus inside the filter drawer while it's open
+  if (e.key === 'Tab' && document.getElementById('sidebar').classList.contains('open')) {
+    const f = getFilterFocusable();
+    if (f.length) {
+      const first = f[0], last = f[f.length - 1], sb = document.getElementById('sidebar');
+      if (!sb.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
       else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
