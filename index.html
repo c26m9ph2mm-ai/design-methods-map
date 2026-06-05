@@ -283,7 +283,7 @@
   /* Responsive */
   @media(max-width:900px) {
     .layout { flex-direction:column; }
-    .main { max-height:none; padding-bottom:calc(1.5rem + var(--footer-h)); }
+    .main { max-height:none; }
     .sidebar {
       position:fixed; top:0; left:0; bottom:0; height:100%; max-height:none;
       width:86%; max-width:330px; min-width:0; z-index:300;
@@ -486,6 +486,11 @@
   }
   .site-footer .visits[hidden] { display:none; }
   .site-footer .copyright { color:var(--textLight); }
+  /* On mobile the footer flows at the end of the page instead of being pinned.
+     Declared after the base rule so it wins (media queries don't add specificity). */
+  @media(max-width:900px) {
+    .site-footer { position:static; box-shadow:none; }
+  }
   /* Explore toolbar: primary controls inline + a "More" overflow disclosure */
   .rb-controls { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
   .lens-info {
