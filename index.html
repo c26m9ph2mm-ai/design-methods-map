@@ -2065,12 +2065,12 @@ function renderProject() {
         ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
         ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
       </div>
-      <div class="card-phases" style="margin:.5rem 0 .3rem;">
-        ${['phase1','phase2','phase3','phase4','phase5'].map(p =>
-          `<div class="phase-pip ${m.phases.includes(p)?'active':''}" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
+      <div class="card-desc">${m.description.substring(0,100)}...</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem;">
+        ${m.phases.map(p =>
+          `<span class="tag" style="background:var(--${p});color:#333" title="Design phase">${phaseLabels[p]}</span>`
         ).join('')}
       </div>
-      <div class="card-desc">${m.description.substring(0,100)}...</div>
     </div>`;
   });
   container.innerHTML = html;
