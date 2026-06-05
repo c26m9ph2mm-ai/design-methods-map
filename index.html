@@ -335,7 +335,7 @@
       <div class="results-bar">
         <span id="resultCount">Showing 100 methods</span>
         <div style="display:flex;align-items:center;gap:.6rem;">
-          <button class="view-btn" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods you've added to your project">Deselect all</button>
+          <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods you've added to your project">Deselect all</button>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn">Grid</button>
             <button class="view-btn" onclick="setView('list')" id="listBtn">List</button>
@@ -358,6 +358,7 @@
           style="padding:.6rem 1.4rem;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:600;font-size:.9rem;cursor:pointer;">
           Suggest methods
         </button>
+        <button class="view-btn js-deselect-all" onclick="clearAllSelected()" title="Remove all methods you've added to your project">Deselect all</button>
         <span style="font-size:.78rem;color:var(--textLight);">Tip: mention your stage (early exploration, ideation, testing), and whether you care about numbers or reasons.</span>
       </div>
       <div style="margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;" id="advisorExamples"></div>
@@ -1890,16 +1891,17 @@ function clearAllSelected() {
   applyFilters();
   if (currentTab === 'project') renderProject();
   if (currentTab === 'compare') renderCompare();
+  if (currentTab === 'advisor' && document.getElementById('advisorInput').value.trim().length >= 8) runAdvisor();
 }
 
 function updateDeselectBtn() {
-  const btn = document.getElementById('deselectAllBtn');
-  if (!btn) return;
   const n = selectedMethods.length;
-  btn.textContent = n ? `Deselect all (${n})` : 'Deselect all';
-  btn.disabled = n === 0;
-  btn.style.opacity = n ? '1' : '.45';
-  btn.style.cursor = n ? 'pointer' : 'default';
+  document.querySelectorAll('.js-deselect-all').forEach(btn => {
+    btn.textContent = n ? `Deselect all (${n})` : 'Deselect all';
+    btn.disabled = n === 0;
+    btn.style.opacity = n ? '1' : '.45';
+    btn.style.cursor = n ? 'pointer' : 'default';
+  });
 }
 
 function renderMethods(list, activeFilters) {
