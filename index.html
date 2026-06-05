@@ -150,9 +150,13 @@
   .tag-generative { background:#FDF2E9; color:#A85A14; }
   .tag-evaluative { background:#E8F8F5; color:#0E6655; }
   .card-desc { font-size:.8rem; color:var(--textLight); line-height:1.5; }
-  .card-phases { display:flex; gap:3px; margin-top:.6rem; }
+  .card-phases { display:flex; flex-wrap:wrap; gap:4px; margin-top:.6rem; }
   .phase-pip {
-    width:18px; height:6px; border-radius:3px; opacity:.3;
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:22px; height:16px; padding:0 4px;
+    border-radius:4px; border:1px solid rgba(0,0,0,.28);
+    font-size:.62rem; font-weight:700; line-height:1; color:#2D3748;
+    opacity:.35;
   }
   .phase-pip.active { opacity:1; }
   /* List view */
@@ -1969,7 +1973,7 @@ function renderMethods(list, activeFilters) {
         <div class="card-desc">${m.description.substring(0,120)}...</div>
         <div class="card-phases">
           ${m.phases.map(p =>
-            `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
+            `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`
           ).join('')}
         </div>
       </div>
@@ -1988,7 +1992,7 @@ function renderMethods(list, activeFilters) {
         </div>
         <div class="card-phases">
           ${m.phases.map(p =>
-            `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
+            `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`
           ).join('')}
         </div>
         <span style="font-size:.75rem;color:var(--textLight);min-width:60px">${cap(m.effort)}</span>
@@ -2106,7 +2110,7 @@ function runAdvisor() {
         <div class="card-desc">${m.description.substring(0,110)}...</div>
         ${reasons.length ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accentText);"><strong>Why:</strong> ${reasons.slice(0,4).join(' · ')}</div>` : ''}
         <div class="card-phases" style="margin-top:.5rem;">
-          ${m.phases.map(p => `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`).join('')}
+          ${m.phases.map(p => `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`).join('')}
         </div>
       </div>
     `).join('') + `</div>`;
@@ -2291,7 +2295,7 @@ function renderProject() {
       <div class="card-desc">${m.description.substring(0,120)}...</div>
       <div class="card-phases">
         ${m.phases.map(p =>
-          `<div class="phase-pip active" style="background:var(--${p})" title="${phaseLabels[p]}"></div>`
+          `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`
         ).join('')}
       </div>
     </div>
