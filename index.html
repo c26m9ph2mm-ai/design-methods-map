@@ -413,6 +413,25 @@
         <span style="font-size:.78rem;color:var(--textLight);">Tip: mention your stage (early exploration, ideation, testing), and whether you care about numbers or reasons.</span>
       </div>
       <div style="margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;" id="advisorExamples"></div>
+      <details class="advisor-guide" style="margin-bottom:1.2rem;max-width:640px;border:1px solid var(--border);border-radius:10px;background:white;">
+        <summary style="cursor:pointer;font-size:.85rem;font-weight:600;color:var(--accentText);padding:.7rem .9rem;list-style-position:inside;">
+          Not sure how to phrase it? See which words signal what
+        </summary>
+        <div style="font-size:.82rem;line-height:1.6;padding:0 .9rem .9rem;">
+          <p style="color:var(--textLight);margin-bottom:.7rem;">Include words like these in your description and the Advisor steers toward the matching methods. These map to the same tags you see on each method card:</p>
+          <div style="display:flex;flex-direction:column;gap:.55rem;">
+            <div><span class="tag tag-exploratory">Exploratory</span> &mdash; <span style="color:var(--textLight)">understand, discover, explore, why, needs, pain points, motivation, daily routine, behavior, experience, journey</span></div>
+            <div><span class="tag tag-generative">Generative</span> &mdash; <span style="color:var(--textLight)">generate, brainstorm, ideate, concept, ideas, co-design, innovate, imagine</span></div>
+            <div><span class="tag tag-evaluative">Evaluative</span> &mdash; <span style="color:var(--textLight)">test, evaluate, validate, usability, assess, check, improve, refine, prototype</span></div>
+            <div><span class="tag tag-quantitative">Quantitative</span> &mdash; <span style="color:var(--textLight)">measure, how many, metric, number, rate, percentage, benchmark, A/B, conversion, analytics</span></div>
+            <div><span class="tag tag-qualitative">Qualitative</span> &mdash; <span style="color:var(--textLight)">why, reason, in-depth, story, opinion, perception</span></div>
+            <div><span class="tag tag-behavioral">Behavioral</span> &mdash; <span style="color:var(--textLight)">observe, what they do, watch, workflow, task, real use, in the field</span></div>
+            <div><span class="tag tag-attitudinal">Attitudinal</span> &mdash; <span style="color:var(--textLight)">what they say, prefer, satisfaction, feel, emotion, attitude, survey</span></div>
+            <div><span class="tag" style="background:#EEF1F6;color:#5A6577">Project stage</span> &mdash; <span style="color:var(--textLight)">early/planning: scope, define, requirements, kickoff &middot; live: launch, monitor, in market, analytics</span></div>
+          </div>
+          <p style="color:var(--textLight);margin-top:.7rem;">Example: <em>&ldquo;We want to <strong>measure</strong> which checkout layout performs better&rdquo;</em> leans Quantitative + Evaluative; <em>&ldquo;<strong>understand why</strong> nurses skip a step&rdquo;</em> leans Exploratory + Qualitative.</p>
+        </div>
+      </details>
       <div id="advisorResults"></div>
     </div>
     <div id="projectView" class="project-panel" role="tabpanel" aria-labelledby="tab-project">
