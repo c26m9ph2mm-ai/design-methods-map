@@ -2257,6 +2257,9 @@ function runAdvisor() {
     out.innerHTML = `<p style="color:var(--textLight);font-size:.9rem;">Please describe your project and goals in a sentence or two, then click <strong>Suggest methods</strong>.</p>`;
     return;
   }
+  // Collapse the keyword guide once suggestions are shown, to make room for results
+  const guide = document.querySelector('.advisor-guide');
+  if (guide) guide.open = false;
 
   const want = { data:{}, approach:{}, phase:{} };
   const matchedLabels = [];
