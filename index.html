@@ -482,6 +482,36 @@
   .plan-group-head .pg-tags { font-weight:400; color:var(--textLight); }
   .plan-none { font-size:.8rem; color:var(--textLight); font-style:italic; }
   .plan-adv-note { font-size:.76rem; color:var(--textLight); margin-top:.4rem; line-height:1.5; }
+  /* Lens toggle (Collection <-> Analysis) */
+  .lens-toggle { display:inline-flex; gap:0; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .lens-btn {
+    padding:.35rem .8rem; border:none; background:white; cursor:pointer; font-size:.8rem; font-weight:600;
+    color:var(--textLight); min-height:24px; transition:.15s;
+  }
+  .lens-btn + .lens-btn { border-left:1px solid var(--border); }
+  .lens-btn:hover { background:#F0F4FF; }
+  .lens-btn.active { background:var(--accent); color:white; }
+  .lens-btn:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+  /* Analysis "have/want" chooser */
+  .analysis-chooser {
+    display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .8rem; margin-bottom:1rem;
+    background:#F8FAFC; border:1px solid var(--border); border-radius:10px; padding:.7rem .9rem; font-size:.88rem;
+  }
+  .analysis-chooser label { display:inline-flex; align-items:center; gap:.4rem; color:var(--text); }
+  .analysis-chooser select {
+    font-size:.85rem; font-family:inherit; padding:.35rem .5rem; border:1px solid var(--border);
+    border-radius:8px; background:white; color:var(--text); cursor:pointer; min-height:30px;
+  }
+  .analysis-chooser select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  /* Analysis card: Advanced badge in the card top */
+  .method-card .card-adv {
+    font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    background:var(--attitudinal); color:#6B4E00; padding:1px 7px; border-radius:8px; flex-shrink:0; align-self:flex-start;
+  }
+  .adv-hidden-note {
+    grid-column:1/-1; font-size:.82rem; color:var(--textLight); background:#F8FAFC;
+    border:1px dashed var(--border); border-radius:10px; padding:.7rem .9rem; text-align:center;
+  }
 </style>
 </head>
 <body>
@@ -545,7 +575,7 @@
         <li><b>Effort</b> — rough time and resources needed.</li>
       </ul>
     </div>
-    <div class="filter-section">
+    <div class="filter-section" id="fsDataType">
       <div class="filter-title">Data Type <button class="btn-clear" onclick="clearGroup('dataType')">Clear</button></div>
       <div class="filter-group" id="dataTypeFilters">
         <label class="filter-item"><input type="checkbox" value="qualitative" onchange="applyFilters()"><span class="color-dot" style="background:var(--qualitative)"></span>Qualitative</label>
@@ -554,7 +584,19 @@
         <label class="filter-item"><input type="checkbox" value="attitudinal" onchange="applyFilters()"><span class="color-dot" style="background:var(--attitudinal)"></span>Attitudinal</label>
       </div>
     </div>
-    <div class="filter-section">
+    <div class="filter-section" id="fsOutputType" style="display:none;">
+      <div class="filter-title">Output Type <button class="btn-clear" onclick="clearGroup('outputType')">Clear</button></div>
+      <div class="filter-group" id="outputTypeFilters">
+        <label class="filter-item"><input type="checkbox" value="Themes" onchange="applyFilters()"> Themes</label>
+        <label class="filter-item"><input type="checkbox" value="Model/Framework" onchange="applyFilters()"> Model/Framework</label>
+        <label class="filter-item"><input type="checkbox" value="Priorities/Ranking" onchange="applyFilters()"> Priorities/Ranking</label>
+        <label class="filter-item"><input type="checkbox" value="Segments/Clusters" onchange="applyFilters()"> Segments/Clusters</label>
+        <label class="filter-item"><input type="checkbox" value="Scores/Measures" onchange="applyFilters()"> Scores/Measures</label>
+        <label class="filter-item"><input type="checkbox" value="Statistical Significance" onchange="applyFilters()"> Statistical Significance</label>
+        <label class="filter-item"><input type="checkbox" value="Map/Journey" onchange="applyFilters()"> Map/Journey</label>
+      </div>
+    </div>
+    <div class="filter-section" id="fsApproach">
       <div class="filter-title">Approach <button class="btn-clear" onclick="clearGroup('approach')">Clear</button></div>
       <div class="filter-group" id="approachFilters">
         <label class="filter-item"><input type="checkbox" value="exploratory" onchange="applyFilters()"><span class="color-dot" style="background:var(--exploratory)"></span>Exploratory</label>
@@ -562,7 +604,7 @@
         <label class="filter-item"><input type="checkbox" value="evaluative" onchange="applyFilters()"><span class="color-dot" style="background:var(--evaluative)"></span>Evaluative</label>
       </div>
     </div>
-    <div class="filter-section">
+    <div class="filter-section" id="fsPhase">
       <div class="filter-title">Design Phase <button class="btn-clear" onclick="clearGroup('phase')">Clear</button></div>
       <div class="filter-group" id="phaseFilters">
         <label class="filter-item"><input type="checkbox" value="phase1" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase1);border-radius:3px"></span>Planning & Scoping</label>
@@ -572,7 +614,7 @@
         <label class="filter-item"><input type="checkbox" value="phase5" onchange="applyFilters()"><span class="color-dot" style="background:var(--phase5);border-radius:3px"></span>Launch & Monitor</label>
       </div>
     </div>
-    <div class="filter-section">
+    <div class="filter-section" id="fsEffort">
       <div class="filter-title">Effort / Resources</div>
       <div class="filter-group" id="effortFilters">
         <label class="filter-item"><input type="checkbox" value="low" onchange="applyFilters()"> Low effort</label>
@@ -598,7 +640,11 @@
           <label class="adv-toggle" title="Advanced analysis methods stay visible either way; this controls whether they are emphasised">
             <input type="checkbox" id="advToggle" onchange="setShowAdvanced(this.checked)"> Show advanced methods
           </label>
-          <div class="view-toggle">
+          <div class="lens-toggle" role="group" aria-label="Method type">
+            <button class="lens-btn active" id="lensCollectionBtn" onclick="setLens('collection')" aria-pressed="true">Collection methods</button>
+            <button class="lens-btn" id="lensAnalysisBtn" onclick="setLens('analysis')" aria-pressed="false">Analysis methods</button>
+          </div>
+          <div class="view-toggle" id="viewToggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
             <button class="view-btn" onclick="setView('list')" id="listBtn" aria-pressed="false">List</button>
             <button class="view-btn" onclick="setView('map')" id="mapBtn" aria-pressed="false">Map</button>
@@ -606,6 +652,27 @@
         </div>
       </div>
       <div id="activeFilters" class="active-filters" style="display:none;"></div>
+      <div id="analysisChooser" class="analysis-chooser" style="display:none;">
+        <label>I have
+          <select id="haveData" onchange="setChooser('dataType', this.value)" aria-label="Data type you have">
+            <option value="">any</option>
+            <option value="qualitative">qualitative</option>
+            <option value="quantitative">quantitative</option>
+            <option value="behavioral">behavioural</option>
+            <option value="attitudinal">attitudinal</option>
+          </select> data</label>
+        <label>and I want to find
+          <select id="wantOutput" onchange="setChooser('outputType', this.value)" aria-label="Output you want to find">
+            <option value="">anything</option>
+            <option value="Themes">Themes</option>
+            <option value="Model/Framework">Model/Framework</option>
+            <option value="Priorities/Ranking">Priorities/Ranking</option>
+            <option value="Segments/Clusters">Segments/Clusters</option>
+            <option value="Scores/Measures">Scores/Measures</option>
+            <option value="Statistical Significance">Statistical Significance</option>
+            <option value="Map/Journey">Map/Journey</option>
+          </select></label>
+      </div>
       <div class="methods-grid" id="methodsContainer"></div>
     </div>
     <div id="advisorView" class="project-panel" role="tabpanel" aria-labelledby="tab-advisor">
@@ -2613,6 +2680,7 @@ const analysisMethods = [
 let selectedMethods = JSON.parse(localStorage.getItem('selectedMethods') || '[]');
 let currentView = 'grid';
 let currentTab = 'explore';
+let currentLens = 'collection';   // 'collection' | 'analysis' (Phase 4 lens)
 
 function passesFilters(m, f) {
   if (f.search && !m.name.toLowerCase().includes(f.search) && !m.description.toLowerCase().includes(f.search)) return false;
@@ -2624,6 +2692,7 @@ function passesFilters(m, f) {
 }
 
 function applyFilters() {
+  if (currentLens === 'analysis') { applyAnalysisFilters(); return; }
   const f = {
     search: document.getElementById('searchInput').value.toLowerCase(),
     dataTypes: getChecked('dataTypeFilters'),
@@ -2719,7 +2788,7 @@ function getChecked(containerId) {
 }
 
 function clearGroup(type) {
-  const map = { dataType: 'dataTypeFilters', approach: 'approachFilters', phase: 'phaseFilters', effort: 'effortFilters' };
+  const map = { dataType: 'dataTypeFilters', approach: 'approachFilters', phase: 'phaseFilters', effort: 'effortFilters', outputType: 'outputTypeFilters' };
   document.querySelectorAll(`#${map[type]} input`).forEach(cb => cb.checked = false);
   applyFilters();
 }
@@ -3023,19 +3092,21 @@ function runAdvisor() {
 
   const tokens = [...new Set(q.replace(/[^a-z\s]/g,' ').split(/\s+/).filter(w => w.length>3 && !advisorStop.has(w)))];
 
-  const scored = methods.map(m => {
+  // Same matcher, different dataset depending on the active lens (Phase 4)
+  const dataset = currentLens === 'analysis' ? analysisMethods : methods;
+  const scored = dataset.map(m => {
     let score = 0;
-    Object.entries(want.approach).forEach(([tag,w]) => { if (m.approach.includes(tag)) score += w*3; });
+    Object.entries(want.approach).forEach(([tag,w]) => { if ((m.approach||[]).includes(tag)) score += w*3; });
     Object.entries(want.data).forEach(([tag,w]) => { if (m.dataType.includes(tag)) score += w*2; });
-    Object.entries(want.phase).forEach(([tag,w]) => { if (m.phases.includes(tag)) score += w*2; });
-    const text = (m.name+' '+m.description+' '+(m.whenToUse||'')).toLowerCase();
+    Object.entries(want.phase).forEach(([tag,w]) => { if ((m.phases||[]).includes(tag)) score += w*2; });
+    const text = (m.name+' '+m.description+' '+(m.whenToUse||'')+' '+(m.outputType||'')).toLowerCase();
     const matchedWords = tokens.filter(t => text.includes(t));
     score += Math.min(matchedWords.length, 4);
     // Which of the fired intent signals this method actually satisfies (for the "Why" line)
     const labels = firedSignals.filter(sig =>
-      (sig.approach||[]).some(t => m.approach.includes(t)) ||
+      (sig.approach||[]).some(t => (m.approach||[]).includes(t)) ||
       (sig.data||[]).some(t => m.dataType.includes(t)) ||
-      (sig.phase||[]).some(t => m.phases.includes(t))
+      (sig.phase||[]).some(t => (m.phases||[]).includes(t))
     ).map(s => s.label);
     return { m, score, labels, matchedWords };
   }).filter(x => x.score > 0).sort((a,b)=> b.score - a.score).slice(0, 8);
@@ -3056,6 +3127,8 @@ function runAdvisor() {
       if (matchedWords.length) whyBits.push(`matched your word${matchedWords.length>1?'s':''} <em>“${matchedWords.slice(0,4).join('”, “')}”</em>`);
       if (labels.length) whyBits.push(`fits <strong>${labels.slice(0,3).join('</strong>, <strong>')}</strong>`);
       const why = whyBits.join(' — ');
+      const whyHTML = why ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accentText);line-height:1.5;"><strong>Why:</strong> ${why}</div>` : '';
+      if (currentLens === 'analysis') return analysisCardHTML(m, whyHTML);
       return `
       <div class="method-card ${selectedMethods.includes(m.name)?'selected':''}" role="button" tabindex="0" aria-label="View details for ${m.name}" onclick="openModal('${m.name.replace(/'/g,"\\'")}')" onkeydown="cardKeydown(event,'${m.name.replace(/'/g,"\\'")}')">
         <div class="card-top">
@@ -3118,12 +3191,17 @@ function analysisBridgeHTML(collectionId) {
   </div>`;
 }
 
-function setShowAdvanced(on) {
+function setShowAdvanced(on, rerender = true) {
   showAdvanced = !!on;
   try { localStorage.setItem('showAdvanced', showAdvanced ? '1' : '0'); } catch (e) {}
   document.body.classList.toggle('show-advanced', showAdvanced);
   const cb = document.getElementById('advToggle');
   if (cb) cb.checked = showAdvanced;
+  if (!rerender) return;
+  // Analysis grid filters advanced out when off, so refresh the active surface
+  if (currentTab === 'explore') applyFilters();
+  else if (currentTab === 'project') renderProject();
+  else if (currentTab === 'advisor' && document.getElementById('advisorInput').value.trim().length >= 8) runAdvisor();
 }
 
 /* ---------- Analysis Plan (My Project) ---------- */
@@ -3215,6 +3293,100 @@ function buildAnalysisPlanHTML() {
     h += '<ul>' + show.map(a => `<li>${escHtml(a.name)} [${escHtml(a.level)}] &rarr; ${escHtml(a.outputType)}</li>`).join('') + '</ul>';
   });
   return h;
+}
+
+/* ---------- Phase 4: Analysis lens (cards, filters, chooser, toggle) ---------- */
+function analysisCardKeydown(e, id) {
+  if (e.target !== e.currentTarget) return;
+  if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); openAnalysisModal(id); }
+}
+function analysisCardHTML(a, whyHTML) {
+  const adv = a.level === 'Advanced';
+  return `
+      <div class="method-card analysis-card" role="button" tabindex="0" aria-label="View details for ${escHtml(a.name)}"
+        onclick="openAnalysisModal('${a.id}')" onkeydown="analysisCardKeydown(event,'${a.id}')">
+        <div class="card-top">
+          <h3>${escHtml(a.name)}</h3>
+          ${adv ? '<span class="card-adv">Advanced</span>' : ''}
+        </div>
+        <div class="card-tags">
+          ${a.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
+          <span class="tag" style="background:#EEF2FF;color:var(--accentText)">${escHtml(a.outputType)}</span>
+        </div>
+        <div class="card-desc">${escHtml(a.description.substring(0,120))}…</div>
+        ${whyHTML || ''}
+        <div class="card-phases" style="margin-top:.5rem;">
+          ${a.phases.map(p => `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`).join('')}
+        </div>
+      </div>`;
+}
+function passesAnalysisFilters(a, f) {
+  if (f.search && !a.name.toLowerCase().includes(f.search) && !a.description.toLowerCase().includes(f.search) && !a.outputType.toLowerCase().includes(f.search)) return false;
+  if (f.dataTypes.length && !f.dataTypes.some(d => a.dataType.includes(d))) return false;
+  if (f.outputTypes.length && !f.outputTypes.includes(a.outputType)) return false;
+  return true;
+}
+function applyAnalysisFilters() {
+  const f = {
+    search: document.getElementById('searchInput').value.toLowerCase(),
+    dataTypes: getChecked('dataTypeFilters'),
+    outputTypes: getChecked('outputTypeFilters')
+  };
+  let filtered = analysisMethods.filter(a => passesAnalysisFilters(a, f));
+  let hiddenAdv = 0;
+  if (!showAdvanced) { const b = filtered.length; filtered = filtered.filter(a => a.level !== 'Advanced'); hiddenAdv = b - filtered.length; }
+
+  document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${analysisMethods.length} analysis methods`;
+  const fb = document.getElementById('filtersBtn');
+  if (fb) { const n = f.dataTypes.length + f.outputTypes.length; fb.textContent = n ? `Filters (${n})` : 'Filters'; }
+  const cbtn = document.getElementById('clearFiltersBtn');
+  if (cbtn) { const active = !!(f.search || f.dataTypes.length || f.outputTypes.length); cbtn.disabled = !active; cbtn.style.opacity = active ? '1' : '.45'; cbtn.style.cursor = active ? 'pointer' : 'default'; }
+
+  const container = document.getElementById('methodsContainer');
+  container.className = 'methods-grid';
+  if (!filtered.length) {
+    container.innerHTML = `<div class="adv-hidden-note">No analysis methods match. Try “any” / “anything” in the chooser, or clear the filters.${hiddenAdv ? ` (${hiddenAdv} advanced hidden — enable “Show advanced methods”.)` : ''}</div>`;
+  } else {
+    let html = filtered.map(a => analysisCardHTML(a)).join('');
+    if (hiddenAdv > 0) html += `<div class="adv-hidden-note">${hiddenAdv} advanced method${hiddenAdv > 1 ? 's' : ''} hidden. Enable “Show advanced methods” to include ${hiddenAdv > 1 ? 'them' : 'it'}.</div>`;
+    container.innerHTML = html;
+  }
+  syncChoosers(f);
+  updateURL();
+}
+function setChooser(group, value) {
+  const id = group === 'dataType' ? 'dataTypeFilters' : 'outputTypeFilters';
+  document.querySelectorAll(`#${id} input[type=checkbox]`).forEach(cb => { cb.checked = (value !== '' && cb.value === value); });
+  applyFilters();
+}
+function syncChoosers(f) {
+  const dts = (f && f.dataTypes) || getChecked('dataTypeFilters');
+  const ots = (f && f.outputTypes) || getChecked('outputTypeFilters');
+  const hd = document.getElementById('haveData'); if (hd) hd.value = dts.length === 1 ? dts[0] : '';
+  const wo = document.getElementById('wantOutput'); if (wo) wo.value = ots.length === 1 ? ots[0] : '';
+}
+function setLens(lens) {
+  if (lens === currentLens) return;
+  currentLens = lens;
+  // Reset filters cleanly between modes; the basket (selectedMethods) is untouched
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.sidebar input[type=checkbox]').forEach(cb => cb.checked = false);
+  updateLensUI();
+  applyFilters();
+}
+function updateLensUI() {
+  const analysis = currentLens === 'analysis';
+  const lc = document.getElementById('lensCollectionBtn'), la = document.getElementById('lensAnalysisBtn');
+  lc.classList.toggle('active', !analysis); lc.setAttribute('aria-pressed', String(!analysis));
+  la.classList.toggle('active', analysis); la.setAttribute('aria-pressed', String(analysis));
+  // sidebar: show Output Type only in analysis; hide collection-only groups + the collection taxonomy help
+  ['fsApproach','fsPhase','fsEffort'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = analysis ? 'none' : ''; });
+  const ot = document.getElementById('fsOutputType'); if (ot) ot.style.display = analysis ? '' : 'none';
+  const fh = document.getElementById('filterHelp'); if (fh && !localStorage.getItem('hideFilterHelp')) fh.style.display = analysis ? 'none' : '';
+  // chooser shown only in analysis; collection view-toggle + active-filter chips hidden in analysis
+  const ch = document.getElementById('analysisChooser'); if (ch) ch.style.display = analysis ? 'flex' : 'none';
+  const vt = document.getElementById('viewToggle'); if (vt) vt.style.display = analysis ? 'none' : 'flex';
+  const af = document.getElementById('activeFilters'); if (af && analysis) af.style.display = 'none';
 }
 
 function openAnalysisModal(id) {
@@ -3579,6 +3751,8 @@ function updateURL() {
   if (q) p.set('q', q);
   const g = (id, param) => { const v = getChecked(id); if (v.length) p.set(param, v.join(',')); };
   g('dataTypeFilters', 'dt'); g('approachFilters', 'ap'); g('phaseFilters', 'ph'); g('effortFilters', 'ef');
+  g('outputTypeFilters', 'ot');
+  if (currentLens === 'analysis') p.set('lens', 'analysis');
   if (currentTab && currentTab !== 'explore') p.set('tab', currentTab);
   if (currentView && currentView !== 'grid') p.set('view', currentView);
   if (currentView === 'map' && mapMode !== 'landscape') p.set('mmode', mapMode);
@@ -3592,6 +3766,8 @@ function restoreFromURL() {
     const cb = document.querySelector(`#${id} input[value="${v}"]`); if (cb) cb.checked = true;
   });
   sg('dt', 'dataTypeFilters'); sg('ap', 'approachFilters'); sg('ph', 'phaseFilters'); sg('ef', 'effortFilters');
+  sg('ot', 'outputTypeFilters');
+  if (p.get('lens') === 'analysis') currentLens = 'analysis';
   if (['grid','list','map'].includes(p.get('view'))) currentView = p.get('view');
   if (['landscape','swimlanes'].includes(p.get('mmode'))) mapMode = p.get('mmode');
   const tab = p.get('tab');
@@ -3634,7 +3810,8 @@ const initialTab = restoreFromURL();
 if (localStorage.getItem('hideFilterHelp')) document.getElementById('filterHelp').classList.add('hidden');
 document.getElementById('projectCount').textContent = selectedMethods.length;
 updateDeselectBtn();
-setShowAdvanced(showAdvanced);   // sets body class + checkbox before first render
+setShowAdvanced(showAdvanced, false);   // sets body class + checkbox before first render (no re-render yet)
+updateLensUI();           // reflects restored lens (chooser/sidebar/view-toggle visibility)
 setView(currentView);     // reflects restored view + runs applyFilters()
 switchTab(initialTab);    // reflects restored tab
 </script>
