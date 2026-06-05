@@ -419,9 +419,6 @@
   .filter-help.hidden { display:none; }
   /* Collection -> Analysis bridge (chips on cards & modal) */
   .analysis-bridge { margin-top:.7rem; padding-top:.6rem; border-top:1px dashed var(--border); }
-  /* In list view the row is a flex line; let the bridge wrap onto its own full-width line */
-  .method-row { flex-wrap:wrap; }
-  .method-row .analysis-bridge { flex-basis:100%; width:100%; }
   .analysis-bridge-title {
     font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
     color:var(--textLight); margin-bottom:.45rem;
@@ -2920,7 +2917,6 @@ function renderMethods(list, activeFilters) {
             `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`
           ).join('')}
         </div>
-        ${analysisBridgeHTML(m.id)}
       </div>
     `).join('');
   } else {
@@ -2941,7 +2937,6 @@ function renderMethods(list, activeFilters) {
           ).join('')}
         </div>
         <span style="font-size:.75rem;color:var(--textLight);min-width:60px">${cap(m.effort)}</span>
-        ${analysisBridgeHTML(m.id)}
       </div>
     `).join('');
   }
