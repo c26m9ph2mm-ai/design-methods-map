@@ -329,6 +329,43 @@
   .compare-table ul { margin:0; padding-left:1.05rem; }
   .compare-table li { margin-bottom:.25rem; }
   .compare-table .tag { margin:0 .25rem .25rem 0; }
+  /* Map view */
+  .map-toolbar { display:flex; flex-wrap:wrap; gap:.8rem; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+  .map-modes { display:flex; gap:.3rem; }
+  .map-legend { display:flex; gap:.8rem; font-size:.75rem; color:var(--textLight); flex-wrap:wrap; }
+  .map-legend-item { display:inline-flex; align-items:center; gap:.3rem; }
+  .map-dot { width:10px; height:10px; border-radius:50%; }
+  .map-plot {
+    position:relative; background:white; border:1px solid var(--border); border-radius:12px;
+    padding:2rem; width:100%; max-width:680px; aspect-ratio:1/1; margin:0 auto;
+  }
+  .map-area {
+    position:relative; width:100%; height:100%;
+    background:
+      linear-gradient(to right, transparent calc(50% - 1px), var(--border) calc(50% - 1px), var(--border) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(to bottom, transparent calc(50% - 1px), var(--border) calc(50% - 1px), var(--border) calc(50% + 1px), transparent calc(50% + 1px));
+  }
+  .axis-label { position:absolute; font-size:.7rem; font-weight:700; color:var(--textLight); text-transform:uppercase; letter-spacing:.04em; white-space:nowrap; }
+  .axis-top { top:.55rem; left:50%; transform:translateX(-50%); }
+  .axis-bottom { bottom:.55rem; left:50%; transform:translateX(-50%); }
+  .axis-left { left:.5rem; top:50%; transform:translateY(-50%) rotate(-90deg); transform-origin:left center; }
+  .axis-right { right:.5rem; top:50%; transform:translateY(-50%) rotate(90deg); transform-origin:right center; }
+  .map-point {
+    position:absolute; width:14px; height:14px; border-radius:50%; transform:translate(-50%,-50%);
+    border:1.5px solid white; box-shadow:0 1px 3px rgba(0,0,0,.28); cursor:pointer; padding:0; transition:.12s;
+  }
+  .map-point:hover, .map-point:focus-visible { width:19px; height:19px; outline:2px solid var(--accent); outline-offset:1px; z-index:5; }
+  .map-point.dim { opacity:.12; pointer-events:none; box-shadow:none; }
+  .map-lanes { display:flex; gap:.8rem; overflow-x:auto; padding-bottom:.5rem; }
+  .map-lane { flex:1 0 170px; min-width:170px; background:white; border:1px solid var(--border); border-radius:12px; padding:.6rem; }
+  .map-lane-head { font-size:.78rem; font-weight:700; display:flex; align-items:center; gap:.4rem; margin-bottom:.6rem; line-height:1.3; }
+  .map-lane-body { display:flex; flex-direction:column; gap:.4rem; }
+  .map-lane-card {
+    text-align:left; font-size:.78rem; font-weight:600; color:var(--text); padding:.45rem .5rem;
+    border:1px solid var(--border); border-radius:8px; background:#FBFCFE; cursor:pointer; min-height:24px;
+  }
+  .map-lane-card:hover, .map-lane-card:focus-visible { border-color:var(--accent); outline:2px solid var(--accent); outline-offset:1px; }
+  .map-lane-card.dim { opacity:.25; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -418,6 +455,7 @@
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
             <button class="view-btn" onclick="setView('list')" id="listBtn" aria-pressed="false">List</button>
+            <button class="view-btn" onclick="setView('map')" id="mapBtn" aria-pressed="false">Map</button>
           </div>
         </div>
       </div>
@@ -2124,6 +2162,7 @@ function updateDeselectBtn() {
 
 function renderMethods(list, activeFilters) {
   const container = document.getElementById('methodsContainer');
+  if (currentView === 'map') { renderMap(container, list); return; }
   if (list.length === 0 && activeFilters) {
     const hints = [];
     const activeCount = [activeFilters.dataTypes, activeFilters.approaches, activeFilters.phases, activeFilters.efforts]
@@ -2212,6 +2251,78 @@ function renderMethods(list, activeFilters) {
 }
 
 function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+/* ---------- Map view (landscape plot + phase swimlanes) ---------- */
+function hashStr(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return Math.abs(h);
+}
+function methodXY(m) {
+  const dt = m.dataType;
+  const qual = dt.includes('qualitative') ? 1 : 0, quant = dt.includes('quantitative') ? 1 : 0;
+  const beh = dt.includes('behavioral') ? 1 : 0, att = dt.includes('attitudinal') ? 1 : 0;
+  let x = (qual + quant) ? quant / (qual + quant) : 0.5;   // 0 = Qualitative (left), 1 = Quantitative (right)
+  let y = (beh + att) ? beh / (beh + att) : 0.5;           // 0 = Attitudinal (top), 1 = Behavioral (bottom)
+  const h = hashStr(m.name);
+  x += ((h % 1000) / 1000 - 0.5) * 0.18;
+  y += (((Math.floor(h / 1000)) % 1000) / 1000 - 0.5) * 0.18;
+  x = Math.max(0.03, Math.min(0.97, x));
+  y = Math.max(0.04, Math.min(0.96, y));
+  return { x, y };
+}
+function renderMap(container, list) {
+  const matched = new Set(list.map(m => m.name));
+  container.className = '';
+  const toolbar = `
+    <div class="map-toolbar">
+      <div class="map-modes" role="group" aria-label="Map layout">
+        <button class="view-btn ${mapMode==='landscape'?'active':''}" aria-pressed="${mapMode==='landscape'}" onclick="setMapMode('landscape')">Landscape</button>
+        <button class="view-btn ${mapMode==='swimlanes'?'active':''}" aria-pressed="${mapMode==='swimlanes'}" onclick="setMapMode('swimlanes')">Phase swimlanes</button>
+      </div>
+      <div class="map-legend" aria-hidden="true">
+        ${['exploratory','generative','evaluative'].map(a => `<span class="map-legend-item"><span class="map-dot" style="background:var(--${a})"></span>${cap(a)}</span>`).join('')}
+      </div>
+    </div>`;
+  container.innerHTML = toolbar + (mapMode === 'swimlanes' ? swimlanesHTML(matched) : landscapeHTML(matched));
+}
+function mapPointBtn(m, matched, cls, style, extra) {
+  const on = matched.has(m.name);
+  const nm = m.name.replace(/'/g, "\\'");
+  return `<button class="${cls} ${on?'':'dim'}" ${on?'':'tabindex="-1" aria-hidden="true"'}
+    style="${style}" title="${escHtml(m.name)}"
+    aria-label="View details for ${escHtml(m.name)} (${m.dataType.map(cap).join(', ')})"
+    onclick="openModal('${nm}')">${extra||''}</button>`;
+}
+function landscapeHTML(matched) {
+  const points = methods.map(m => {
+    const { x, y } = methodXY(m);
+    const style = `left:${(x*100).toFixed(1)}%;top:${(y*100).toFixed(1)}%;background:var(--${m.approach[0]})`;
+    return mapPointBtn(m, matched, 'map-point', style, '');
+  }).join('');
+  return `<div class="map-plot">
+    <span class="axis-label axis-top">Attitudinal</span>
+    <span class="axis-label axis-bottom">Behavioral</span>
+    <span class="axis-label axis-left">Qualitative</span>
+    <span class="axis-label axis-right">Quantitative</span>
+    <div class="map-area" role="group" aria-label="Methods landscape: horizontal axis Qualitative to Quantitative, vertical axis Attitudinal to Behavioral">
+      ${points}
+    </div>
+  </div>`;
+}
+function swimlanesHTML(matched) {
+  const lanes = ['phase1','phase2','phase3','phase4','phase5'].map(p => {
+    const inLane = methods.filter(m => m.phases.includes(p));
+    const cards = inLane.map(m =>
+      mapPointBtn(m, matched, 'map-lane-card', `border-left:3px solid var(--${m.approach[0]})`, escHtml(m.name))
+    ).join('');
+    return `<div class="map-lane">
+      <div class="map-lane-head"><span class="phase-pip active" style="background:var(--${p})" aria-hidden="true">P${p.replace('phase','')}</span> ${phaseShort[p]}</div>
+      <div class="map-lane-body">${cards || '<span style="font-size:.75rem;color:var(--textLight)">None</span>'}</div>
+    </div>`;
+  }).join('');
+  return `<div class="map-lanes">${lanes}</div>`;
+}
 
 // Keyboard activation for clickable method cards/rows (Enter or Space opens the modal)
 function cardKeydown(e, name) {
@@ -2430,13 +2541,17 @@ function toggleSelect(name) {
 
 function setView(v) {
   currentView = v;
-  const gridBtn = document.getElementById('gridBtn'), listBtn = document.getElementById('listBtn');
-  gridBtn.classList.toggle('active', v==='grid');
-  listBtn.classList.toggle('active', v==='list');
-  gridBtn.setAttribute('aria-pressed', v==='grid' ? 'true' : 'false');
-  listBtn.setAttribute('aria-pressed', v==='list' ? 'true' : 'false');
+  ['grid','list','map'].forEach(name => {
+    const btn = document.getElementById(name + 'Btn');
+    if (!btn) return;
+    btn.classList.toggle('active', v === name);
+    btn.setAttribute('aria-pressed', v === name ? 'true' : 'false');
+  });
   applyFilters();
 }
+
+let mapMode = 'landscape';
+function setMapMode(mode) { mapMode = mode; applyFilters(); }
 
 function switchTab(tab) {
   currentTab = tab;
