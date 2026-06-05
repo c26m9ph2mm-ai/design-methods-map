@@ -379,6 +379,44 @@
     #printArea p { font-size:10.5pt; margin:.25rem 0; }
     #printArea ul { margin:.2rem 0 .5rem 1.2rem; font-size:10.5pt; }
   }
+  /* Keyboard-shortcut hint + help panel */
+  .search-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:.1rem; }
+  .search-row { display:flex; align-items:center; gap:.5rem; }
+  .help-btn {
+    width:32px; height:32px; border-radius:50%; border:1px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.12); color:white; font-weight:700; font-size:.95rem;
+    line-height:1; cursor:pointer; flex-shrink:0;
+  }
+  .help-btn:hover { background:rgba(255,255,255,.22); }
+  .kbd-hint { font-size:.7rem; color:rgba(255,255,255,.55); margin-top:.3rem; }
+  .kbd-hint kbd, .help-panel kbd {
+    background:rgba(255,255,255,.16); border-radius:4px; padding:0 .3rem; font-family:inherit; font-size:.72rem;
+  }
+  .help-panel {
+    display:none; position:absolute; right:2rem; top:5.4rem; z-index:150; width:310px; max-width:calc(100vw - 2rem);
+    background:white; color:var(--text); border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,.28); padding:1rem 1.1rem;
+  }
+  .help-panel.open { display:block; }
+  .help-panel h3 { font-size:.9rem; margin-bottom:.6rem; }
+  .help-panel dl { display:grid; grid-template-columns:auto 1fr; gap:.4rem .7rem; font-size:.8rem; align-items:center; }
+  .help-panel kbd { background:#EEF1F6; border:1px solid var(--border); color:var(--text); }
+  .help-panel .help-close {
+    position:absolute; top:.5rem; right:.5rem; border:none; background:#F0F0F0; border-radius:50%;
+    width:26px; height:26px; cursor:pointer; font-size:1rem;
+  }
+  /* Dismissible taxonomy explainer in the sidebar */
+  .filter-help {
+    position:relative; background:#EEF2FF; border:1px solid #C7D2FE; border-radius:10px;
+    padding:.7rem .8rem; margin-bottom:1.2rem; font-size:.76rem; color:var(--text); line-height:1.5;
+  }
+  .filter-help strong { font-size:.78rem; }
+  .filter-help ul { margin:.4rem 0 0; padding-left:1rem; }
+  .filter-help li { margin-bottom:.25rem; }
+  .filter-help-close {
+    position:absolute; top:.3rem; right:.3rem; border:none; background:transparent; font-size:1.05rem;
+    cursor:pointer; color:var(--textLight); width:24px; height:24px; line-height:1;
+  }
+  .filter-help.hidden { display:none; }
 </style>
 </head>
 <body>
@@ -389,10 +427,26 @@
       <h1>Map of Design Methods</h1>
       <p>Explore, filter, and select the right user research methods for your project</p>
     </div>
-    <div class="search-box">
-      <span class="search-icon" aria-hidden="true">&#128269;</span>
-      <input type="text" id="searchInput" aria-label="Search methods" placeholder="Search methods..." oninput="applyFilters()">
+    <div class="search-wrap">
+      <div class="search-row">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">&#128269;</span>
+          <input type="text" id="searchInput" aria-label="Search methods" placeholder="Search methods..." oninput="applyFilters()">
+        </div>
+        <button class="help-btn" id="helpBtn" onclick="toggleHelp()" aria-haspopup="dialog" aria-expanded="false" aria-controls="helpPanel" title="Keyboard shortcuts & help" aria-label="Keyboard shortcuts and help">?</button>
+      </div>
+      <div class="kbd-hint" aria-hidden="true">Press <kbd>/</kbd> to search · <kbd>Esc</kbd> to close</div>
     </div>
+  </div>
+  <div class="help-panel" id="helpPanel" role="dialog" aria-modal="false" aria-label="Keyboard shortcuts">
+    <button class="help-close" onclick="closeHelp()" aria-label="Close help">&times;</button>
+    <h3>Keyboard shortcuts</h3>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Focus the search box</dd>
+      <dt><kbd>Esc</kbd></dt><dd>Close a dialog, the filter drawer, or this panel</dd>
+      <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Move between tabs (when a tab is focused)</dd>
+      <dt><kbd>Tab</kbd></dt><dd>Move between controls; <kbd>Enter</kbd> / <kbd>Space</kbd> opens a method</dd>
+    </dl>
   </div>
   <div class="tabs" id="tablist" role="tablist" aria-label="Views" onkeydown="tabsKeydown(event)">
     <button class="tab active" id="tab-explore" role="tab" data-tab="explore" aria-selected="true" aria-controls="exploreView" tabindex="0" onclick="switchTab('explore')">Explore</button>
@@ -415,6 +469,16 @@
     <div class="drawer-header">
       <h2 id="drawerTitle">Filters</h2>
       <button class="drawer-close" onclick="closeFilters()" aria-label="Close filters">&times;</button>
+    </div>
+    <div class="filter-help" id="filterHelp">
+      <button class="filter-help-close" onclick="dismissFilterHelp()" aria-label="Dismiss this help">&times;</button>
+      <strong>What do these filters mean?</strong>
+      <ul>
+        <li><b>Data Type</b> — kind of data: qualitative vs quantitative, behaviour vs attitudes.</li>
+        <li><b>Approach</b> — the research goal: explore, generate ideas, or evaluate.</li>
+        <li><b>Design Phase</b> — where in the design process it fits (P1–P5).</li>
+        <li><b>Effort</b> — rough time and resources needed.</li>
+      </ul>
     </div>
     <div class="filter-section">
       <div class="filter-title">Data Type <button class="btn-clear" onclick="clearGroup('dataType')">Clear</button></div>
@@ -482,7 +546,8 @@
       <h2 style="margin-bottom:.4rem;font-size:1.2rem;">✨ Method Advisor</h2>
       <p style="font-size:.9rem;color:var(--textLight);margin-bottom:1rem;max-width:640px;">
         Describe your project and what you want to learn from your users in plain language.
-        We'll suggest research methods that fit.
+        It matches keywords in your text to the method taxonomy and suggests methods that fit —
+        a simple rule-based matcher, not AI, so each suggestion explains exactly which words matched.
       </p>
       <textarea id="advisorInput" rows="4" placeholder="e.g. We're building a mobile banking app for older adults. We want to understand their daily money habits and find out why they avoid online banking, then test some early designs with them."
         style="width:100%;max-width:640px;padding:.9rem 1rem;border:1px solid var(--border);border-radius:10px;font-size:.92rem;font-family:inherit;resize:vertical;outline:none;line-height:1.6;"
@@ -2404,28 +2469,32 @@ function runAdvisor() {
   const guide = document.querySelector('.advisor-guide');
   if (guide) guide.open = false;
 
+  const firedSignals = advisorSignals.filter(sig => sig.kw.some(k => new RegExp(k).test(q)));
+  const matchedLabels = firedSignals.map(s => s.label);
   const want = { data:{}, approach:{}, phase:{} };
-  const matchedLabels = [];
-  advisorSignals.forEach(sig => {
-    if (!sig.kw.some(k => new RegExp(k).test(q))) return;
-    matchedLabels.push(sig.label);
+  firedSignals.forEach(sig =>
     ['data','approach','phase'].forEach(dim =>
       (sig[dim]||[]).forEach(tag => { want[dim][tag] = (want[dim][tag]||0)+1; })
-    );
-  });
+    )
+  );
 
   const tokens = [...new Set(q.replace(/[^a-z\s]/g,' ').split(/\s+/).filter(w => w.length>3 && !advisorStop.has(w)))];
 
   const scored = methods.map(m => {
-    let score = 0; const reasons = new Set();
-    Object.entries(want.approach).forEach(([tag,w]) => { if (m.approach.includes(tag)) { score += w*3; reasons.add(cap(tag)); } });
-    Object.entries(want.data).forEach(([tag,w]) => { if (m.dataType.includes(tag)) { score += w*2; reasons.add(cap(tag)); } });
-    Object.entries(want.phase).forEach(([tag,w]) => { if (m.phases.includes(tag)) { score += w*2; reasons.add(phaseShort[tag]); } });
+    let score = 0;
+    Object.entries(want.approach).forEach(([tag,w]) => { if (m.approach.includes(tag)) score += w*3; });
+    Object.entries(want.data).forEach(([tag,w]) => { if (m.dataType.includes(tag)) score += w*2; });
+    Object.entries(want.phase).forEach(([tag,w]) => { if (m.phases.includes(tag)) score += w*2; });
     const text = (m.name+' '+m.description+' '+(m.whenToUse||'')).toLowerCase();
-    let kwHits = 0;
-    tokens.forEach(t => { if (text.includes(t)) kwHits++; });
-    if (kwHits) { score += Math.min(kwHits,4); if (kwHits>=2) reasons.add('Keyword match'); }
-    return { m, score, reasons:[...reasons] };
+    const matchedWords = tokens.filter(t => text.includes(t));
+    score += Math.min(matchedWords.length, 4);
+    // Which of the fired intent signals this method actually satisfies (for the "Why" line)
+    const labels = firedSignals.filter(sig =>
+      (sig.approach||[]).some(t => m.approach.includes(t)) ||
+      (sig.data||[]).some(t => m.dataType.includes(t)) ||
+      (sig.phase||[]).some(t => m.phases.includes(t))
+    ).map(s => s.label);
+    return { m, score, labels, matchedWords };
   }).filter(x => x.score > 0).sort((a,b)=> b.score - a.score).slice(0, 8);
 
   if (!scored.length) {
@@ -2439,7 +2508,12 @@ function runAdvisor() {
 
   out.innerHTML = `<p style="font-size:.9rem;margin-bottom:1rem;max-width:640px;">${summary}</p>
     <div class="methods-grid">` +
-    scored.map(({m,reasons}) => `
+    scored.map(({m,labels,matchedWords}) => {
+      const whyBits = [];
+      if (matchedWords.length) whyBits.push(`matched your word${matchedWords.length>1?'s':''} <em>“${matchedWords.slice(0,4).join('”, “')}”</em>`);
+      if (labels.length) whyBits.push(`fits <strong>${labels.slice(0,3).join('</strong>, <strong>')}</strong>`);
+      const why = whyBits.join(' — ');
+      return `
       <div class="method-card ${selectedMethods.includes(m.name)?'selected':''}" role="button" tabindex="0" aria-label="View details for ${m.name}" onclick="openModal('${m.name.replace(/'/g,"\\'")}')" onkeydown="cardKeydown(event,'${m.name.replace(/'/g,"\\'")}')">
         <div class="card-top">
           <h3>${m.name}</h3>
@@ -2453,12 +2527,12 @@ function runAdvisor() {
           ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
         </div>
         <div class="card-desc">${m.description.substring(0,110)}...</div>
-        ${reasons.length ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accentText);"><strong>Why:</strong> ${reasons.slice(0,4).join(' · ')}</div>` : ''}
+        ${why ? `<div style="margin-top:.6rem;font-size:.74rem;color:var(--accentText);line-height:1.5;"><strong>Why:</strong> ${why}</div>` : ''}
         <div class="card-phases" style="margin-top:.5rem;">
           ${m.phases.map(p => `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`).join('')}
         </div>
-      </div>
-    `).join('') + `</div>`;
+      </div>`;
+    }).join('') + `</div>`;
 }
 
 const phaseLabels = {
@@ -2748,6 +2822,30 @@ function flashBtn(btn, msg) {
 }
 function copyLink(btn) { updateURL(); copyText(location.href).then(() => flashBtn(btn, 'Copied!')); }
 
+// Keyboard-shortcuts help panel
+let lastHelpFocus = null;
+function toggleHelp() {
+  const panel = document.getElementById('helpPanel');
+  if (panel.classList.contains('open')) { closeHelp(); return; }
+  panel.classList.add('open');
+  document.getElementById('helpBtn').setAttribute('aria-expanded', 'true');
+  lastHelpFocus = document.activeElement;
+  const c = panel.querySelector('.help-close'); if (c) c.focus();
+}
+function closeHelp() {
+  const panel = document.getElementById('helpPanel');
+  if (!panel.classList.contains('open')) return;
+  panel.classList.remove('open');
+  document.getElementById('helpBtn').setAttribute('aria-expanded', 'false');
+  if (lastHelpFocus && typeof lastHelpFocus.focus === 'function') lastHelpFocus.focus();
+  lastHelpFocus = null;
+}
+function dismissFilterHelp() {
+  const el = document.getElementById('filterHelp');
+  if (el) el.classList.add('hidden');
+  try { localStorage.setItem('hideFilterHelp', '1'); } catch (e) {}
+}
+
 function updateURL() {
   const p = new URLSearchParams();
   const q = document.getElementById('searchInput').value.trim();
@@ -2775,7 +2873,7 @@ function restoreFromURL() {
 
 // Keyboard shortcut
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeFilters(); }
+  if (e.key === 'Escape') { closeModal(); closeFilters(); closeHelp(); }
   // Trap Tab focus inside the modal while it's open
   if (e.key === 'Tab' && document.getElementById('modalOverlay').classList.contains('open')) {
     const f = getModalFocusable();
@@ -2806,6 +2904,7 @@ document.addEventListener('keydown', e => {
 
 // Init
 const initialTab = restoreFromURL();
+if (localStorage.getItem('hideFilterHelp')) document.getElementById('filterHelp').classList.add('hidden');
 document.getElementById('projectCount').textContent = selectedMethods.length;
 updateDeselectBtn();
 setView(currentView);     // reflects restored view + runs applyFilters()
