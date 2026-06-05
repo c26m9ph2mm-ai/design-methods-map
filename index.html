@@ -278,11 +278,11 @@
       <input type="text" id="searchInput" placeholder="Search methods..." oninput="applyFilters()">
     </div>
   </div>
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('explore')">Explore</button>
-    <button class="tab" onclick="switchTab('advisor')">✨ Method Advisor</button>
-    <button class="tab" onclick="switchTab('project')">My Project <span class="badge" id="projectCount">0</span></button>
-    <button class="tab" onclick="switchTab('compare')">Compare</button>
+  <div class="tabs" id="tablist" role="tablist" aria-label="Views" onkeydown="tabsKeydown(event)">
+    <button class="tab active" id="tab-explore" role="tab" data-tab="explore" aria-selected="true" aria-controls="exploreView" tabindex="0" onclick="switchTab('explore')">Explore</button>
+    <button class="tab" id="tab-advisor" role="tab" data-tab="advisor" aria-selected="false" aria-controls="advisorView" tabindex="-1" onclick="switchTab('advisor')">✨ Method Advisor</button>
+    <button class="tab" id="tab-project" role="tab" data-tab="project" aria-selected="false" aria-controls="projectView" tabindex="-1" onclick="switchTab('project')">My Project <span class="badge" id="projectCount">0</span></button>
+    <button class="tab" id="tab-compare" role="tab" data-tab="compare" aria-selected="false" aria-controls="compareView" tabindex="-1" onclick="switchTab('compare')">Compare</button>
   </div>
 </div>
 
@@ -334,7 +334,7 @@
   </aside>
 
   <main class="main" id="mainContent">
-    <div id="exploreView">
+    <div id="exploreView" role="tabpanel" aria-labelledby="tab-explore">
       <div class="results-bar">
         <span id="resultCount">Showing 100 methods</span>
         <div style="display:flex;align-items:center;gap:.6rem;">
@@ -347,7 +347,7 @@
       </div>
       <div class="methods-grid" id="methodsContainer"></div>
     </div>
-    <div id="advisorView" class="project-panel">
+    <div id="advisorView" class="project-panel" role="tabpanel" aria-labelledby="tab-advisor">
       <h2 style="margin-bottom:.4rem;font-size:1.2rem;">✨ Method Advisor</h2>
       <p style="font-size:.9rem;color:var(--textLight);margin-bottom:1rem;max-width:640px;">
         Describe your project and what you want to learn from your users in plain language.
@@ -367,12 +367,12 @@
       <div style="margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;" id="advisorExamples"></div>
       <div id="advisorResults"></div>
     </div>
-    <div id="projectView" class="project-panel">
+    <div id="projectView" class="project-panel" role="tabpanel" aria-labelledby="tab-project">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Selected Methods</h2>
       <div id="projectMethods"></div>
       <button class="export-btn" onclick="exportProject()" id="exportBtn" style="display:none">Export Selection as Text</button>
     </div>
-    <div id="compareView" class="project-panel">
+    <div id="compareView" class="project-panel" role="tabpanel" aria-labelledby="tab-compare">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">Compare Selected Methods</h2>
       <div class="compare-grid" id="compareMethods"></div>
     </div>
@@ -2216,7 +2216,12 @@ function setView(v) {
 
 function switchTab(tab) {
   currentTab = tab;
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['explore','advisor','project','compare'][i]===tab));
+  document.querySelectorAll('#tablist [role="tab"]').forEach(t => {
+    const isActive = t.dataset.tab === tab;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    t.tabIndex = isActive ? 0 : -1;
+  });
   document.getElementById('exploreView').style.display = tab==='explore' ? 'block' : 'none';
   document.getElementById('advisorView').style.display = tab==='advisor' ? 'block' : 'none';
   document.getElementById('advisorView').classList.toggle('visible', tab==='advisor');
@@ -2229,6 +2234,21 @@ function switchTab(tab) {
   if (tab==='advisor') initAdvisor();
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
+}
+
+// WAI-ARIA tabs: Left/Right (and Home/End) move between tabs with roving tabindex
+function tabsKeydown(e) {
+  if (!['ArrowLeft','ArrowRight','Home','End'].includes(e.key)) return;
+  e.preventDefault();
+  const tabs = [...document.querySelectorAll('#tablist [role="tab"]')];
+  const current = tabs.indexOf(document.activeElement);
+  let next;
+  if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft') next = (current - 1 + tabs.length) % tabs.length;
+  else if (e.key === 'Home') next = 0;
+  else next = tabs.length - 1;
+  switchTab(tabs[next].dataset.tab);
+  tabs[next].focus();
 }
 
 function renderProject() {
