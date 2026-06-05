@@ -1839,7 +1839,7 @@ function applyFilters() {
   });
 
   document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${methods.length} methods`;
-  renderMethods(filtered);
+  renderMethods(filtered, { search, dataTypes, approaches, phases, efforts });
 }
 
 function getChecked(containerId) {
@@ -1852,8 +1852,47 @@ function clearGroup(type) {
   applyFilters();
 }
 
-function renderMethods(list) {
+function renderMethods(list, activeFilters) {
   const container = document.getElementById('methodsContainer');
+  if (list.length === 0 && activeFilters) {
+    const hints = [];
+    const activeCount = [activeFilters.dataTypes, activeFilters.approaches, activeFilters.phases, activeFilters.efforts]
+      .filter(a => a.length > 0).length;
+
+    if (activeFilters.search) {
+      const fuzzyMatches = methods.filter(m =>
+        m.name.toLowerCase().includes(activeFilters.search.substring(0, 3))
+      ).slice(0, 3);
+      if (fuzzyMatches.length) {
+        hints.push(`Did you mean: ${fuzzyMatches.map(m => `<strong>${m.name}</strong>`).join(', ')}?`);
+      } else {
+        hints.push(`No methods match "<strong>${activeFilters.search}</strong>". Try a shorter or different keyword.`);
+      }
+    }
+    if (activeCount > 1) {
+      hints.push('Multiple filters are active and may be too restrictive — try removing one to broaden results.');
+    }
+    if (activeFilters.efforts.length === 1 && activeCount > 1) {
+      hints.push(`Only some methods are tagged as <strong>${activeFilters.efforts[0]} effort</strong>. Try including other effort levels.`);
+    }
+
+    container.className = 'methods-grid';
+    container.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--textLight)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35;margin-bottom:1rem;">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <h3 style="font-size:1.05rem;font-weight:600;margin-bottom:.5rem;color:var(--text);">No methods found</h3>
+        <div style="font-size:.88rem;color:var(--textLight);max-width:420px;margin:0 auto;line-height:1.7;">
+          ${hints.length ? hints.map(h => `<p style="margin-bottom:.4rem;">${h}</p>`).join('') : '<p>Try adjusting your search or filters.</p>'}
+        </div>
+        <button onclick="document.getElementById('searchInput').value='';document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c=>c.checked=false);applyFilters();"
+          style="margin-top:1.2rem;padding:.5rem 1.2rem;border:1px solid var(--accent);background:white;color:var(--accent);border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;">
+          Clear all filters
+        </button>
+      </div>`;
+    return;
+  }
   if (currentView === 'grid') {
     container.className = 'methods-grid';
     container.innerHTML = list.map(m => `
