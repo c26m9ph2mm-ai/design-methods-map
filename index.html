@@ -251,6 +251,10 @@
     cursor:pointer; margin-top:1rem; transition:.2s;
   }
   .export-btn:hover { background:var(--accentHover); }
+  /* Method Advisor two-column layout (wraps to stacked on narrow/portrait screens) */
+  .advisor-top { display:flex; gap:1.5rem; align-items:flex-start; flex-wrap:wrap; }
+  .advisor-intro { flex:2 1 340px; min-width:0; }
+  .advisor-guide-wrap { flex:1 1 260px; min-width:0; }
   /* Phase legend strip */
   .phase-legend {
     display:flex; flex-wrap:wrap; gap:.5rem; padding:.8rem 1.2rem;
@@ -396,6 +400,8 @@
       <div class="methods-grid" id="methodsContainer"></div>
     </div>
     <div id="advisorView" class="project-panel" role="tabpanel" aria-labelledby="tab-advisor">
+      <div class="advisor-top">
+      <div class="advisor-intro">
       <h2 style="margin-bottom:.4rem;font-size:1.2rem;">✨ Method Advisor</h2>
       <p style="font-size:.9rem;color:var(--textLight);margin-bottom:1rem;max-width:640px;">
         Describe your project and what you want to learn from your users in plain language.
@@ -413,7 +419,9 @@
         <span style="font-size:.78rem;color:var(--textLight);">Tip: mention your stage (early exploration, ideation, testing), and whether you care about numbers or reasons.</span>
       </div>
       <div style="margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;" id="advisorExamples"></div>
-      <details class="advisor-guide" style="margin-bottom:1.2rem;max-width:640px;border:1px solid var(--border);border-radius:10px;background:white;">
+      </div>
+      <aside class="advisor-guide-wrap" aria-label="Keyword guide">
+      <details class="advisor-guide" open style="width:100%;border:1px solid var(--border);border-radius:10px;background:white;">
         <summary style="cursor:pointer;font-size:.85rem;font-weight:600;color:var(--accentText);padding:.7rem .9rem;list-style-position:inside;">
           Not sure how to phrase it? See which words signal what
         </summary>
@@ -432,6 +440,8 @@
           <p style="color:var(--textLight);margin-top:.7rem;">Example: <em>&ldquo;We want to <strong>measure</strong> which checkout layout performs better&rdquo;</em> leans Quantitative + Evaluative; <em>&ldquo;<strong>understand why</strong> nurses skip a step&rdquo;</em> leans Exploratory + Qualitative.</p>
         </div>
       </details>
+      </aside>
+      </div>
       <div id="advisorResults"></div>
     </div>
     <div id="projectView" class="project-panel" role="tabpanel" aria-labelledby="tab-project">
