@@ -283,7 +283,7 @@
   </div>
 </div>
 
-<div class="phase-legend">
+<div class="phase-legend" id="phaseLegend">
   <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase1)"></div> Planning, Scoping & Definition</div>
   <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase2)"></div> Exploration, Synthesis & Design Implication</div>
   <div class="phase-legend-item"><div class="phase-legend-dot" style="background:var(--phase3)"></div> Concept Generation & Early Prototype Iteration</div>
@@ -2161,6 +2161,7 @@ function switchTab(tab) {
   document.getElementById('compareView').style.display = tab==='compare' ? 'block' : 'none';
   document.getElementById('compareView').classList.toggle('visible', tab==='compare');
   document.querySelector('.sidebar').style.display = tab==='explore' ? '' : 'none';
+  document.getElementById('phaseLegend').style.display = tab==='compare' ? 'none' : '';
   if (tab==='advisor') initAdvisor();
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
