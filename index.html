@@ -381,7 +381,7 @@
 
 <!-- Detail Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"></div>
 </div>
 
 <script>
@@ -2116,13 +2116,17 @@ const phaseLabels = {
   phase5: 'Launch & Monitor'
 };
 
+let lastFocusedModalTrigger = null;
 function openModal(name) {
   const m = methods.find(x => x.name === name);
   if (!m) return;
+  const overlay = document.getElementById('modalOverlay');
+  // Remember the element that opened the modal (skip on re-render while already open)
+  if (!overlay.classList.contains('open')) lastFocusedModalTrigger = document.activeElement;
   const modal = document.getElementById('modal');
   modal.innerHTML = `
-    <button class="modal-close" onclick="closeModal()">&times;</button>
-    <h2>${m.name}</h2>
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h2 id="modalTitle">${m.name}</h2>
     <div class="card-tags" style="margin-bottom:.8rem">
       ${m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
       ${m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
@@ -2168,11 +2172,27 @@ function openModal(name) {
       ${selectedMethods.includes(m.name)?'Remove from My Project':'Add to My Project'}
     </button>
   `;
-  document.getElementById('modalOverlay').classList.add('open');
+  overlay.classList.add('open');
+  // Move focus into the dialog
+  const closeBtn = modal.querySelector('.modal-close');
+  (closeBtn || modal).focus();
+}
+
+function getModalFocusable() {
+  const modal = document.getElementById('modal');
+  return [...modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter(el => !el.disabled && el.offsetParent !== null);
 }
 
 function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
+  const overlay = document.getElementById('modalOverlay');
+  if (!overlay.classList.contains('open')) return;
+  overlay.classList.remove('open');
+  // Return focus to the element that opened the modal
+  if (lastFocusedModalTrigger && typeof lastFocusedModalTrigger.focus === 'function') {
+    lastFocusedModalTrigger.focus();
+  }
+  lastFocusedModalTrigger = null;
 }
 
 function toggleSelect(name) {
@@ -2302,6 +2322,17 @@ function exportProject() {
 // Keyboard shortcut
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
+  // Trap Tab focus inside the modal while it's open
+  if (e.key === 'Tab' && document.getElementById('modalOverlay').classList.contains('open')) {
+    const f = getModalFocusable();
+    if (f.length) {
+      const first = f[0], last = f[f.length - 1], modal = document.getElementById('modal');
+      if (!modal.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    return;
+  }
   if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
     e.preventDefault();
     document.getElementById('searchInput').focus();
