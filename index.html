@@ -356,6 +356,26 @@
   }
   .map-point:hover, .map-point:focus-visible { width:19px; height:19px; outline:2px solid var(--accent); outline-offset:1px; z-index:5; }
   .map-point.dim { opacity:.12; pointer-events:none; box-shadow:none; }
+  /* Cluster marker (cells with 4+ overlapping methods) */
+  .map-cluster {
+    position:absolute; transform:translate(-50%,-50%); min-width:26px; height:26px; padding:0 7px;
+    border-radius:13px; border:2px solid white; background:var(--accent); color:white;
+    font-size:.74rem; font-weight:700; cursor:pointer; box-shadow:0 1px 5px rgba(0,0,0,.32);
+    display:flex; align-items:center; justify-content:center; z-index:2;
+  }
+  .map-cluster:hover, .map-cluster:focus-visible {
+    outline:2px solid var(--accentText); outline-offset:2px;
+    transform:translate(-50%,-50%) scale(1.12); z-index:6;
+  }
+  .cluster-list { display:flex; flex-direction:column; gap:.45rem; }
+  .cluster-item {
+    display:flex; flex-direction:column; align-items:flex-start; gap:.15rem; text-align:left;
+    padding:.55rem .75rem; border:1px solid var(--border); border-radius:10px; background:#FBFCFE; cursor:pointer;
+  }
+  .cluster-item:hover { border-color:var(--accent); background:#EEF2FF; }
+  .cluster-item:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .cluster-item .ci-name { font-weight:600; font-size:.9rem; color:var(--text); }
+  .cluster-item .ci-tags { font-size:.74rem; color:var(--textLight); }
   .map-lanes { display:flex; gap:.8rem; overflow-x:auto; padding-bottom:.5rem; }
   .map-lane { flex:1 0 170px; min-width:170px; background:white; border:1px solid var(--border); border-radius:12px; padding:.6rem; }
   .map-lane-head { font-size:.78rem; font-weight:700; display:flex; align-items:center; gap:.4rem; margin-bottom:.6rem; line-height:1.3; }
@@ -2678,6 +2698,19 @@ let selectedMethods = JSON.parse(localStorage.getItem('selectedMethods') || '[]'
 let currentView = 'grid';
 let currentTab = 'explore';
 let currentLens = 'collection';   // 'collection' | 'analysis' (Phase 4 lens)
+let mapClusters = {};             // cellKey -> [method names] for the landscape cluster popovers
+
+// Make background regions inert (keyboard + AT) behind an open dialog
+const MODAL_INERT = ['.header', '.phase-legend', '.layout'];
+const DRAWER_INERT = ['.header', '.phase-legend', '#mainContent'];
+function setInertEls(selectors, on) {
+  selectors.forEach(sel => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+    else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+  });
+}
 
 function passesFilters(m, f) {
   if (f.search && !m.name.toLowerCase().includes(f.search) && !m.description.toLowerCase().includes(f.search)) return false;
@@ -2945,23 +2978,19 @@ function renderMethods(list, activeFilters) {
 function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
 
 /* ---------- Map view (landscape plot + phase swimlanes) ---------- */
-function hashStr(s) {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return Math.abs(h);
-}
-function methodXY(m) {
+// A method's discrete landscape cell from its data-type profile (no random jitter,
+// so de-collision is deterministic). x: Qualitative(0)..Quantitative(1); y: Attitudinal(0)..Behavioural(1).
+function methodCell(m) {
   const dt = m.dataType;
   const qual = dt.includes('qualitative') ? 1 : 0, quant = dt.includes('quantitative') ? 1 : 0;
   const beh = dt.includes('behavioral') ? 1 : 0, att = dt.includes('attitudinal') ? 1 : 0;
-  let x = (qual + quant) ? quant / (qual + quant) : 0.5;   // 0 = Qualitative (left), 1 = Quantitative (right)
-  let y = (beh + att) ? beh / (beh + att) : 0.5;           // 0 = Attitudinal (top), 1 = Behavioral (bottom)
-  const h = hashStr(m.name);
-  x += ((h % 1000) / 1000 - 0.5) * 0.18;
-  y += (((Math.floor(h / 1000)) % 1000) / 1000 - 0.5) * 0.18;
-  x = Math.max(0.03, Math.min(0.97, x));
-  y = Math.max(0.04, Math.min(0.96, y));
-  return { x, y };
+  const bx = (qual + quant) ? quant / (qual + quant) : 0.5;
+  const by = (beh + att) ? beh / (beh + att) : 0.5;
+  return { bx, by };
+}
+function axisName(v, isX) {
+  if (isX) return v === 0 ? 'Qualitative' : v === 1 ? 'Quantitative' : 'mixed data type';
+  return v === 0 ? 'Attitudinal' : v === 1 ? 'Behavioural' : 'mixed data type';
 }
 function renderMap(container, list) {
   const matched = new Set(list.map(m => m.name));
@@ -2976,7 +3005,7 @@ function renderMap(container, list) {
         ${['exploratory','generative','evaluative'].map(a => `<span class="map-legend-item"><span class="map-dot" style="background:var(--${a})"></span>${cap(a)}</span>`).join('')}
       </div>
     </div>`;
-  container.innerHTML = toolbar + (mapMode === 'swimlanes' ? swimlanesHTML(matched) : landscapeHTML(matched));
+  container.innerHTML = toolbar + (mapMode === 'swimlanes' ? swimlanesHTML(matched) : landscapeHTML(list));
 }
 function mapPointBtn(m, matched, cls, style, extra) {
   const on = matched.has(m.name);
@@ -2986,21 +3015,68 @@ function mapPointBtn(m, matched, cls, style, extra) {
     aria-label="View details for ${escHtml(m.name)} (${m.dataType.map(cap).join(', ')})"
     onclick="openModal('${nm}')">${extra||''}</button>`;
 }
-function landscapeHTML(matched) {
-  const points = methods.map(m => {
-    const { x, y } = methodXY(m);
-    const style = `left:${(x*100).toFixed(1)}%;top:${(y*100).toFixed(1)}%;background:var(--${m.approach[0]})`;
-    return mapPointBtn(m, matched, 'map-point', style, '');
-  }).join('');
+// Ring offsets (degrees) for de-colliding 2–3 methods that share a cell
+const CELL_RING = { 2: [0, 180], 3: [90, 210, 330] };
+function landscapeHTML(list) {
+  mapClusters = {};
+  // Group the filtered methods by their discrete cell
+  const groups = new Map();
+  list.slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(m => {
+    const { bx, by } = methodCell(m);
+    const key = bx + '|' + by;
+    if (!groups.has(key)) groups.set(key, { bx, by, items: [] });
+    groups.get(key).items.push(m);
+  });
+  const pts = [];
+  groups.forEach((g, key) => {
+    const cx = 0.09 + g.bx * 0.82, cy = 0.09 + g.by * 0.82, n = g.items.length;
+    if (n >= 4) {
+      // Cluster marker: one button opening a focus-trapped list of the cell's methods
+      mapClusters[key] = g.items.map(m => m.name);
+      const lbl = `${n} methods at ${axisName(g.bx, true)} / ${axisName(g.by, false)} — open list`;
+      pts.push(`<button class="map-cluster" style="left:${(cx*100).toFixed(2)}%;top:${(cy*100).toFixed(2)}%" aria-label="${escHtml(lbl)}" title="${escHtml(lbl)}" onclick="openClusterModal('${key}')">${n}</button>`);
+    } else {
+      // 1 method at centre; 2–3 spread on a small ring so none overlap
+      g.items.forEach((m, i) => {
+        let x = cx, y = cy;
+        if (n > 1) { const r = n === 3 ? 0.055 : 0.05, rad = CELL_RING[n][i] * Math.PI / 180; x = cx + r * Math.cos(rad); y = cy + r * Math.sin(rad); }
+        const nm = m.name.replace(/'/g, "\\'");
+        const style = `left:${(x*100).toFixed(2)}%;top:${(y*100).toFixed(2)}%;background:var(--${m.approach[0] || 'exploratory'})`;
+        pts.push(`<button class="map-point" style="${style}" title="${escHtml(m.name)}" aria-label="View details for ${escHtml(m.name)} (${m.dataType.map(cap).join(', ')})" onclick="openModal('${nm}')"></button>`);
+      });
+    }
+  });
   return `<div class="map-plot">
     <span class="axis-label axis-top">Attitudinal</span>
     <span class="axis-label axis-bottom">Behavioral</span>
     <span class="axis-label axis-left">Qualitative</span>
     <span class="axis-label axis-right">Quantitative</span>
-    <div class="map-area" role="group" aria-label="Methods landscape: horizontal axis Qualitative to Quantitative, vertical axis Attitudinal to Behavioral">
-      ${points}
+    <div class="map-area" role="group" aria-label="Methods landscape: horizontal axis Qualitative to Quantitative, vertical axis Attitudinal to Behavioral. Crowded spots are shown as numbered clusters you can open.">
+      ${pts.join('')}
     </div>
   </div>`;
+}
+function openClusterModal(key) {
+  const names = mapClusters[key];
+  if (!names || !names.length) return;
+  const overlay = document.getElementById('modalOverlay');
+  if (!overlay.classList.contains('open')) lastFocusedModalTrigger = document.activeElement;
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h2 id="modalTitle">${names.length} methods here</h2>
+    <p style="font-size:.86rem;color:var(--textLight);margin:.2rem 0 1rem;">These methods sit at the same spot on the landscape because they share the same data-type profile. Choose one to open its details.</p>
+    <div class="cluster-list">${names.map(n => {
+      const m = methods.find(x => x.name === n);
+      const nm = n.replace(/'/g, "\\'");
+      return `<button type="button" class="cluster-item" onclick="openModal('${nm}')">
+        <span class="ci-name">${escHtml(n)}</span>
+        <span class="ci-tags">${m.dataType.map(cap).join(', ')}${m.approach.length ? ' · ' + m.approach.map(cap).join(', ') : ''}</span>
+      </button>`;
+    }).join('')}</div>`;
+  setInertEls(MODAL_INERT, true);
+  overlay.classList.add('open');
+  (modal.querySelector('.modal-close') || modal).focus();
 }
 function swimlanesHTML(matched) {
   const lanes = ['phase1','phase2','phase3','phase4','phase5'].map(p => {
@@ -3507,6 +3583,7 @@ function closeModal() {
   const overlay = document.getElementById('modalOverlay');
   if (!overlay.classList.contains('open')) return;
   overlay.classList.remove('open');
+  setInertEls(MODAL_INERT, false);   // restore the background
   // Return focus to the element that opened the modal
   if (lastFocusedModalTrigger && typeof lastFocusedModalTrigger.focus === 'function') {
     lastFocusedModalTrigger.focus();
