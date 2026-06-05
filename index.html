@@ -306,18 +306,29 @@
   ::-webkit-scrollbar { width:6px; }
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:#CBD5E0; border-radius:3px; }
-  /* Compare view */
-  .compare-grid {
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem;
+  /* Compare view — single matrix table */
+  .compare-scroll {
+    overflow:auto; max-height:calc(100vh - 230px);
+    border:1px solid var(--border); border-radius:12px; background:white;
   }
-  .compare-card {
-    background:white; border-radius:12px; padding:1.2rem; border:1px solid var(--border);
+  .compare-table { border-collapse:collapse; width:100%; min-width:520px; font-size:.82rem; }
+  .compare-table th, .compare-table td {
+    text-align:left; padding:.6rem .8rem; border-bottom:1px solid var(--border);
+    vertical-align:top; line-height:1.5;
   }
-  .compare-card h3 { margin-bottom:.6rem; font-size:1rem; }
-  .compare-row { display:flex; justify-content:space-between; font-size:.82rem; padding:.3rem 0; border-bottom:1px solid #f0f0f0; }
-  .compare-row:last-child { border-bottom:none; }
-  .compare-label { color:var(--textLight); }
-  .compare-value { font-weight:600; }
+  .compare-table thead th {
+    position:sticky; top:0; background:#EEF1F6; z-index:2; font-size:.9rem; font-weight:700;
+  }
+  .compare-table th[scope=row] {
+    position:sticky; left:0; background:white; color:var(--textLight);
+    font-weight:600; white-space:nowrap; z-index:1;
+  }
+  .compare-table thead th:first-child { left:0; z-index:3; background:#EEF1F6; }
+  .compare-table tbody tr:nth-child(even) td,
+  .compare-table tbody tr:nth-child(even) th[scope=row] { background:#FBFCFE; }
+  .compare-table ul { margin:0; padding-left:1.05rem; }
+  .compare-table li { margin-bottom:.25rem; }
+  .compare-table .tag { margin:0 .25rem .25rem 0; }
 </style>
 </head>
 <body>
@@ -465,7 +476,7 @@
     </div>
     <div id="compareView" class="project-panel" role="tabpanel" aria-labelledby="tab-compare">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">Compare Selected Methods</h2>
-      <div class="compare-grid" id="compareMethods"></div>
+      <div id="compareMethods"></div>
     </div>
   </main>
 </div>
@@ -2513,21 +2524,23 @@ function renderCompare() {
     </div>`;
     return;
   }
-  container.innerHTML = selectedMethods.map(name => {
-    const m = methods.find(x => x.name === name);
-    if (!m) return '';
-    return `<div class="compare-card">
-      <h3>${m.name}</h3>
-      <div class="compare-row"><span class="compare-label">Data Type</span><span class="compare-value">${m.dataType.map(cap).join(', ')}</span></div>
-      <div class="compare-row"><span class="compare-label">Approach</span><span class="compare-value">${m.approach.map(cap).join(', ')}</span></div>
-      <div class="compare-row"><span class="compare-label">Effort</span><span class="compare-value">${cap(m.effort)}</span></div>
-      <div class="compare-row"><span class="compare-label">Phases</span><span class="compare-value">${m.phases.map(p => phaseLabels[p].split(',')[0]).join(', ')}</span></div>
-      ${m.sampleSize ? `<div class="compare-row"><span class="compare-label">Sample Size</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.sampleSize}</span></div>` : ''}
-      ${m.analysisMethods ? `<div class="compare-row"><span class="compare-label">Analysis</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.analysisMethods.slice(0,3).join(', ')}</span></div>` : ''}
-      <div class="compare-row"><span class="compare-label">Strengths</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.strengths[0]}</span></div>
-      <div class="compare-row"><span class="compare-label">Limitations</span><span class="compare-value" style="font-weight:400;font-size:.78rem">${m.limitations[0]}</span></div>
-    </div>`;
-  }).join('');
+  const sel = selectedMethods.map(n => methods.find(x => x.name === n)).filter(Boolean);
+  const list = arr => (arr && arr.length) ? `<ul>${arr.map(s => `<li>${s}</li>`).join('')}</ul>` : '—';
+  const rows = [
+    ['Data Type', m => m.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join(' ')],
+    ['Approach', m => m.approach.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join(' ')],
+    ['Effort', m => cap(m.effort)],
+    ['Phases', m => m.phases.map(p => phaseShort[p]).join('<br>')],
+    ['Sample Size', m => m.sampleSize || '—'],
+    ['Analysis Methods', m => list(m.analysisMethods)],
+    ['Strengths', m => list(m.strengths)],
+    ['Limitations', m => list(m.limitations)]
+  ];
+  const head = `<tr><th scope="col">Attribute</th>${sel.map(m => `<th scope="col">${m.name}</th>`).join('')}</tr>`;
+  const body = rows.map(([label, fn]) =>
+    `<tr><th scope="row">${label}</th>${sel.map(m => `<td>${fn(m)}</td>`).join('')}</tr>`
+  ).join('');
+  container.innerHTML = `<div class="compare-scroll"><table class="compare-table"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
 
 function exportProject() {
