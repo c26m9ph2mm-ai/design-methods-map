@@ -386,7 +386,7 @@
         <span id="resultCount">Showing 100 methods</span>
         <div style="display:flex;align-items:center;gap:.6rem;">
           <button class="view-btn filters-btn" onclick="openFilters()" id="filtersBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="sidebar">Filters</button>
-          <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods you've added to your project">Deselect all</button>
+          <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods from My Project">Clear selection</button>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
             <button class="view-btn" onclick="setView('list')" id="listBtn" aria-pressed="false">List</button>
@@ -409,16 +409,16 @@
           style="padding:.6rem 1.4rem;border:none;border-radius:10px;background:var(--accent);color:white;font-weight:600;font-size:.9rem;cursor:pointer;">
           Suggest methods
         </button>
-        <button class="view-btn js-deselect-all" onclick="clearAllSelected()" title="Remove all methods you've added to your project">Deselect all</button>
+        <button class="view-btn js-deselect-all" onclick="clearAllSelected()" title="Remove all methods from My Project">Clear selection</button>
         <span style="font-size:.78rem;color:var(--textLight);">Tip: mention your stage (early exploration, ideation, testing), and whether you care about numbers or reasons.</span>
       </div>
       <div style="margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;" id="advisorExamples"></div>
       <div id="advisorResults"></div>
     </div>
     <div id="projectView" class="project-panel" role="tabpanel" aria-labelledby="tab-project">
-      <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Selected Methods</h2>
+      <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Project</h2>
       <div id="projectMethods"></div>
-      <button class="export-btn" onclick="exportProject()" id="exportBtn" style="display:none">Export Selection as Text</button>
+      <button class="export-btn" onclick="exportProject()" id="exportBtn" style="display:none">Export My Project (.txt)</button>
     </div>
     <div id="compareView" class="project-panel" role="tabpanel" aria-labelledby="tab-compare">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">Compare Selected Methods</h2>
@@ -1987,7 +1987,7 @@ function clearAllSelected() {
 function updateDeselectBtn() {
   const n = selectedMethods.length;
   document.querySelectorAll('.js-deselect-all').forEach(btn => {
-    btn.textContent = n ? `Deselect all (${n})` : 'Deselect all';
+    btn.textContent = n ? `Clear selection (${n})` : 'Clear selection';
     btn.disabled = n === 0;
     btn.style.opacity = n ? '1' : '.45';
     btn.style.cursor = n ? 'pointer' : 'default';
@@ -2430,7 +2430,7 @@ function exportProject() {
   const blob = new Blob([text], {type: 'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'my-research-methods.txt';
+  a.download = 'my-project.txt';
   a.click();
 }
 
