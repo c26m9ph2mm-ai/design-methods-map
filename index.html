@@ -559,6 +559,57 @@
     grid-column:1/-1; font-size:.82rem; color:var(--textLight); background:#F8FAFC;
     border:1px dashed var(--border); border-radius:10px; padding:.7rem .9rem; text-align:center;
   }
+  .site-footer .tour-link {
+    background:none; border:none; color:var(--accentText); font-size:.8rem; cursor:pointer;
+    text-decoration:underline; font-family:inherit; padding:0;
+  }
+  .site-footer .tour-link:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  /* ---------- Onboarding tour ---------- */
+  #tourOverlay { position:fixed; inset:0; z-index:400; display:none; }
+  #tourOverlay.open { display:block; }
+  .tour-spot {
+    position:fixed; left:50%; top:50%; width:0; height:0; border-radius:12px;
+    box-shadow:0 0 0 9999px rgba(15,20,35,.62);
+    transition:left .4s cubic-bezier(.4,0,.2,1), top .4s cubic-bezier(.4,0,.2,1),
+               width .4s cubic-bezier(.4,0,.2,1), height .4s cubic-bezier(.4,0,.2,1);
+    pointer-events:none;
+  }
+  .tour-spot.ring::after {
+    content:''; position:absolute; inset:-3px; border-radius:14px; border:2px solid var(--accent);
+    animation:tourPulse 1.7s ease-out infinite;
+  }
+  @keyframes tourPulse {
+    0% { box-shadow:0 0 0 0 rgba(74,108,247,.45); }
+    70% { box-shadow:0 0 0 9px rgba(74,108,247,0); }
+    100% { box-shadow:0 0 0 0 rgba(74,108,247,0); }
+  }
+  .tour-pop {
+    position:fixed; z-index:401; width:330px; max-width:calc(100vw - 2rem); background:white;
+    border-radius:14px; box-shadow:0 18px 50px rgba(0,0,0,.32); padding:1.1rem 1.2rem;
+    animation:tourPop .34s cubic-bezier(.34,1.4,.64,1) both;
+  }
+  @keyframes tourPop { from { opacity:0; transform:translateY(8px) scale(.97); } to { opacity:1; } }
+  .tour-pop h3 { font-size:1.02rem; font-weight:700; margin-bottom:.35rem; color:var(--text); }
+  .tour-pop p { font-size:.88rem; color:var(--textLight); line-height:1.6; margin-bottom:1rem; }
+  .tour-foot { display:flex; align-items:center; justify-content:space-between; gap:.6rem; }
+  .tour-dots { display:flex; gap:.34rem; }
+  .tour-dot { width:7px; height:7px; border-radius:50%; background:var(--border); transition:.25s; }
+  .tour-dot.on { background:var(--accent); transform:scale(1.3); }
+  .tour-btns { display:flex; gap:.4rem; }
+  .tour-btn {
+    padding:.42rem .9rem; border-radius:8px; font-size:.82rem; font-weight:600; cursor:pointer;
+    border:1px solid var(--border); background:white; color:var(--text); font-family:inherit;
+  }
+  .tour-btn.primary { background:var(--accent); color:white; border-color:var(--accent); }
+  .tour-btn.primary:hover { background:var(--accentHover); }
+  .tour-btn:focus-visible { outline:2px solid var(--accentText); outline-offset:2px; }
+  .tour-skip { background:none; border:none; color:var(--textLight); font-size:.8rem; cursor:pointer; text-decoration:underline; font-family:inherit; padding:0; }
+  .tour-skip:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion:reduce) {
+    .tour-spot { transition:none; }
+    .tour-spot.ring::after { animation:none; }
+    .tour-pop { animation:none; }
+  }
 </style>
 </head>
 <body>
@@ -794,8 +845,15 @@
 
 <footer class="site-footer">
   <span class="visits" id="visitorCount" hidden></span>
+  <button class="tour-link" type="button" onclick="startTour()">Take a tour</button>
   <span class="copyright">&copy; <span id="footerYear">2026</span> Dr. Sharmistha Banerjee, Department of Design, IIT Guwahati</span>
 </footer>
+
+<!-- Onboarding tour -->
+<div id="tourOverlay" aria-hidden="true">
+  <div class="tour-spot" id="tourSpot"></div>
+  <div class="tour-pop" id="tourPop" role="dialog" aria-modal="true" aria-labelledby="tourTitle"></div>
+</div>
 
 <!-- Detail Modal -->
 <div id="printArea" class="print-only" aria-hidden="true"></div>
@@ -3928,6 +3986,24 @@ function restoreFromURL() {
 
 // Keyboard shortcut
 document.addEventListener('keydown', e => {
+  // Onboarding tour intercepts keys while open
+  if (document.getElementById('tourOverlay').classList.contains('open')) {
+    if (e.key === 'Escape') { e.preventDefault(); endTour(); return; }
+    if (e.key === 'ArrowRight') { e.preventDefault(); tourIdx < TOUR.length - 1 ? showTourStep(tourIdx + 1) : endTour(); return; }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); if (tourIdx > 0) showTourStep(tourIdx - 1); return; }
+    if (e.key === 'Tab') {
+      const f = [...document.getElementById('tourPop').querySelectorAll('button')].filter(b => b.offsetParent !== null);
+      const pop = document.getElementById('tourPop');
+      if (f.length) {
+        const first = f[0], last = f[f.length - 1];
+        if (!pop.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+        else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      return;
+    }
+    return;
+  }
   if (e.key === 'Escape') { closeModal(); closeFilters(); closeHelp(); closeMore(true); }
   // Trap Tab focus inside the modal while it's open
   if (e.key === 'Tab' && document.getElementById('modalOverlay').classList.contains('open')) {
@@ -3957,6 +4033,98 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* ---------- Onboarding tour ---------- */
+const TOUR = [
+  { target: null, title: 'Welcome to the Map of Design Methods 👋', body: 'A quick tour of how to find the right research methods for your project — it takes under a minute.' },
+  { target: '.search-box', title: 'Search & browse', body: 'Find any of 97 methods by name, or scroll the cards. Every card opens full step-by-step guidance.' },
+  { target: '#tablist', title: 'Four ways in', body: 'Explore methods, get tailored advice, build “My Project”, and Compare methods side by side.' },
+  { target: '.lens-toggle', title: 'Collection vs Analysis', body: 'Collection methods gather data from users; Analysis methods make sense of data you already have.' },
+  { target: '#tab-advisor', title: 'Not sure where to start?', body: 'Describe your project in plain words and the Method Advisor suggests methods that fit.' },
+  { target: '#tab-project', title: 'Build an analysis plan', body: 'Add methods to “My Project” to get an automatic Analysis Plan you can export.' }
+];
+let tourIdx = 0, tourLastFocus = null;
+const TOUR_INERT = ['.header', '.phase-legend', '.layout', '.site-footer'];
+
+function startTour() {
+  tourLastFocus = document.activeElement;
+  // Ensure the targeted controls are on-screen
+  setLens('collection');
+  switchTab('explore');
+  tourIdx = 0;
+  const ov = document.getElementById('tourOverlay');
+  ov.classList.add('open');
+  ov.setAttribute('aria-hidden', 'false');
+  setInertEls(TOUR_INERT, true);
+  window.addEventListener('resize', positionTour);
+  window.addEventListener('scroll', positionTour, true);
+  showTourStep(0);
+}
+function endTour() {
+  const ov = document.getElementById('tourOverlay');
+  if (!ov.classList.contains('open')) return;
+  ov.classList.remove('open');
+  ov.setAttribute('aria-hidden', 'true');
+  setInertEls(TOUR_INERT, false);
+  window.removeEventListener('resize', positionTour);
+  window.removeEventListener('scroll', positionTour, true);
+  try { localStorage.setItem('dmm_onboarded', '1'); } catch (e) {}
+  if (tourLastFocus && typeof tourLastFocus.focus === 'function') tourLastFocus.focus();
+}
+function showTourStep(i) {
+  tourIdx = i;
+  const step = TOUR[i], isLast = i === TOUR.length - 1;
+  const dots = TOUR.map((_, k) => `<span class="tour-dot ${k === i ? 'on' : ''}"></span>`).join('');
+  const pop = document.getElementById('tourPop');
+  pop.innerHTML = `
+    <h3 id="tourTitle">${escHtml(step.title)}</h3>
+    <p>${escHtml(step.body)}</p>
+    <div class="tour-foot">
+      <div class="tour-dots" aria-hidden="true">${dots}</div>
+      <div class="tour-btns">
+        ${i > 0
+          ? `<button class="tour-btn" type="button" onclick="showTourStep(${i - 1})">Back</button>`
+          : `<button class="tour-skip" type="button" onclick="endTour()">Skip</button>`}
+        <button class="tour-btn primary" type="button" id="tourNext" onclick="${isLast ? 'endTour()' : `showTourStep(${i + 1})`}">${isLast ? 'Got it' : 'Next'}</button>
+      </div>
+    </div>
+    ${i > 0 ? `<div style="margin-top:.6rem;text-align:right"><button class="tour-skip" type="button" onclick="endTour()">Skip tour</button></div>` : ''}`;
+  pop.setAttribute('aria-label', step.title);
+  // restart the entrance animation each step
+  pop.style.animation = 'none'; void pop.offsetWidth; pop.style.animation = '';
+  positionTour();
+  const nb = document.getElementById('tourNext');
+  if (nb) nb.focus();
+}
+function positionTour() {
+  const step = TOUR[tourIdx];
+  const spot = document.getElementById('tourSpot');
+  const pop = document.getElementById('tourPop');
+  const el = step.target ? document.querySelector(step.target) : null;
+  const rect = el && el.getBoundingClientRect();
+  if (!rect || !rect.width) {
+    // Welcome / fallback: full dim, no cutout, centred card
+    spot.classList.remove('ring');
+    spot.style.left = '50%'; spot.style.top = '50%'; spot.style.width = '0'; spot.style.height = '0';
+    pop.style.left = '50%'; pop.style.top = '50%'; pop.style.transform = 'translate(-50%,-50%)';
+    return;
+  }
+  const pad = 6;
+  spot.classList.add('ring');
+  spot.style.left = (rect.left - pad) + 'px';
+  spot.style.top = (rect.top - pad) + 'px';
+  spot.style.width = (rect.width + pad * 2) + 'px';
+  spot.style.height = (rect.height + pad * 2) + 'px';
+  // Place the card below the target if there's room, else above
+  pop.style.transform = 'none';
+  const popW = Math.min(330, window.innerWidth - 32);
+  const left = Math.min(Math.max(12, rect.left + rect.width / 2 - popW / 2), window.innerWidth - popW - 12);
+  pop.style.left = left + 'px';
+  const popH = pop.offsetHeight || 170, gap = 14;
+  pop.style.top = (rect.bottom + gap + popH < window.innerHeight - 8)
+    ? (rect.bottom + gap) + 'px'
+    : Math.max(8, rect.top - gap - popH) + 'px';
+}
+
 // Init
 const initialTab = restoreFromURL();
 if (localStorage.getItem('hideFilterHelp')) document.getElementById('filterHelp').classList.add('hidden');
@@ -3966,6 +4134,9 @@ setShowAdvanced(showAdvanced, false);   // sets body class + checkbox before fir
 updateLensUI();           // reflects restored lens (chooser/sidebar/view-toggle visibility)
 setView(currentView);     // reflects restored view + runs applyFilters()
 switchTab(initialTab);    // reflects restored tab
+
+// First-visit onboarding tour (replayable any time via the footer "Take a tour")
+try { if (!localStorage.getItem('dmm_onboarded')) setTimeout(startTour, 600); } catch (e) {}
 
 // Footer: current year + visitor counter (third-party hit counter; degrades silently)
 (function () {
