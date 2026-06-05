@@ -334,9 +334,12 @@
     <div id="exploreView">
       <div class="results-bar">
         <span id="resultCount">Showing 100 methods</span>
-        <div class="view-toggle">
-          <button class="view-btn active" onclick="setView('grid')" id="gridBtn">Grid</button>
-          <button class="view-btn" onclick="setView('list')" id="listBtn">List</button>
+        <div style="display:flex;align-items:center;gap:.6rem;">
+          <button class="view-btn" onclick="clearAllFilters()" id="deselectAllBtn" title="Clear search and all filters">Deselect all</button>
+          <div class="view-toggle">
+            <button class="view-btn active" onclick="setView('grid')" id="gridBtn">Grid</button>
+            <button class="view-btn" onclick="setView('list')" id="listBtn">List</button>
+          </div>
         </div>
       </div>
       <div class="methods-grid" id="methodsContainer"></div>
@@ -1869,6 +1872,12 @@ function getChecked(containerId) {
 function clearGroup(type) {
   const map = { dataType: 'dataTypeFilters', approach: 'approachFilters', phase: 'phaseFilters', effort: 'effortFilters' };
   document.querySelectorAll(`#${map[type]} input`).forEach(cb => cb.checked = false);
+  applyFilters();
+}
+
+function clearAllFilters() {
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.sidebar input[type=checkbox]').forEach(cb => cb.checked = false);
   applyFilters();
 }
 
