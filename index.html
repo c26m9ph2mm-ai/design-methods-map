@@ -461,12 +461,31 @@
   body:not(.show-advanced) .analysis-chip.adv { opacity:.5; }
   body:not(.show-advanced) .analysis-chip.adv:hover,
   body:not(.show-advanced) .analysis-chip.adv:focus-visible { opacity:1; }
-  /* "Show advanced methods" toggle */
-  .adv-toggle {
-    display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--textLight);
-    cursor:pointer; user-select:none; min-height:24px;
+  /* Explore toolbar: primary controls inline + a "More" overflow disclosure */
+  .rb-controls { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
+  .lens-info {
+    width:24px; height:24px; flex-shrink:0; border:1px solid var(--border); border-radius:50%;
+    background:white; color:var(--textLight); font-size:.85rem; line-height:1; cursor:help; padding:0;
   }
-  .adv-toggle input { accent-color:var(--accent); width:15px; height:15px; cursor:pointer; }
+  .lens-info:hover { color:var(--accentText); border-color:var(--accent); }
+  .lens-info:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .more-wrap { position:relative; }
+  .more-menu {
+    position:absolute; right:0; top:calc(100% + 6px); z-index:120; min-width:220px;
+    background:white; border:1px solid var(--border); border-radius:10px;
+    box-shadow:0 12px 32px rgba(0,0,0,.18); padding:.4rem; display:flex; flex-direction:column; gap:.1rem;
+  }
+  .more-menu[hidden] { display:none; }
+  .more-item {
+    display:flex; align-items:center; gap:.5rem; text-align:left; width:100%;
+    padding:.5rem .6rem; border:none; background:none; border-radius:7px; cursor:pointer;
+    font-size:.84rem; color:var(--text); min-height:32px; font-family:inherit;
+  }
+  .more-item:hover:not(:disabled) { background:#F0F4FF; }
+  .more-item:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+  .more-item:disabled { opacity:.45; cursor:default; }
+  .more-check { cursor:pointer; }
+  .more-check input { accent-color:var(--accent); width:15px; height:15px; cursor:pointer; }
   /* Reverse bridge in analysis modal */
   .feeds-chips { display:flex; flex-wrap:wrap; gap:.4rem; }
   .feeds-chip {
@@ -649,22 +668,29 @@
     <div id="exploreView" role="tabpanel" aria-labelledby="tab-explore">
       <div class="results-bar">
         <span id="resultCount">Showing 100 methods</span>
-        <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+        <div class="rb-controls">
           <button class="view-btn filters-btn" onclick="openFilters()" id="filtersBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="sidebar">Filters</button>
-          <button class="view-btn" onclick="clearAllFilters()" id="clearFiltersBtn" title="Clear search and all filters">Clear all filters</button>
-          <button class="view-btn" onclick="copyLink(this)" id="copyLinkBtn" title="Copy a shareable link to this filtered view">Copy link</button>
-          <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods from My Project">Clear selection</button>
-          <label class="adv-toggle" title="Advanced analysis methods stay visible either way; this controls whether they are emphasised">
-            <input type="checkbox" id="advToggle" onchange="setShowAdvanced(this.checked)"> Show advanced methods
-          </label>
           <div class="lens-toggle" role="group" aria-label="Method type">
             <button class="lens-btn active" id="lensCollectionBtn" onclick="setLens('collection')" aria-pressed="true">Collection methods</button>
             <button class="lens-btn" id="lensAnalysisBtn" onclick="setLens('analysis')" aria-pressed="false">Analysis methods</button>
           </div>
+          <button class="lens-info" id="lensInfo" type="button" aria-label="What is the difference between Collection and Analysis methods?"
+            title="Collection methods gather data from users (interviews, surveys…). Analysis methods make sense of data you already have (thematic analysis, statistics…).">&#9432;</button>
           <div class="view-toggle" id="viewToggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
             <button class="view-btn" onclick="setView('list')" id="listBtn" aria-pressed="false">List</button>
             <button class="view-btn" onclick="setView('map')" id="mapBtn" aria-pressed="false">Map</button>
+          </div>
+          <div class="more-wrap">
+            <button class="view-btn" id="moreBtn" onclick="toggleMore()" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu">More &#8943;</button>
+            <div id="moreMenu" class="more-menu" hidden>
+              <button class="more-item" onclick="copyLink(this)" id="copyLinkBtn" title="Copy a shareable link to this filtered view">Copy link</button>
+              <button class="more-item" onclick="clearAllFilters()" id="clearFiltersBtn" title="Clear search and all filters">Clear all filters</button>
+              <button class="more-item js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods from My Project">Clear selection</button>
+              <label class="more-item more-check" id="advToggleLabel" title="Off by default. Turn on to include Advanced analysis methods alongside Beginner and Intermediate ones.">
+                <input type="checkbox" id="advToggle" onchange="setShowAdvanced(this.checked)"> Show advanced analysis methods
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -3821,6 +3847,27 @@ function dismissFilterHelp() {
   try { localStorage.setItem('hideFilterHelp', '1'); } catch (e) {}
 }
 
+// "More" overflow disclosure for secondary toolbar actions
+function toggleMore() {
+  document.getElementById('moreMenu').hidden ? openMore() : closeMore();
+}
+function openMore() {
+  const menu = document.getElementById('moreMenu');
+  menu.hidden = false;
+  document.getElementById('moreBtn').setAttribute('aria-expanded', 'true');
+  const first = menu.querySelector('button:not(:disabled), input');
+  if (first) first.focus();
+}
+function closeMore(returnFocus) {
+  const menu = document.getElementById('moreMenu');
+  if (!menu || menu.hidden) return;
+  menu.hidden = true;
+  document.getElementById('moreBtn').setAttribute('aria-expanded', 'false');
+  if (returnFocus) document.getElementById('moreBtn').focus();
+}
+// Close the overflow menu on any click outside its wrapper
+document.addEventListener('click', e => { if (!e.target.closest('.more-wrap')) closeMore(); });
+
 function updateURL() {
   const p = new URLSearchParams();
   const q = document.getElementById('searchInput').value.trim();
@@ -3852,7 +3899,7 @@ function restoreFromURL() {
 
 // Keyboard shortcut
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeFilters(); closeHelp(); }
+  if (e.key === 'Escape') { closeModal(); closeFilters(); closeHelp(); closeMore(true); }
   // Trap Tab focus inside the modal while it's open
   if (e.key === 'Tab' && document.getElementById('modalOverlay').classList.contains('open')) {
     const f = getModalFocusable();
