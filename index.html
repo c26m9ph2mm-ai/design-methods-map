@@ -366,6 +366,19 @@
   }
   .map-lane-card:hover, .map-lane-card:focus-visible { border-color:var(--accent); outline:2px solid var(--accent); outline-offset:1px; }
   .map-lane-card.dim { opacity:.25; pointer-events:none; }
+  /* My Project actions + print/PDF */
+  .project-actions { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+  .project-actions .export-btn { width:auto; margin-top:0; }
+  .print-only { display:none; }
+  @media print {
+    body > *:not(#printArea) { display:none !important; }
+    #printArea { display:block !important; font-family:Georgia, 'Times New Roman', serif; color:#000; }
+    #printArea h1 { font-size:18pt; margin:0 0 .4rem; }
+    #printArea h2 { font-size:13pt; margin:1rem 0 .2rem; border-bottom:1px solid #999; padding-bottom:.1rem; }
+    #printArea .meta { color:#444; font-size:9.5pt; margin-bottom:.3rem; }
+    #printArea p { font-size:10.5pt; margin:.25rem 0; }
+    #printArea ul { margin:.2rem 0 .5rem 1.2rem; font-size:10.5pt; }
+  }
 </style>
 </head>
 <body>
@@ -451,6 +464,7 @@
         <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
           <button class="view-btn filters-btn" onclick="openFilters()" id="filtersBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="sidebar">Filters</button>
           <button class="view-btn" onclick="clearAllFilters()" id="clearFiltersBtn" title="Clear search and all filters">Clear all filters</button>
+          <button class="view-btn" onclick="copyLink(this)" id="copyLinkBtn" title="Copy a shareable link to this filtered view">Copy link</button>
           <button class="view-btn js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods from My Project">Clear selection</button>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')" id="gridBtn" aria-pressed="true">Grid</button>
@@ -510,7 +524,11 @@
     <div id="projectView" class="project-panel" role="tabpanel" aria-labelledby="tab-project">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">My Project</h2>
       <div id="projectMethods"></div>
-      <button class="export-btn" onclick="exportProject()" id="exportBtn" style="display:none">Export My Project (.txt)</button>
+      <div class="project-actions" id="projectActions" style="display:none">
+        <button class="export-btn" onclick="exportProject()">Export (.txt)</button>
+        <button class="export-btn" onclick="copyProject(this)">Copy to clipboard</button>
+        <button class="export-btn" onclick="printProject()">Print / Save as PDF</button>
+      </div>
     </div>
     <div id="compareView" class="project-panel" role="tabpanel" aria-labelledby="tab-compare">
       <h2 style="margin-bottom:1rem;font-size:1.2rem;">Compare Selected Methods</h2>
@@ -520,6 +538,8 @@
 </div>
 
 <!-- Detail Modal -->
+<div id="printArea" class="print-only" aria-hidden="true"></div>
+
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"></div>
 </div>
@@ -2019,6 +2039,7 @@ function applyFilters() {
   renderActiveFilters(f);
   updateFacetCounts(f);
   renderMethods(filtered, f);
+  updateURL();
 }
 
 function activeFilterCount(f) {
@@ -2574,6 +2595,7 @@ function switchTab(tab) {
   if (tab==='advisor') initAdvisor();
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
+  updateURL();
 }
 
 // WAI-ARIA tabs: Left/Right (and Home/End) move between tabs with roving tabindex
@@ -2593,7 +2615,7 @@ function tabsKeydown(e) {
 
 function renderProject() {
   const container = document.getElementById('projectMethods');
-  const exportBtn = document.getElementById('exportBtn');
+  const actions = document.getElementById('projectActions');
   if (selectedMethods.length === 0) {
     container.className = '';
     container.innerHTML = `<div class="project-empty">
@@ -2601,10 +2623,10 @@ function renderProject() {
       <p>No methods selected yet.</p>
       <p style="font-size:.85rem">Browse the Explore tab and click + to add methods to your project.</p>
     </div>`;
-    exportBtn.style.display = 'none';
+    actions.style.display = 'none';
     return;
   }
-  exportBtn.style.display = 'block';
+  actions.style.display = 'flex';
 
   const selected = selectedMethods.map(name => methods.find(x => x.name === name)).filter(Boolean);
   container.className = 'methods-grid';
@@ -2658,7 +2680,7 @@ function renderCompare() {
   container.innerHTML = `<div class="compare-scroll"><table class="compare-table"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
 
-function exportProject() {
+function buildProjectText() {
   let text = 'MY PROJECT - SELECTED RESEARCH METHODS\n' + '='.repeat(45) + '\n\n';
   selectedMethods.forEach(name => {
     const m = methods.find(x => x.name === name);
@@ -2675,11 +2697,80 @@ function exportProject() {
     if (m.analysisMethods) text += `Analysis Methods: ${m.analysisMethods.join(', ')}\n`;
     text += '\n';
   });
-  const blob = new Blob([text], {type: 'text/plain'});
+  return text;
+}
+function exportProject() {
+  const blob = new Blob([buildProjectText()], {type: 'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'my-project.txt';
   a.click();
+}
+function copyProject(btn) { copyText(buildProjectText()).then(() => flashBtn(btn, 'Copied!')); }
+function buildProjectHTML() {
+  let h = `<h1>My Project — Selected Research Methods</h1>`;
+  selectedMethods.forEach(name => {
+    const m = methods.find(x => x.name === name);
+    if (!m) return;
+    h += `<h2>${escHtml(m.name)}</h2>`;
+    h += `<div class="meta">${m.dataType.map(cap).join(', ')} &middot; ${m.approach.map(cap).join(', ')} &middot; ${cap(m.effort)} effort &middot; ${m.phases.map(p => phaseShort[p]).join(', ')}</div>`;
+    h += `<p>${escHtml(m.description)}</p>`;
+    h += `<p><strong>When to use:</strong> ${escHtml(m.whenToUse)}</p>`;
+    if (m.strengths && m.strengths.length) h += `<p><strong>Strengths:</strong></p><ul>${m.strengths.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>`;
+    if (m.limitations && m.limitations.length) h += `<p><strong>Limitations:</strong></p><ul>${m.limitations.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>`;
+    if (m.sampleSize) h += `<p><strong>Sample size:</strong> ${escHtml(m.sampleSize)}</p>`;
+    if (m.analysisMethods && m.analysisMethods.length) h += `<p><strong>Analysis methods:</strong> ${m.analysisMethods.map(escHtml).join(', ')}</p>`;
+  });
+  return h;
+}
+function printProject() {
+  if (!selectedMethods.length) return;
+  document.getElementById('printArea').innerHTML = buildProjectHTML();
+  window.print();
+}
+
+// Clipboard + shareable-link helpers
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+  return new Promise(resolve => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta); resolve();
+  });
+}
+function flashBtn(btn, msg) {
+  if (!btn) return;
+  const orig = btn.textContent;
+  btn.textContent = msg; btn.disabled = true;
+  setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1400);
+}
+function copyLink(btn) { updateURL(); copyText(location.href).then(() => flashBtn(btn, 'Copied!')); }
+
+function updateURL() {
+  const p = new URLSearchParams();
+  const q = document.getElementById('searchInput').value.trim();
+  if (q) p.set('q', q);
+  const g = (id, param) => { const v = getChecked(id); if (v.length) p.set(param, v.join(',')); };
+  g('dataTypeFilters', 'dt'); g('approachFilters', 'ap'); g('phaseFilters', 'ph'); g('effortFilters', 'ef');
+  if (currentTab && currentTab !== 'explore') p.set('tab', currentTab);
+  if (currentView && currentView !== 'grid') p.set('view', currentView);
+  if (currentView === 'map' && mapMode !== 'landscape') p.set('mmode', mapMode);
+  const qs = p.toString();
+  history.replaceState(null, '', qs ? ('?' + qs) : (location.pathname + location.hash));
+}
+function restoreFromURL() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('q')) document.getElementById('searchInput').value = p.get('q');
+  const sg = (param, id) => (p.get(param) || '').split(',').filter(Boolean).forEach(v => {
+    const cb = document.querySelector(`#${id} input[value="${v}"]`); if (cb) cb.checked = true;
+  });
+  sg('dt', 'dataTypeFilters'); sg('ap', 'approachFilters'); sg('ph', 'phaseFilters'); sg('ef', 'effortFilters');
+  if (['grid','list','map'].includes(p.get('view'))) currentView = p.get('view');
+  if (['landscape','swimlanes'].includes(p.get('mmode'))) mapMode = p.get('mmode');
+  const tab = p.get('tab');
+  return ['explore','advisor','project','compare'].includes(tab) ? tab : 'explore';
 }
 
 // Keyboard shortcut
@@ -2714,9 +2805,11 @@ document.addEventListener('keydown', e => {
 });
 
 // Init
+const initialTab = restoreFromURL();
 document.getElementById('projectCount').textContent = selectedMethods.length;
 updateDeselectBtn();
-applyFilters();
+setView(currentView);     // reflects restored view + runs applyFilters()
+switchTab(initialTab);    // reflects restored tab
 </script>
 </body>
 </html>
