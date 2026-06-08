@@ -3150,6 +3150,8 @@ function passesFilters(m, f) {
 }
 
 function applyFilters() {
+  // In the Learn tab the search box filters the method picker (when no walkthrough is open)
+  if (currentTab === 'learn') { if (!learnState.methodId) renderLearn(); return; }
   if (currentLens === 'analysis') { applyAnalysisFilters(); return; }
   const f = {
     search: document.getElementById('searchInput').value.toLowerCase(),
@@ -4571,7 +4573,9 @@ function renderLearn(focusHeading){
 }
 function learnPickerHTML(){
   const guided = new Set(LEARN_METHODS.map(m => m.id));
-  const list = (typeof analysisMethods !== 'undefined' ? analysisMethods : []);
+  const all = (typeof analysisMethods !== 'undefined' ? analysisMethods : []);
+  const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
+  const list = q ? all.filter(a => a.name.toLowerCase().includes(q) || a.whatItIs.toLowerCase().includes(q)) : all;
   const cards = list.map(a => {
     const has = guided.has(a.id);
     return `<div class="learn-pick ${has ? 'has' : ''}">
@@ -4582,8 +4586,12 @@ function learnPickerHTML(){
         : `<button class="btn btn-ghost btn-sm" onclick="openAnalysisModal('${a.id}')">View reference card</button>`}
     </div>`;
   }).join('');
+  const countNote = q
+    ? `<p class="small" role="status" style="margin-bottom:.8rem">Showing ${list.length} of ${all.length} analysis methods for “${escHtml(q)}”.${list.length ? '' : ' Nothing matched — try a different term or clear the search.'}</p>`
+    : '';
   return `<h2 class="learn-title">Learn Analysis</h2>
-    <p class="learn-sub">Pick a method and get coached through it step by step, working on your own data (it stays in your browser). Start with a guided walkthrough, or open any method's reference card.</p>
+    <p class="learn-sub">Pick a method and get coached through it step by step, working on your own data (it stays in your browser). Use the search box above to find a method. Start with a guided walkthrough, or open any method's reference card.</p>
+    ${countNote}
     <div class="learn-grid">${cards}</div>`;
 }
 function learnPick(id){ learnCollectCurrent(); learnState.methodId = id; if (learnState.step == null) learnState.step = 0; learnSave(); renderLearn(true); }
