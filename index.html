@@ -465,6 +465,10 @@
   .analysis-chip:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   .analysis-chip .ac-out { color:var(--textLight); font-weight:500; }
   .analysis-chip:hover .ac-out { color:var(--accentText); }
+  /* Output-type tag: neutral style so it reads as a distinct dimension from data-type colours */
+  .tag-output { background:#EEF2FF; color:var(--accentText); border:1px solid #DCE3FF; }
+  .bridge-plain { margin-top:.5rem; font-size:.76rem; color:var(--textLight); line-height:1.5; }
+  .feeds-plain { display:inline-flex; align-items:center; font-size:.78rem; color:var(--textLight); padding:.3rem .2rem; }
   .analysis-chip .ac-adv {
     font-size:.58rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
     background:var(--attitudinal); color:#6B4E00; padding:0 .32rem; border-radius:6px; margin-left:.05rem;
@@ -764,9 +768,6 @@
               <button class="more-item" onclick="copyLink(this)" id="copyLinkBtn" title="Copy a shareable link to this filtered view">Copy link</button>
               <button class="more-item" onclick="clearAllFilters()" id="clearFiltersBtn" title="Clear search and all filters">Clear all filters</button>
               <button class="more-item js-deselect-all" onclick="clearAllSelected()" id="deselectAllBtn" title="Remove all methods from My Project">Clear selection</button>
-              <label class="more-item more-check" id="advToggleLabel" title="Off by default. Turn on to include Advanced analysis methods alongside Beginner and Intermediate ones.">
-                <input type="checkbox" id="advToggle" onchange="setShowAdvanced(this.checked)"> Show advanced analysis methods
-              </label>
             </div>
           </div>
         </div>
@@ -2434,375 +2435,605 @@ const methods = [
 ];
 
 const analysisMethods = [
-  // Analysis & Synthesis methods (normalised to portal vocab). Not yet wired into the UI.
-  // Each: { kind:"analysis", name, dataType:[], approach:[], phases:[], effort, description, outputType, level, inputMethods:[names], rigourNote, softwareTools:[], references:[], ...empty collection-only fields }
+  // 46-method analysis catalog (parsed from analysis-methods-elaborations.md).
+  // Schema: { id, name, outputType:[], dataType:[], whatItIs, produces, rigour, tools, example, references:[], analysesDataFrom:[collection names] }
   {
-    kind: "analysis",
-    name: "Affinity Diagramming (KJ Method)",
-    id: "affinity-diagramming",
-    dataType: ["qualitative"],
-    approach: [],
-    phases: ["phase2","phase3"],
-    effort: "low",
-    description: "Cluster individual observations or quotes into emergent groups to surface shared themes from messy qualitative notes.",
-    outputType: "Themes",
-    level: "Beginner",
-    inputMethods: ["interviews","contextual-inquiry","observation","surveys","diary-studies","focus-groups"],
-    rigourNote: "Build clusters bottom-up from the data rather than sorting into pre-decided buckets; name each cluster only after grouping.",
-    softwareTools: ["Miro","FigJam","Mural","Sticky notes"],
-    references: ["Beyer & Holtzblatt (1998)","Martin & Hanington (2019)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Thematic Analysis",
     id: "thematic-analysis",
-    dataType: ["qualitative"],
-    approach: [],
-    phases: ["phase2","phase4"],
-    effort: "medium",
-    description: "Systematically code qualitative data and develop, review and name themes that answer the research question.",
-    outputType: "Themes",
-    level: "Beginner",
-    inputMethods: ["interviews","diary-studies","surveys","focus-groups","observation","think-aloud-protocol"],
-    rigourNote: "State whether coding is inductive (data-driven) or deductive (theory-driven); keep a codebook and an audit trail.",
-    softwareTools: ["NVivo","ATLAS.ti","Taguette","MAXQDA","Dedoose"],
-    references: ["Braun & Clarke (2006)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    name: "Thematic analysis",
+    outputType: ["Themes"],
+    dataType: ["qualitative","attitudinal"],
+    whatItIs: "A systematic method for identifying, coding, and interpreting patterns of meaning (\"themes\") across a qualitative dataset. Codes are attached to data segments, grouped into candidate themes, then reviewed, defined, and named — either inductively (data-driven) or deductively (framework-driven).",
+    produces: "A defined set of themes and sub-themes, a codebook, and an evidenced narrative linking each theme to illustrative quotes.",
+    rigour: "Follow Braun & Clarke's six phases; keep an auditable codebook; code a subset with a second coder or test inductive vs. deductive stances explicitly; reach analytic saturation; show disconfirming cases; quote sparingly but representatively. Distinguish *reflexive* TA (interpretive) from *codebook* TA (reliability-oriented) and report which you used.",
+    tools: "NVivo, ATLAS.ti, Dedoose, MAXQDA, Taguette (free), Dovetail; spreadsheets for small sets.",
+    example: "Coding 18 onboarding interviews surfaces themes such as \"fear of irreversible actions\" and \"reliance on peer workarounds,\" each grounded in tagged excerpts.",
+    references: ["Braun, V. & Clarke, V. (2006). *Using thematic analysis in psychology.* Qualitative Research in Psychology, 3(2), 77–101.","Braun, V. & Clarke, V. (2022). *Thematic Analysis: A Practical Guide.* SAGE."],
+    analysesDataFrom: ["AEIOU Framework","Affinity Diagramming","Bodystorming","Collage","Content Analysis","Contextual Design","Creative Toolkits","Critical Incident Technique","Crowdsourcing","Cultural Probes","Design Charette","Design Ethnography","Design Workshops","Desirability Testing","Diary Studies","Directed Storytelling","Exploratory Research","Flexible Modeling","Fly-on-the-Wall Observation","Focus Groups","Graffiti Walls","Graphic Organizers","Image Boards","Interviews","KJ Technique","Kano Analysis","Laddering","Love & the Breakup Letter","Mental Model Diagrams","Mind Mapping","Observation","Participant Observation","Participatory Action Research","Participatory Design","Photo Studies","Picture Cards","Prototyping","Remote Moderated Research","Role-Playing","Shadowing","Simulation Exercises","Speed Dating","Surveys","Think-Aloud Protocol","Touchstone Tours","Wizard of Oz"]
   },
   {
-    kind: "analysis",
-    name: "Journey / Experience Mapping",
-    id: "journey-mapping",
-    dataType: ["qualitative"],
-    approach: [],
-    phases: ["phase2","phase3"],
-    effort: "medium",
-    description: "Plot a user's actions, thoughts and emotions across the stages of an experience to expose pain points and opportunities.",
-    outputType: "Map/Journey",
-    level: "Beginner",
-    inputMethods: ["interviews","contextual-inquiry","diary-studies","observation"],
-    rigourNote: "Ground every stage and emotion in evidence from your data; mark assumptions clearly where evidence is thin.",
-    softwareTools: ["Miro","Figma","Smaply","UXPressia"],
-    references: ["Kalbach (2021)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Persona Synthesis",
-    id: "persona-synthesis",
-    dataType: ["qualitative"],
-    approach: [],
-    phases: ["phase2"],
-    effort: "medium",
-    description: "Consolidate patterns across users into a small set of representative archetypes to guide design decisions.",
-    outputType: "Segments/Clusters",
-    level: "Beginner",
-    inputMethods: ["interviews","contextual-inquiry","surveys"],
-    rigourNote: "Derive personas from observed behavioural patterns, not demographics alone; avoid inventing traits unsupported by data.",
-    softwareTools: ["Miro","UXPressia","Figma"],
-    references: ["Cooper, Reimann, Cronin & Noessel (2014)","Pruitt & Adlin (2006)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Descriptive Statistics",
-    id: "descriptive-statistics",
-    dataType: ["quantitative"],
-    approach: [],
-    phases: ["phase4","phase5"],
-    effort: "low",
-    description: "Summarise numeric data with counts, means, medians, spread and simple charts to describe what was observed.",
-    outputType: "Scores/Measures",
-    level: "Beginner",
-    inputMethods: ["surveys","questionnaires","web-analytics","usability-testing","a-b-testing"],
-    rigourNote: "Choose summaries that match the measurement scale (for example, the median for ordinal data) and always report the sample size.",
-    softwareTools: ["Excel","JASP","jamovi","SPSS","R"],
-    references: ["Field (2018)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Qualitative Content Analysis",
-    id: "qualitative-content-analysis",
+    id: "content-analysis",
+    name: "Content analysis",
+    outputType: ["Themes","Scores/Measures"],
     dataType: ["qualitative","quantitative"],
-    approach: [],
-    phases: ["phase2","phase4"],
-    effort: "medium",
-    description: "Categorise text into a coding scheme and, where useful, count category frequencies to compare across cases.",
-    outputType: "Themes",
-    level: "Intermediate",
-    inputMethods: ["surveys","interviews","diary-studies"],
-    rigourNote: "Define categories before counting and assess inter-coder reliability (for example, Cohen's kappa) when more than one coder is involved.",
-    softwareTools: ["NVivo","MAXQDA","QDA Miner","R","Python"],
-    references: ["Krippendorff (2018)","Hsieh & Shannon (2005)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    whatItIs: "Systematic categorisation of textual, visual, or recorded content against a coding scheme, often quantifying how frequently categories occur. Spans qualitative (latent meaning) and quantitative (manifest counts) variants.",
+    produces: "Coded categories with frequency counts, cross-tabulations, and trends; optionally inter-coder reliability figures.",
+    rigour: "Define the unit of analysis and an explicit, mutually exclusive coding scheme; pilot it; train coders; report inter-rater reliability (e.g., Krippendorff's α); separate manifest from latent coding; sample content systematically.",
+    tools: "NVivo, ATLAS.ti, MAXQDA; QDA Miner/WordStat; Python (NLTK, spaCy), R (quanteda).",
+    example: "Coding 300 app-store reviews into feature categories shows 42% concern onboarding, 18% pricing — quantified and tracked across releases.",
+    references: ["Krippendorff, K. (2018). *Content Analysis: An Introduction to Its Methodology* (4th ed.). SAGE.","Neuendorf, K. (2017). *The Content Analysis Guidebook* (2nd ed.). SAGE."],
+    analysesDataFrom: ["Artifact Analysis","Behavioral Mapping","Collage","Concept Mapping","Content Analysis","Content Inventory","Critical Incident Technique","Crowdsourcing","Desirability Testing","Evaluative Research","Focus Groups","Graffiti Walls","Heuristic Evaluation","Interviews","KJ Technique","Laddering","Mind Mapping","Personal Inventories","Photo Studies","Picture Cards","Site Search Analytics","Thematic Analysis"]
   },
   {
-    kind: "analysis",
-    name: "Framework Analysis",
-    id: "framework-analysis",
+    id: "grounded-theory",
+    name: "Grounded theory",
+    outputType: ["Model/Framework","Themes"],
     dataType: ["qualitative"],
-    approach: [],
-    phases: ["phase2","phase4"],
-    effort: "medium",
-    description: "Chart coded qualitative data into a matrix of themes by case to compare systematically across participants.",
-    outputType: "Themes",
-    level: "Intermediate",
-    inputMethods: ["interviews","focus-groups"],
-    rigourNote: "Keep the framework matrix transparent so readers can trace each summary cell back to its source quotes.",
-    softwareTools: ["NVivo","Excel","MAXQDA"],
-    references: ["Ritchie & Spencer (1994)","Gale, Heath, Cameron, Rashid & Redwood (2013)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    whatItIs: "An inductive methodology that builds theory *from* data through iterative rounds of coding (open → axial/focused → theoretical), constant comparison, and theoretical sampling until categories are saturated.",
+    produces: "A grounded conceptual model or theory explaining a core process, with categories, properties, and their relationships.",
+    rigour: "Interleave data collection and analysis; use constant comparison; write memos throughout; sample theoretically to test emerging categories; demonstrate saturation; be explicit about the variant used (Glaserian, Straussian, or Charmaz's constructivist).",
+    tools: "ATLAS.ti, NVivo, MAXQDA (memoing + network views); Dedoose.",
+    example: "Analysis of clinician interviews yields a theory of \"improvised safety,\" explaining how staff compensate for an unforgiving EHR.",
+    references: ["Charmaz, K. (2014). *Constructing Grounded Theory* (2nd ed.). SAGE.","Corbin, J. & Strauss, A. (2015). *Basics of Qualitative Research* (4th ed.). SAGE."],
+    analysesDataFrom: ["Design Ethnography","Exploratory Research","Focus Groups","Participant Observation"]
   },
   {
-    kind: "analysis",
-    name: "Inferential Tests (t-test, ANOVA, chi-square, correlation, regression)",
-    id: "inferential-tests",
+    id: "framework-template-analysis",
+    name: "Framework / template analysis",
+    outputType: ["Themes","Model/Framework"],
+    dataType: ["qualitative"],
+    whatItIs: "A matrix-based approach that codes qualitative data against an a-priori (but revisable) framework, charting cases × themes so patterns can be compared systematically across participants.",
+    produces: "A thematic framework and a charted matrix (cases in rows, themes in columns) supporting within- and cross-case comparison.",
+    rigour: "Develop the framework from a subset before applying it; allow new themes to emerge; chart consistently; keep the index/audit trail; involve multiple analysts in framework development.",
+    tools: "NVivo (framework matrices), Excel, MAXQDA, Quirkos.",
+    example: "Charting 24 patient interviews against an access-to-care framework reveals where \"digital-only\" routes exclude older users.",
+    references: ["Gale, N. et al. (2013). *Using the framework method for the analysis of qualitative data.* BMC Medical Research Methodology, 13(1), 117.","Ritchie, J. & Spencer, L. (1994). *Qualitative data analysis for applied policy research.*"],
+    analysesDataFrom: ["Interviews"]
+  },
+  {
+    id: "affinity-diagramming",
+    name: "Affinity diagramming",
+    outputType: ["Themes","Model/Framework"],
+    dataType: ["qualitative"],
+    whatItIs: "A bottom-up clustering technique (a.k.a. the KJ Method) in which individual observations on notes are silently grouped by natural affinity, then labelled and hierarchically organised to reveal structure in messy qualitative data.",
+    produces: "A labelled hierarchy of clusters (themes → groups → super-groups) and design-opportunity statements.",
+    rigour: "One observation per note; cluster silently first to avoid groupthink; label groups with full sentences capturing the insight (not just topics); build the hierarchy bottom-up; photograph and retain the wall as an audit trail.",
+    tools: "Miro, Mural, FigJam, physical sticky notes; Dovetail (digital affinity).",
+    example: "220 field-visit notes cluster into \"trust,\" \"speed,\" and \"control\" groups, framing three design bets.",
+    references: ["Beyer, H. & Holtzblatt, K. (1998). *Contextual Design.* Morgan Kaufmann.","Kawakita, J. (1991). *The Original KJ Method.* Kawakita Research Institute."],
+    analysesDataFrom: ["AEIOU Framework","Affinity Diagramming","Bodystorming","Brainstorming","Contextual Design","Contextual Inquiry","Design Charette","Design Workshops","Participatory Action Research","Participatory Design","Triangulation"]
+  },
+  {
+    id: "pattern-comparative-analysis",
+    name: "Pattern & comparative analysis",
+    outputType: ["Themes"],
+    dataType: ["qualitative","behavioral"],
+    whatItIs: "A family of cross-case techniques — within-case and cross-case comparison, pattern matching, and explanation building — used to find recurring configurations and contrasts across participants, sites, or episodes.",
+    produces: "Documented patterns, typologies, and matched/explained contrasts across cases.",
+    rigour: "Use structured matrices and displays; define pattern criteria in advance; actively seek negative cases; compare like-with-like; triangulate sources to confirm a pattern is not an artefact.",
+    tools: "Miles–Huberman matrices in Excel/Sheets; NVivo/ATLAS.ti matrix queries; Dedoose.",
+    example: "Comparing onboarding across six teams shows the same \"skip-and-regret\" pattern wherever a step is optional.",
+    references: ["Miles, M., Huberman, A. M. & Saldaña, J. (2014). *Qualitative Data Analysis* (3rd ed.). SAGE.","Yin, R. K. (2018). *Case Study Research and Applications* (6th ed.). SAGE."],
+    analysesDataFrom: ["AEIOU Framework","Affinity Diagramming","Artifact Analysis","Behavioral Mapping","Case Studies","Creative Toolkits","Cultural Probes","Diary Studies","Experience Sampling","Graphic Organizers","Mental Model Diagrams","Personal Inventories","Photo Studies","Picture Cards","Time-Aware Research","Touchstone Tours","Unobtrusive Measures"]
+  },
+  {
+    id: "narrative-analysis",
+    name: "Narrative analysis",
+    outputType: ["Themes"],
+    dataType: ["qualitative","attitudinal"],
+    whatItIs: "Analysis of stories as wholes — their structure, sequence, and meaning — preserving how people emplot events, rather than fragmenting accounts into codes.",
+    produces: "Story arcs, turning points, emotional trajectories, and accounts of how participants make sense of experience.",
+    rigour: "Keep narratives intact; attend to structure (orientation, complication, resolution) and to who tells the story and why; analyse form as well as content; be transparent about the interpretive lens (thematic, structural, dialogic/performative).",
+    tools: "ATLAS.ti, NVivo; transcription tools (Otter, Trint); narrative timeline tools.",
+    example: "\"Day-in-the-life\" stories from carers reveal a recurring arc from confidence → breakdown → workaround that informs support design.",
+    references: ["Riessman, C. K. (2008). *Narrative Methods for the Human Sciences.* SAGE.","Murray, M. (2003). *Narrative psychology.* In *Qualitative Psychology* (Smith, ed.)."],
+    analysesDataFrom: ["Case Studies","Collage","Creative Toolkits","Cultural Probes","Design Ethnography","Directed Storytelling","Evidence-Based Design","Literature Review","Personal Inventories","Picture Cards","Secondary Research","Shadowing","Storyboards","Touchstone Tours"]
+  },
+  {
+    id: "phenomenological-analysis-ipa",
+    name: "Phenomenological analysis (IPA)",
+    outputType: ["Themes"],
+    dataType: ["qualitative","attitudinal"],
+    whatItIs: "Interpretative Phenomenological Analysis examines how a small number of participants make sense of a significant lived experience, through detailed, case-by-case interpretation before cautious cross-case synthesis.",
+    produces: "Experiential themes capturing the texture and meaning of a phenomenon, grounded in rich individual accounts.",
+    rigour: "Use homogeneous, small samples (often 3–8); analyse each case fully before moving on; stay close to participants' words (the \"double hermeneutic\"); evidence each theme with extracts; bracket researcher assumptions reflexively.",
+    tools: "NVivo, ATLAS.ti, MAXQDA; manual line-by-line annotation.",
+    example: "Six users recovering from data loss describe a shared experience of \"guilt and vigilance\" that reframes backup UX.",
+    references: ["Smith, J. A., Flowers, P. & Larkin, M. (2009). *Interpretative Phenomenological Analysis.* SAGE.","Smith, J. A. & Nizza, I. E. (2022). *Essentials of IPA.* APA."],
+    analysesDataFrom: ["Interviews"]
+  },
+  {
+    id: "semiotic-metaphor-analysis",
+    name: "Semiotic & metaphor analysis",
+    outputType: ["Themes"],
+    dataType: ["qualitative"],
+    whatItIs: "Interpretation of signs, symbols, and metaphors in images and artefacts to surface cultural meaning, connotation, and the conceptual mappings people use to reason about a product.",
+    produces: "Readings of denotation/connotation, symbolic codes, and recurrent metaphors that can guide visual language and conceptual models.",
+    rigour: "Distinguish denotation from connotation; ground readings in cultural context; corroborate interpretations with participants or multiple analysts; for metaphor, trace source→target mappings systematically.",
+    tools: "ATLAS.ti (image coding), Miro; reference frameworks (Peirce/Saussure, Lakoff & Johnson).",
+    example: "Collages reveal users framing finance as \"a leaking bucket,\" suggesting containment metaphors in the UI.",
+    references: ["Chandler, D. (2017). *Semiotics: The Basics* (3rd ed.). Routledge.","Lakoff, G. & Johnson, M. (2003). *Metaphors We Live By.* University of Chicago Press."],
+    analysesDataFrom: ["Artifact Analysis","Collage","Creative Toolkits","Focus Groups","Picture Cards","Research Through Design"]
+  },
+  {
+    id: "visual-analysis",
+    name: "Visual analysis",
+    outputType: ["Themes"],
+    dataType: ["qualitative"],
+    whatItIs: "Systematic interpretation of images, photographs, and visual artefacts produced by or for participants, treating the visual as primary data rather than illustration.",
+    produces: "Coded visual themes, compositional readings, and inventories of objects/environments with interpretive notes.",
+    rigour: "Combine content (what is shown) and compositional/social readings (how and why); record provenance and context; pair images with participant explanation (photo-elicitation) to avoid over-reading; use multiple coders.",
+    tools: "ATLAS.ti / NVivo (image coding), Miro; EXIF/metadata tools for provenance.",
+    example: "Photovoice images of \"where I do my banking\" expose kitchen-table, interrupted contexts that reshape session design.",
+    references: ["Rose, G. (2016). *Visual Methodologies* (4th ed.). SAGE.","Banks, M. (2007). *Using Visual Data in Qualitative Research.* SAGE."],
+    analysesDataFrom: ["Artifact Analysis","Creative Toolkits","Cultural Probes","Graffiti Walls"]
+  },
+  {
+    id: "memo-writing-reflexivity",
+    name: "Memo writing & reflexivity",
+    outputType: ["Themes"],
+    dataType: ["qualitative"],
+    whatItIs: "The analytic practice of writing memos that capture emerging ideas, decisions, and the researcher's own influence on interpretation — a connective tissue across coding that also documents reflexivity.",
+    produces: "An audit trail of analytic memos, decision logs, and a reflexive account strengthening trustworthiness.",
+    rigour: "Memo continuously and date entries; separate observational, theoretical, and methodological memos; record positionality and how it shapes readings; feed memos back into coding and theory.",
+    tools: "NVivo/ATLAS.ti/MAXQDA memo functions; Obsidian, Notion, plain notebooks.",
+    example: "A reflexive memo notes the analyst's fintech bias, prompting re-coding of \"convenience\" that had been over-weighted.",
+    references: ["Charmaz, K. (2014). *Constructing Grounded Theory* (2nd ed.). SAGE.","Finlay, L. (2002). *Negotiating the swamp: the opportunity and challenge of reflexivity in research practice.* Qualitative Research, 2(2), 209–230."],
+    analysesDataFrom: ["Exploratory Research","Participant Observation","Participatory Action Research","Research Through Design"]
+  },
+  {
+    id: "design-critique-synthesis",
+    name: "Design critique synthesis",
+    outputType: ["Themes","Priorities/Ranking"],
+    dataType: ["qualitative","attitudinal"],
+    whatItIs: "Structured synthesis of critique and expert feedback on concepts or designs into shared principles, recurring issues, and prioritised directions.",
+    produces: "Consolidated critique themes, extracted design principles, and a ranked list of issues/opportunities.",
+    rigour: "Use a critique framework (e.g., goal-oriented \"I like / I wish / What if\"); separate observation from preference; attribute and de-duplicate feedback; resolve conflicts explicitly; convert recurring points into testable principles.",
+    tools: "FigJam/Miro/Mural critique boards; Dovetail; spreadsheets for issue logs.",
+    example: "Three critique rounds on a dashboard converge on the principle \"show change, not just state.\"",
+    references: ["Connors, A. & Irizarry, A. (2015). *Discussing Design: Improving Communication and Collaboration through Critique.* O'Reilly.","Schön, D. (1983). *The Reflective Practitioner.* Basic Books."],
+    analysesDataFrom: ["Design Charette","Elito Method","Parallel Prototyping","Research Through Design"]
+  },
+  {
+    id: "cluster-segmentation-analysis",
+    name: "Cluster & segmentation analysis",
+    outputType: ["Segments/Clusters"],
+    dataType: ["quantitative","behavioral"],
+    whatItIs: "Grouping items, people, or cards into clusters that are internally similar and externally distinct — manually (card-sort agreement) or statistically (distance-based clustering, dendrograms, k-means).",
+    produces: "Cluster/segment definitions, similarity matrices, dendrograms, and named groups with defining attributes.",
+    rigour: "Choose distance metric and linkage deliberately; standardise variables; decide cluster count with a defensible rule (silhouette, scree, dendrogram cut) rather than by eye; validate stability on held-out data; profile and name clusters from their drivers, not assumptions.",
+    tools: "Optimal Workshop / kardSort (card-sort dendrograms), R (cluster, factoextra), Python (scikit-learn), SPSS.",
+    example: "Open card-sort similarity data yields three content clusters that become the new top-level navigation.",
+    references: ["Everitt, B., Landau, S., Leese, M. & Stahl, D. (2011). Cluster Analysis (5th ed.). Wiley.","Spencer, D. (2009). Card Sorting: Designing Usable Categories. Rosenfeld."],
+    analysesDataFrom: ["Affinity Diagramming","Card Sorting","Kano Analysis","Mental Model Diagrams","Personas","Stakeholder Maps","Territory Maps","Web Analytics"]
+  },
+  {
+    id: "persona-empathy-mapping",
+    name: "Persona & empathy mapping",
+    outputType: ["Model/Framework","Segments/Clusters"],
+    dataType: ["qualitative","attitudinal"],
+    whatItIs: "Synthesis of research into archetypal user models (personas) and empathy maps that consolidate goals, behaviours, needs, and pains into shareable, decision-guiding representations.",
+    produces: "A set of evidence-based personas and/or empathy maps (says / thinks / does / feels) with goals and scenarios.",
+    rigour: "Ground every attribute in data and cite sources; base segmentation on behaviour and goals, not demographics alone; limit the number of personas; keep them falsifiable and update them; avoid stereotyping.",
+    tools: "UXPressia, Smaply, Figma/Miro templates; spreadsheets linking attributes to evidence.",
+    example: "Behavioural clusters from analytics + interviews produce three personas distinguished by risk tolerance, not age.",
+    references: ["Pruitt, J. & Adlin, T. (2006). The Persona Lifecycle. Morgan Kaufmann.","Cooper, A. (1999). The Inmates Are Running the Asylum. Sams."],
+    analysesDataFrom: ["Personas"]
+  },
+  {
+    id: "taxonomic-classification",
+    name: "Taxonomic classification",
+    outputType: ["Model/Framework","Segments/Clusters"],
+    dataType: ["qualitative"],
+    whatItIs: "Organising items or concepts into a structured classification or hierarchy (a taxonomy), often derived from sorting studies or content, to formalise categories and their relationships.",
+    produces: "A taxonomy / category hierarchy with definitions and membership rules; an information architecture candidate.",
+    rigour: "Derive categories from user data (card sorting, content) not internal jargon; ensure categories are mutually exclusive and collectively exhaustive where intended; validate with closed card sorts or tree-testing; document inclusion criteria.",
+    tools: "Optimal Workshop (Treejack, OptimalSort), Miro, xSort; spreadsheets.",
+    example: "Sorting 60 help articles produces a four-branch taxonomy validated at 86% tree-test success.",
+    references: ["Spencer, D. (2009). Card Sorting: Designing Usable Categories. Rosenfeld.","Rugg, G. & McGeorge, P. (2005). The sorting techniques. Expert Systems, 22(3), 94–107."],
+    analysesDataFrom: ["Artifact Analysis","Concept Mapping","Evaluative Research","Personal Inventories","Photo Studies","Stakeholder Walkthrough","Think-Aloud Protocol"]
+  },
+  {
+    id: "laddering-means-end-analysis",
+    name: "Laddering & means-end analysis",
+    outputType: ["Model/Framework"],
+    dataType: ["attitudinal","qualitative"],
+    whatItIs: "A technique that links product attributes to consequences and ultimately to personal values, producing a means-end \"ladder\" and an aggregated hierarchical value map (HVM).",
+    produces: "Attribute–consequence–value chains and an HVM showing dominant motivational pathways; an implication matrix.",
+    rigour: "Use consistent probing (\"why does that matter?\"); code elements into attributes/consequences/values reliably; build the implication matrix with a justified cut-off; report dominant ladders and the cut-off used.",
+    tools: "LadderUX, MECAnalyst; spreadsheets for the implication matrix; NVivo for coding.",
+    example: "Laddering on a savings app maps \"round-up feature → effortless saving → feeling in control,\" targeting the control value.",
+    references: ["Reynolds, T. J. & Gutman, J. (1988). Laddering theory, method, analysis, and interpretation. Journal of Advertising Research, 28(1), 11–31.","Gutman, J. (1982). A means-end chain model. Journal of Marketing, 46(2), 60–72."],
+    analysesDataFrom: ["Laddering","Participant Observation"]
+  },
+  {
+    id: "journey-touchpoint-mapping",
+    name: "Journey & touchpoint mapping",
+    outputType: ["Map/Journey"],
+    dataType: ["qualitative","behavioral"],
+    whatItIs: "Visual synthesis of a user's end-to-end experience across stages and touchpoints, layering actions, thoughts, emotions, pain points, and opportunities onto a timeline.",
+    produces: "A journey map with stages, touchpoints, an emotion curve, moments of truth, and prioritised opportunities.",
+    rigour: "Base stages and emotions on evidence (quotes, metrics), not workshop guesses; define the actor and scope; mark assumptions vs. data; identify back-stage failure points; tie opportunities to specific touchpoints.",
+    tools: "Smaply, UXPressia, Miro/Mural, FigJam, TheyDo.",
+    example: "A claims journey reveals the post-submission \"silence gap\" as the lowest emotional point and top fix.",
+    references: ["Kalbach, J. (2016). Mapping Experiences. O'Reilly.","Stickdorn, M. et al. (2018). This Is Service Design Doing. O'Reilly."],
+    analysesDataFrom: ["Business Origami","Contextual Inquiry","Customer Experience Audit","Scenario Description Swimlanes","Storyboards","User Journey Maps"]
+  },
+  {
+    id: "service-blueprinting",
+    name: "Service blueprinting",
+    outputType: ["Map/Journey"],
+    dataType: ["qualitative"],
+    whatItIs: "Extension of journey mapping that aligns the customer journey with front-stage and back-stage actions, support processes, and lines of interaction/visibility to expose how a service is delivered.",
+    produces: "A blueprint showing customer actions, frontstage, backstage, support processes, and the lines of interaction/visibility/internal interaction.",
+    rigour: "Anchor to a real customer journey; map actual (not idealised) processes by involving operations staff; mark fail points and waits; keep swimlanes consistent; validate with the teams who run each stage.",
+    tools: "Miro/Mural, Smaply, Lucidchart; spreadsheets for process detail.",
+    example: "Blueprinting onboarding shows a manual back-office verification causing the 48-hour activation delay.",
+    references: ["Shostack, G. L. (1984). Designing services that deliver. Harvard Business Review, 62(1), 133–139.","Bitner, M. J., Ostrom, A. L. & Morgan, F. N. (2008). Service blueprinting. California Management Review, 50(3), 66–94."],
+    analysesDataFrom: ["Scenario Description Swimlanes","Simulation Exercises","Stakeholder Walkthrough","User Journey Maps"]
+  },
+  {
+    id: "stakeholder-systems-mapping",
+    name: "Stakeholder & systems mapping",
+    outputType: ["Map/Journey","Model/Framework"],
+    dataType: ["qualitative"],
+    whatItIs: "Mapping the actors, relationships, flows, and influence/interest in a system to understand dependencies, power, and value exchange around a product or service.",
+    produces: "Stakeholder maps, influence–interest grids, network/flow diagrams, and value-exchange models.",
+    rigour: "Identify stakeholders systematically (don't omit hidden or marginal actors); classify by influence and interest with evidence; map flows (information, money, value) explicitly; validate with participants; update as the system changes.",
+    tools: "Kumu, Miro/Mural, Gephi (networks), Lucidchart.",
+    example: "A systems map reveals a third-party KYC vendor as the unseen bottleneck shaping onboarding UX.",
+    references: ["Reed, M. S. et al. (2009). Who's in and why? A typology of stakeholder analysis. Journal of Environmental Management, 90(5), 1933–1949.","Freeman, R. E. (1984). Strategic Management: A Stakeholder Approach. Pitman."],
+    analysesDataFrom: ["Business Origami","Concept Mapping","Contextual Inquiry","Graphic Organizers","KJ Technique","Mind Mapping","Participatory Action Research","Stakeholder Maps","Stakeholder Walkthrough","Web Analytics"]
+  },
+  {
+    id: "work-artifact-modeling",
+    name: "Work & artifact modeling",
+    outputType: ["Model/Framework"],
+    dataType: ["qualitative","behavioral"],
+    whatItIs: "Building the formal work models of Contextual Design — flow, sequence, artifact, cultural, and physical models — from field data to represent how work actually happens.",
+    produces: "A consolidated set of work models and an affinity-backed picture of practice, with artefacts annotated for how they are used and adapted.",
+    rigour: "Model directly from observed instances, not recollection; run interpretation sessions soon after visits; consolidate across participants; keep artefacts in context and note workarounds and annotations as evidence of unmet needs.",
+    tools: "Miro/Mural for models, OmniGraffle/Lucidchart; photo cataloguing tools for artefacts.",
+    example: "A sequence model exposes a hidden reconciliation step users perform in a spreadsheet outside the product.",
+    references: ["Holtzblatt, K. & Beyer, H. (2017). Contextual Design (2nd ed.). Morgan Kaufmann.","Beyer, H. & Holtzblatt, K. (1998). Contextual Design. Morgan Kaufmann."],
+    analysesDataFrom: ["Contextual Design","Contextual Inquiry","Touchstone Tours"]
+  },
+  {
+    id: "task-analysis-hta-goms-cta",
+    name: "Task analysis (HTA / GOMS / CTA)",
+    outputType: ["Model/Framework"],
+    dataType: ["behavioral","qualitative"],
+    whatItIs: "Decomposing a task into goals, sub-goals, operations, and plans. Variants include Hierarchical Task Analysis (HTA), GOMS (predictive performance modelling), and Cognitive Task Analysis (knowledge and decisions).",
+    produces: "A task hierarchy/flow with plans; for GOMS, quantitative time/step predictions; for CTA, decision requirements and knowledge maps.",
+    rigour: "Define the top goal and stopping rule; validate the decomposition with users/experts; for GOMS use validated operator times and state assumptions; capture errors and decision points, not just the happy path.",
+    tools: "Excel/Visio/Lucidchart for HTA; CogTool / GOMS calculators; protocol-analysis transcripts for CTA.",
+    example: "GOMS predicts the redesigned transfer flow saves ~7 seconds per task before any build.",
+    references: ["Annett, J. (2003). Hierarchical Task Analysis. In Handbook of Cognitive Task Design.","Card, S., Moran, T. & Newell, A. (1983). The Psychology of Human-Computer Interaction. Erlbaum."],
+    analysesDataFrom: ["Automated Remote Research","Competitive Testing","Prototyping","Remote Moderated Research","Scenario-Based Evaluation","Task Analysis","Think-Aloud Protocol","Usability Testing"]
+  },
+  {
+    id: "requirement-feature-extraction",
+    name: "Requirement & feature extraction",
+    outputType: ["Model/Framework","Priorities/Ranking"],
+    dataType: ["qualitative"],
+    whatItIs: "Deriving explicit, traceable requirements and candidate features from research, briefs, and artefacts, and structuring them for prioritisation and handoff.",
+    produces: "A structured requirements list / feature inventory with rationale, source traceability, and acceptance-style detail.",
+    rigour: "Trace each requirement to a source (quote, observation, metric); separate problem from solution; remove duplicates and conflicts; make requirements testable; carry priority and rationale forward.",
+    tools: "Jira/Confluence, Notion, Aha!, Airtable; requirement-traceability matrices in Sheets.",
+    example: "Extraction from 20 interviews yields 14 de-duplicated, source-linked requirements feeding the backlog.",
+    references: ["Robertson, S. & Robertson, J. (2012). Mastering the Requirements Process (3rd ed.). Addison-Wesley.","Cooper, A., Reimann, R. & Cronin, D. (2014). About Face (4th ed.). Wiley."],
+    analysesDataFrom: ["Flexible Modeling","Love & the Breakup Letter","Mind Mapping","Parallel Prototyping","Scenarios","Stakeholder Walkthrough"]
+  },
+  {
+    id: "scenario-walkthrough-analysis",
+    name: "Scenario & walkthrough analysis",
+    outputType: ["Map/Journey","Themes"],
+    dataType: ["qualitative"],
+    whatItIs: "Analysing narrative scenarios or structured walkthroughs (e.g., cognitive walkthroughs) to evaluate how well a design supports goal completion and where breakdowns occur, step by step.",
+    produces: "Annotated scenarios/walkthroughs with breakdowns, coverage gaps, and fit assessments per step.",
+    rigour: "Use representative, evidence-based scenarios and personas; for cognitive walkthroughs answer the four standard questions at each step; record assumptions; cover edge and error paths, not only the success path.",
+    tools: "Miro/FigJam walkthrough boards, spreadsheets; usability-issue trackers (Dovetail).",
+    example: "A cognitive walkthrough of first-time setup flags step 3 where the action's label hides its outcome.",
+    references: ["Carroll, J. M. (2000). Making Use: Scenario-Based Design of Human-Computer Interactions. MIT Press.","Wharton, C. et al. (1994). The cognitive walkthrough method. In Usability Inspection Methods. Wiley."],
+    analysesDataFrom: ["Bodystorming","Cognitive Walkthrough","Role-Playing","Scenario-Based Evaluation","Scenarios","Simulation Exercises","Storyboards"]
+  },
+  {
+    id: "prioritization-voting-matrices",
+    name: "Prioritization (voting & matrices)",
+    outputType: ["Priorities/Ranking"],
+    dataType: ["attitudinal","quantitative"],
+    whatItIs: "Techniques for ordering ideas, features, or issues by agreed criteria — dot voting, priority/impact–effort matrices, MoSCoW, and Kano classification — to convert a long list into a defensible ranking.",
+    produces: "A ranked or grouped list (e.g., Now/Next/Later, must/should/could, basic/performance/delight) with scores and rationale.",
+    rigour: "Define and weight criteria before scoring; make voters independent to avoid anchoring; for Kano use the standard functional/dysfunctional question pair; record dissent; sanity-check the ranking against evidence and cost.",
+    tools: "Miro/Mural (dot voting), Airtable/Productboard, Kano survey templates, spreadsheets (impact–effort).",
+    example: "Impact–effort scoring of 22 backlog items isolates four \"high impact / low effort\" wins for the next sprint.",
+    references: ["Kano, N. et al. (1984). Attractive quality and must-be quality. Journal of the Japanese Society for Quality Control, 14(2), 39–48.","Gray, D., Brown, S. & Macanufo, J. (2010). Gamestorming. O'Reilly."],
+    analysesDataFrom: ["Brainstorming","Critical Incident Technique","Crowdsourcing","Design Charette","Design Workshops","Heuristic Evaluation","Image Boards","KJ Technique","Kano Analysis","Love & the Breakup Letter","Personal Inventories","Questionnaires","Rapid Iterative Testing","Speed Dating","Stakeholder Walkthrough","User Journey Maps","Value Opportunity Analysis"]
+  },
+  {
+    id: "comparative-matrix-radar-charts",
+    name: "Comparative matrix & radar charts",
+    outputType: ["Priorities/Ranking","Scores/Measures"],
+    dataType: ["attitudinal","quantitative"],
+    whatItIs: "Structured comparison of options against shared criteria using decision matrices (e.g., Pugh/weighted matrices) and radar/spider charts that visualise multi-criteria trade-offs.",
+    produces: "A scored option-by-criteria matrix, a recommended option with rationale, and radar charts showing strengths/weaknesses per option.",
+    rigour: "Choose criteria that matter to users/business and weight them transparently; use a consistent scale; include a baseline/reference option (Pugh); run sensitivity checks on weights; avoid false precision in the visual.",
+    tools: "Excel/Google Sheets, Airtable; charting libraries (Chart.js, Plotly) for radar; Miro templates.",
+    example: "A weighted matrix across five vendors makes the accessibility-led choice explicit despite a higher price.",
+    references: ["Pugh, S. (1991). Total Design. Addison-Wesley.","Keeney, R. & Raiffa, H. (1993). Decisions with Multiple Objectives. Cambridge University Press."],
+    analysesDataFrom: ["Elito Method","Graphic Organizers","Image Boards","Mind Mapping","Parallel Prototyping","Prototyping","Rapid Iterative Testing","Semantic Differential","Speed Dating","Triangulation","Value Opportunity Analysis","Weighted Matrix"]
+  },
+  {
+    id: "gap-benchmarking-analysis",
+    name: "Gap & benchmarking analysis",
+    outputType: ["Priorities/Ranking","Scores/Measures"],
+    dataType: ["quantitative","qualitative"],
+    whatItIs: "Measuring current performance against a target, competitor, or standard to quantify gaps and prioritise where to close them — covering competitive benchmarking and internal capability gaps.",
+    produces: "Gap statements, benchmark tables/percentiles, competitive positioning, and a prioritised improvement list.",
+    rigour: "Compare like-for-like (same tasks, metrics, conditions); use established benchmarks (e.g., SUS percentiles) and report sample sizes/CIs; separate symptom from cause; date benchmarks and re-measure after changes.",
+    tools: "Excel/R for benchmark stats; MeasuringU/UX benchmarking datasets; competitive-audit spreadsheets; analytics platforms.",
+    example: "A SUS of 62 sits at the 35th percentile, framing usability as the top gap versus two competitors.",
+    references: ["Camp, R. C. (1989). Benchmarking. ASQC Quality Press.","Sauro, J. & Lewis, J. R. (2016). Quantifying the User Experience (2nd ed.). Morgan Kaufmann."],
+    analysesDataFrom: ["Business Origami","Cognitive Walkthrough","Competitive Testing","Content Inventory","Customer Experience Audit","Graphic Organizers","Key Performance Indicators","Literature Review","Mental Model Diagrams","Questionnaires","Questionnaires & Evaluation","Scenario-Based Evaluation","Secondary Research","Storyboards","Territory Maps","Value Opportunity Analysis"]
+  },
+  {
+    id: "severity-heuristic-evaluation",
+    name: "Severity & heuristic evaluation",
+    outputType: ["Priorities/Ranking"],
+    dataType: ["qualitative","attitudinal"],
+    whatItIs: "Expert inspection of an interface against usability principles (heuristics), with each issue rated for severity (frequency × impact × persistence) to prioritise fixes.",
+    produces: "A catalogue of usability issues, each mapped to a heuristic and assigned a severity rating, ordered for remediation.",
+    rigour: "Use 3–5 evaluators independently, then merge; rate severity with a defined scale; tie each issue to a heuristic and a screen/step; distinguish evaluator opinion from observed user failure; re-rate after fixes.",
+    tools: "Heuristic checklists (Nielsen's 10), spreadsheets, Dovetail/issue trackers; annotation tools (Figma comments).",
+    example: "Five evaluators surface 23 issues; three rated \"catastrophic\" gate the release.",
+    references: ["Nielsen, J. (1994). Heuristic evaluation. In Usability Inspection Methods. Wiley.","Nielsen, J. & Molich, R. (1990). Heuristic evaluation of user interfaces. CHI '90, 249–256."],
+    analysesDataFrom: ["Cognitive Walkthrough","Evaluative Research","Heuristic Evaluation","Rapid Iterative Testing","Scenario-Based Evaluation","Think-Aloud Protocol","Usability Testing"]
+  },
+  {
+    id: "root-cause-analysis",
+    name: "Root cause analysis",
+    outputType: ["Model/Framework"],
+    dataType: ["qualitative"],
+    whatItIs: "Tracing a problem to its underlying causes rather than symptoms, using techniques such as the 5 Whys and cause–effect (fishbone/Ishikawa) diagrams.",
+    produces: "A causal map / fishbone diagram identifying root cause(s) and contributing factors, with candidate interventions.",
+    rigour: "Base causes on evidence, not opinion; pursue chains to a controllable root; distinguish necessary from contributing causes; verify the root explains the observed effect; avoid stopping at the first plausible cause.",
+    tools: "Miro/Mural (fishbone), Lucidchart; spreadsheets for 5-Whys logs.",
+    example: "Five Whys on repeated failed transfers traces the error to an ambiguous date format, not user mistakes.",
+    references: ["Ishikawa, K. (1986). Guide to Quality Control. Asian Productivity Organization.","Andersen, B. & Fagerhaug, T. (2006). Root Cause Analysis (2nd ed.). ASQ Quality Press."],
+    analysesDataFrom: ["Critical Incident Technique"]
+  },
+  {
+    id: "descriptive-statistics-ux-metrics",
+    name: "Descriptive statistics & UX metrics",
+    outputType: ["Scores/Measures"],
+    dataType: ["quantitative","behavioral"],
+    whatItIs: "Summarising data with central tendency, spread, and standardised UX metrics (task success, time-on-task, error rate, SUS, SEQ, NPS/CSAT) to describe performance and attitudes numerically.",
+    produces: "Summary tables and charts: means/medians, distributions, success/error/completion rates, and standardised scores with confidence intervals.",
+    rigour: "Pick measures of central tendency suited to the distribution (median for skewed times); always report variability and sample size; use confidence intervals not bare point estimates; use validated instruments (SUS, SEQ) as designed; don't infer causation from descriptives.",
+    tools: "Excel/Google Sheets, R, JASP, jamovi, SPSS; MeasuringU calculators; Tullis & Albert metric templates.",
+    example: "Task success 78% (CI 66–87%) with median time 42s benchmarks the redesign against the prior build.",
+    references: ["Sauro, J. & Lewis, J. R. (2016). Quantifying the User Experience (2nd ed.). Morgan Kaufmann.","Tullis, T. & Albert, B. (2013). Measuring the User Experience (2nd ed.). Morgan Kaufmann."],
+    analysesDataFrom: ["Automated Remote Research","Cognitive Walkthrough","Competitive Testing","Content Inventory","Customer Experience Audit","Design Workshops","Ergonomic Analysis","Evaluative Research","KJ Technique","Prototyping","Questionnaires","Questionnaires & Evaluation","Rapid Iterative Testing","Scenario Description Swimlanes","Simulation Exercises","Speed Dating","Surveys","Territory Maps","Usability Testing","Value Opportunity Analysis","Weighted Matrix"]
+  },
+  {
+    id: "semantic-differential-rating-scales",
+    name: "Semantic differential & rating scales",
+    outputType: ["Scores/Measures"],
+    dataType: ["attitudinal","quantitative"],
+    whatItIs: "Quantifying attitudes and perceptions with bipolar adjective scales (semantic differential), Likert items, and other rating scales, then summarising the resulting scores.",
+    produces: "Scale scores, profiles across adjective pairs, distributions, and comparisons across designs or segments.",
+    rigour: "Use balanced bipolar anchors and pre-tested items; check scale reliability (Cronbach's α) and dimensionality (factor analysis); treat ordinal Likert data appropriately; avoid leading wording; report scale points and anchors.",
+    tools: "Qualtrics, SurveyMonkey, Google Forms; analysis in R/JASP/SPSS; AttrakDiff for UX semantic differentials.",
+    example: "An AttrakDiff profile shows the prototype rates high on \"pragmatic\" but low on \"stimulating,\" guiding visual work.",
+    references: ["Osgood, C. E., Suci, G. J. & Tannenbaum, P. H. (1957). The Measurement of Meaning. University of Illinois Press.","DeVellis, R. F. (2017). Scale Development (4th ed.). SAGE."],
+    analysesDataFrom: ["Image Boards","Kano Analysis","Questionnaires","Questionnaires & Evaluation","Triangulation","Weighted Matrix"]
+  },
+  {
+    id: "sentiment-analysis",
+    name: "Sentiment analysis",
+    outputType: ["Scores/Measures","Themes"],
+    dataType: ["attitudinal","qualitative"],
+    whatItIs: "Classifying text by emotional polarity/intensity (and sometimes specific emotions or aspects) to quantify how people feel at scale, by lexicon or machine-learning methods.",
+    produces: "Sentiment scores/labels per item, aspect-level sentiment, trends over time, and ranked positive/negative drivers.",
+    rigour: "Validate the classifier against human-labelled samples; handle negation, sarcasm, and domain language; report accuracy/F1; prefer aspect-based sentiment for actionability; keep humans in the loop for nuance.",
+    tools: "Python (VADER, transformers/Hugging Face), R (sentimentr), MonkeyLearn, Brandwatch, MeaningCloud.",
+    example: "Aspect-based sentiment on 2,000 reviews shows \"support\" is the most negative aspect despite a positive overall score.",
+    references: ["Liu, B. (2015). Sentiment Analysis: Mining Opinions, Sentiments, and Emotions. Cambridge University Press.","Pang, B. & Lee, L. (2008). Opinion mining and sentiment analysis. Foundations and Trends in IR, 2(1–2), 1–135."],
+    analysesDataFrom: ["Crowdsourcing","Desirability Testing","Graffiti Walls","Love & the Breakup Letter"]
+  },
+  {
+    id: "conversion-funnel-analysis",
+    name: "Conversion & funnel analysis",
+    outputType: ["Scores/Measures"],
+    dataType: ["behavioral","quantitative"],
+    whatItIs: "Measuring how users progress (and drop off) through a defined sequence of steps, quantifying conversion at each stage and the impact of changes (often via A/B tests).",
+    produces: "Funnel charts, step conversion/drop-off rates, segment comparisons, and lift estimates from experiments.",
+    rigour: "Define steps and the conversion window precisely; segment to avoid Simpson's paradox; ensure tracking validity; for experiments pre-register the metric and required sample, and don't peek/stop early.",
+    tools: "GA4, Amplitude, Mixpanel, Heap; A/B platforms (Optimizely, VWO); SQL/BI tools.",
+    example: "Funnel analysis pinpoints a 41% drop at identity verification; an A/B test of inline help lifts it by 9 points.",
+    references: ["Kohavi, R., Tang, D. & Xu, Y. (2020). Trustworthy Online Controlled Experiments. Cambridge University Press.","Croll, A. & Yoskovitz, B. (2013). Lean Analytics. O'Reilly."],
+    analysesDataFrom: ["A/B Testing","Key Performance Indicators","Web Analytics"]
+  },
+  {
+    id: "behavioural-analytics-log-analysis",
+    name: "Behavioural analytics & log analysis",
+    outputType: ["Scores/Measures","Map/Journey"],
+    dataType: ["behavioral","quantitative"],
+    whatItIs: "Mining event logs and product analytics to understand what users actually do — paths, cohorts, retention, search behaviour, and feature use — from naturally occurring behavioural data.",
+    produces: "Usage metrics, path/flow analyses, cohort and retention curves, search-term reports, and segment behaviour profiles.",
+    rigour: "Verify event instrumentation and definitions; mind survivorship and selection bias; use cohorts for retention; correlate with qualitative data to explain the \"why\"; respect privacy and consent.",
+    tools: "GA4, Amplitude, Mixpanel, Heap, PostHog; FullStory/Hotjar (session replay); SQL, Python/R.",
+    example: "Cohort analysis shows week-1 retention doubles for users who complete a first transfer, redefining activation.",
+    references: ["Kohavi, R., Tang, D. & Xu, Y. (2020). Trustworthy Online Controlled Experiments. Cambridge University Press.","Han, J., Kamber, M. & Pei, J. (2011). Data Mining: Concepts and Techniques (3rd ed.). Morgan Kaufmann."],
+    analysesDataFrom: ["Card Sorting","Content Inventory","Key Performance Indicators","Site Search Analytics","Surveys","Time-Aware Research","Unobtrusive Measures","Web Analytics"]
+  },
+  {
+    id: "trend-temporal-analysis",
+    name: "Trend & temporal analysis",
+    outputType: ["Scores/Measures"],
+    dataType: ["quantitative","behavioral"],
+    whatItIs: "Analysing how measures change over time — trends, seasonality, before/after shifts, and longitudinal patterns — including basic time-series and experience-curve methods.",
+    produces: "Time-series plots, trend/seasonality decompositions, change-point and before/after comparisons, and experience curves.",
+    rigour: "Account for seasonality and autocorrelation; distinguish trend from noise with appropriate models; mark interventions for interrupted-time-series reasoning; avoid over-fitting; state the time grain and window.",
+    tools: "R (forecast, fable), Python (statsmodels, Prophet), Excel; analytics platforms' trend views.",
+    example: "Interrupted time-series shows support tickets fell sustainably after the redesign, not just seasonally.",
+    references: ["Hyndman, R. J. & Athanasopoulos, G. (2021). Forecasting: Principles and Practice (3rd ed.). OTexts.","Box, G., Jenkins, G. et al. (2015). Time Series Analysis (5th ed.). Wiley."],
+    analysesDataFrom: ["Behavioral Mapping","Content Analysis","Diary Studies","Experience Sampling","Key Performance Indicators","Secondary Research","Time-Aware Research"]
+  },
+  {
+    id: "eye-tracking-analysis",
+    name: "Eye-tracking analysis",
+    outputType: ["Scores/Measures","Map/Journey"],
+    dataType: ["behavioral","quantitative"],
+    whatItIs: "Analysis of gaze data — fixations, saccades, areas of interest (AOIs), scan paths, and time-to-first-fixation — to reveal what draws attention and in what order.",
+    produces: "Heatmaps, gaze/scan-path plots, AOI metrics (dwell time, fixation count, time-to-first-fixation), and attention sequences.",
+    rigour: "Calibrate and validate per participant; define AOIs a priori; report data-loss/quality; use adequate samples for heatmaps; pair gaze with task and verbal data to interpret meaning; beware attention ≠ comprehension.",
+    tools: "Tobii Pro Lab, iMotions, Gazepoint, RealEye, Pupil Labs.",
+    example: "AOI metrics show users never fixate the secondary CTA, explaining its low click-through.",
+    references: ["Holmqvist, K. et al. (2011). Eye Tracking: A Comprehensive Guide to Methods and Measures. Oxford University Press.","Bojko, A. (2013). Eye Tracking the User Experience. Rosenfeld."],
+    analysesDataFrom: ["Eye Tracking"]
+  },
+  {
+    id: "spatial-movement-analysis",
+    name: "Spatial & movement analysis",
+    outputType: ["Map/Journey","Scores/Measures"],
+    dataType: ["behavioral","quantitative"],
+    whatItIs: "Mapping where people go and what they do in a physical (or interface) space over time — behavioural mapping, movement/flow tracing, and density/heatmap analysis.",
+    produces: "Density maps/heatmaps, movement paths, zone-occupancy and dwell metrics, and time-of-day comparisons.",
+    rigour: "Use a consistent observation protocol and time sampling; map onto an accurate plan; sample across times/days; protect anonymity; combine counts with interpretation of why zones are used.",
+    tools: "Observation apps, GIS/heatmap tools, spreadsheets; for interfaces, click/scroll heatmaps (Hotjar).",
+    example: "Behavioural maps of a branch show queue congestion at a single counter, reframing the layout brief.",
+    references: ["Zeisel, J. (2006). Inquiry by Design (rev. ed.). W. W. Norton.","Ittelson, W., Rivlin, L. & Proshansky, H. (1970). The use of behavioral maps in environmental psychology."],
+    analysesDataFrom: ["Behavioral Mapping","Eye Tracking","Fly-on-the-Wall Observation"]
+  },
+  {
+    id: "video-interaction-analysis",
+    name: "Video & interaction analysis",
+    outputType: ["Themes"],
+    dataType: ["behavioral","qualitative"],
+    whatItIs: "Detailed analysis of video records of real activity, coding talk, gesture, gaze, and tool use to understand how interaction and collaboration actually unfold.",
+    produces: "Time-coded interaction logs, behavioural coding schemes with frequencies, and accounts of how people coordinate and where breakdowns occur.",
+    rigour: "Sample episodes systematically; build and reliability-test the coding scheme; transcribe to an explicit convention; ground claims in repeatable observations; obtain consent and anonymise.",
+    tools: "ELAN, Dovetail, Adobe Premiere/Descript (clipping), Transana, ATLAS.ti (video coding).",
+    example: "Interaction analysis of paired use shows the navigator silently correcting the driver, revealing a hidden collaboration pattern.",
+    references: ["Jordan, B. & Henderson, A. (1995). Interaction analysis: foundations and practice. Journal of the Learning Sciences, 4(1), 39–103.","Heath, C., Hindmarsh, J. & Luff, P. (2010). Video in Qualitative Research. SAGE."],
+    analysesDataFrom: ["Automated Remote Research","Bodystorming","Focus Groups","Participatory Design","Wizard of Oz"]
+  },
+  {
+    id: "inferential-statistics-hypothesis-tests",
+    name: "Inferential statistics & hypothesis tests",
+    outputType: ["Statistical Significance"],
     dataType: ["quantitative"],
-    approach: [],
-    phases: ["phase4","phase5"],
-    effort: "medium",
-    description: "Test whether differences or relationships seen in your sample are likely to hold in the wider population.",
-    outputType: "Statistical Significance",
-    level: "Intermediate",
-    inputMethods: ["surveys","a-b-testing","usability-testing","experiments"],
-    rigourNote: "Match the test to your data type and design, check assumptions, and report effect sizes and confidence intervals, not just p-values.",
-    softwareTools: ["SPSS","JASP","jamovi","R","Python (statsmodels)"],
-    references: ["Field (2018)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    whatItIs: "Testing whether observed differences or associations are unlikely to be due to chance, using tests such as chi-square, t-tests, ANOVA, and their non-parametric equivalents (Mann–Whitney, Friedman).",
+    produces: "Test statistics, p-values, effect sizes, and a decision about the hypothesis with stated uncertainty.",
+    rigour: "State hypotheses and the test before collecting data; power the study for a meaningful effect; check test assumptions (normality, independence, variance); report effect sizes and CIs, not just p; correct for multiple comparisons; don't dichotomise on p alone.",
+    tools: "R, JASP, jamovi, SPSS, Python (SciPy, statsmodels, pingouin); MeasuringU calculators.",
+    example: "A chi-square test confirms variant B's higher completion rate is significant (χ²=8.1, p=.004, φ=.21).",
+    references: ["Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics (5th ed.). SAGE.","Sauro, J. & Lewis, J. R. (2016). Quantifying the User Experience (2nd ed.). Morgan Kaufmann."],
+    analysesDataFrom: ["A/B Testing","Competitive Testing","Content Analysis","Desirability Testing","Experiments","Heuristic Evaluation","Questionnaires & Evaluation","Semantic Differential","Surveys","Weighted Matrix"]
   },
   {
-    kind: "analysis",
-    name: "Reliability Analysis (Cronbach's α, McDonald's ω)",
-    id: "reliability-analysis",
-    dataType: ["quantitative","attitudinal"],
-    approach: [],
-    phases: ["phase4"],
-    effort: "low",
-    description: "Check how consistently a set of survey items measures the same underlying construct.",
-    outputType: "Scores/Measures",
-    level: "Intermediate",
-    inputMethods: ["surveys","questionnaires"],
-    rigourNote: "Report which coefficient you used and why; alpha assumes items contribute equally, so prefer omega when that does not hold.",
-    softwareTools: ["SPSS","JASP","jamovi","R (psych)"],
-    references: ["Cronbach (1951)","Revelle & Zinbarg (2009)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    id: "regression-correlation",
+    name: "Regression & correlation",
+    outputType: ["Statistical Significance","Scores/Measures"],
+    dataType: ["quantitative"],
+    whatItIs: "Quantifying relationships between variables — correlation for strength/direction, regression for prediction and the effect of predictors while controlling for others (including multilevel models for nested data).",
+    produces: "Coefficients with CIs, model fit (R²), predicted values, and the relative contribution of predictors.",
+    rigour: "Check linearity, independence, homoscedasticity, and multicollinearity; avoid over-fitting; never infer causation from observational correlation; use multilevel models for repeated measures/clustering; validate out-of-sample where possible.",
+    tools: "R (lm, lme4), Python (statsmodels, scikit-learn), SPSS, JASP.",
+    example: "Regression shows perceived trust predicts intention to reuse over and above speed (β=.34, p<.001).",
+    references: ["Cohen, J., Cohen, P., West, S. & Aiken, L. (2003). Applied Multiple Regression/Correlation Analysis (3rd ed.). Erlbaum.","Field, A. (2018). Discovering Statistics Using IBM SPSS Statistics (5th ed.). SAGE."],
+    analysesDataFrom: ["Experience Sampling","Experiments","Site Search Analytics","Surveys"]
   },
   {
-    kind: "analysis",
-    name: "Triangulation (Joint Displays)",
-    id: "triangulation",
-    dataType: ["qualitative","quantitative"],
-    approach: [],
-    phases: ["phase2","phase4"],
-    effort: "medium",
-    description: "Integrate qualitative and quantitative findings to corroborate, complement or explain results from a single source.",
-    outputType: "Model/Framework",
-    level: "Intermediate",
-    inputMethods: ["interviews","surveys","usability-testing","diary-studies"],
-    rigourNote: "Use a joint display to set qualitative and quantitative evidence side by side and state explicitly where they agree or diverge.",
-    softwareTools: ["MAXQDA","Dedoose","Excel","NVivo"],
-    references: ["Denzin (1978)","Creswell & Plano Clark (2018)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    id: "bayesian-analysis",
+    name: "Bayesian analysis",
+    outputType: ["Statistical Significance"],
+    dataType: ["quantitative"],
+    whatItIs: "Inference that combines prior knowledge with data to produce posterior probability distributions over parameters or hypotheses, yielding directly interpretable probabilities (e.g., P(B better than A)).",
+    produces: "Posterior distributions, credible intervals, Bayes factors, and probability statements about effects.",
+    rigour: "Justify priors and run prior-sensitivity checks; verify model convergence (R-hat, trace plots); report credible intervals and the model; prefer Bayesian A/B testing when continuous monitoring is needed; communicate assumptions plainly.",
+    tools: "Stan, PyMC, R (brms, rstanarm), JASP (Bayesian module).",
+    example: "Bayesian A/B test reports a 96% probability that variant B improves conversion, with a credible interval of +1–6 points.",
+    references: ["Kruschke, J. (2015). Doing Bayesian Data Analysis (2nd ed.). Academic Press.","Gelman, A. et al. (2013). Bayesian Data Analysis (3rd ed.). CRC Press."],
+    analysesDataFrom: ["A/B Testing"]
   },
   {
-    kind: "analysis",
-    name: "Grounded-Theory Coding (open, axial, selective)",
-    id: "grounded-theory-coding",
-    dataType: ["qualitative"],
-    approach: [],
-    phases: ["phase2"],
-    effort: "high",
-    description: "Build a theory directly from data through successive coding stages, comparing cases until categories are saturated.",
-    outputType: "Model/Framework",
-    level: "Advanced",
-    inputMethods: ["interviews","observation","focus-groups"],
-    rigourNote: "Use constant comparison and theoretical sampling; keep analytic memos so the emerging theory is traceable to the data.",
-    softwareTools: ["ATLAS.ti","NVivo","MAXQDA"],
-    references: ["Charmaz (2014)","Corbin & Strauss (2015)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    id: "confidence-interval-estimation",
+    name: "Confidence interval estimation",
+    outputType: ["Statistical Significance","Scores/Measures"],
+    dataType: ["quantitative"],
+    whatItIs: "Estimating a plausible range for a population value (rate, mean, difference) from sample data, expressing the precision of an estimate rather than a bare point value.",
+    produces: "Point estimates with confidence intervals for rates, means, and differences; precision/sample-size guidance.",
+    rigour: "Use methods suited to the statistic and small samples (e.g., adjusted-Wald for proportions, common in UX); report the interval alongside every estimate; widen interpretation for small n; use CIs to plan sample sizes.",
+    tools: "R, Python (statsmodels), MeasuringU calculators, Excel.",
+    example: "A 78% task-success rate (n=12) carries a 95% CI of 50–93%, tempering the optimistic headline.",
+    references: ["Cumming, G. (2012). Understanding the New Statistics. Routledge.","Sauro, J. & Lewis, J. R. (2016). Quantifying the User Experience (2nd ed.). Morgan Kaufmann."],
+    analysesDataFrom: ["A/B Testing"]
   },
   {
-    kind: "analysis",
-    name: "Exploratory Factor Analysis / PCA",
     id: "factor-analysis-pca",
-    dataType: ["quantitative","attitudinal"],
-    approach: [],
-    phases: ["phase4"],
-    effort: "high",
-    description: "Reduce many correlated survey items to a smaller set of underlying factors or components.",
-    outputType: "Model/Framework",
-    level: "Advanced",
-    inputMethods: ["surveys","questionnaires"],
-    rigourNote: "Check sampling adequacy (KMO, Bartlett's test), justify the number of factors retained, and report the rotation used.",
-    softwareTools: ["SPSS","JASP","R (psych)","FACTOR"],
-    references: ["Fabrigar & Wegener (2012)","Costello & Osborne (2005)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Mokken Scale Analysis",
-    id: "mokken-scale-analysis",
-    dataType: ["quantitative","attitudinal"],
-    approach: [],
-    phases: ["phase4"],
-    effort: "high",
-    description: "A non-parametric item-response approach that tests whether items form a hierarchical, unidimensional scale.",
-    outputType: "Scores/Measures",
-    level: "Advanced",
-    inputMethods: ["surveys","questionnaires"],
-    rigourNote: "Report scalability coefficients (H), assess monotonicity and invariant item ordering, and justify the scaling threshold used.",
-    softwareTools: ["R (mokken)"],
-    references: ["Mokken (1971)","Sijtsma & Molenaar (2002)","Van der Ark (2007)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Rasch Analysis",
-    id: "rasch-analysis",
-    dataType: ["quantitative","attitudinal"],
-    approach: [],
-    phases: ["phase4"],
-    effort: "high",
-    description: "A probabilistic item-response model that places persons and items on the same interval scale to test measurement quality.",
-    outputType: "Scores/Measures",
-    level: "Advanced",
-    inputMethods: ["surveys","questionnaires"],
-    rigourNote: "Examine item and person fit statistics and report whether the data fit the model, rather than adjusting the model to the data.",
-    softwareTools: ["Winsteps","R (eRm, TAM)","jMetrik","ConQuest"],
-    references: ["Rasch (1960)","Bond & Fox (2015)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
-  },
-  {
-    kind: "analysis",
-    name: "Cluster Analysis",
-    id: "cluster-analysis",
+    name: "Factor analysis / PCA",
+    outputType: ["Segments/Clusters","Model/Framework"],
     dataType: ["quantitative"],
-    approach: [],
-    phases: ["phase2","phase4"],
-    effort: "high",
-    description: "Group respondents into segments with similar response patterns to reveal natural user types.",
-    outputType: "Segments/Clusters",
-    level: "Advanced",
-    inputMethods: ["surveys","web-analytics"],
-    rigourNote: "Standardise variables before clustering, justify the number of clusters, and validate stability on a holdout or an alternative method.",
-    softwareTools: ["SPSS","R (cluster, factoextra)","Python (scikit-learn)"],
-    references: ["Everitt, Landau, Leese & Stahl (2011)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    whatItIs: "Reducing many correlated variables to a smaller set of latent factors (factor analysis) or components (PCA) to reveal underlying structure in scales and large measurement sets.",
+    produces: "Factor/component loadings, retained dimensions, variance explained, and a reduced structure (e.g., the subscales of a questionnaire).",
+    rigour: "Check sampling adequacy (KMO, Bartlett's); choose extraction and rotation deliberately; retain factors by theory plus scree/parallel analysis (not just eigenvalue>1); interpret only stable, loading-clean factors; confirm on new data (CFA).",
+    tools: "R (psych, lavaan), SPSS/AMOS, Mplus, JASP, Python (factor_analyzer).",
+    example: "EFA of a 20-item experience scale reduces it to three factors — efficiency, trust, delight.",
+    references: ["Fabrigar, L. & Wegener, D. (2012). Exploratory Factor Analysis. Oxford University Press.","Jolliffe, I. T. (2002). Principal Component Analysis (2nd ed.). Springer."],
+    analysesDataFrom: ["Semantic Differential","Shadowing","Surveys"]
   },
   {
-    kind: "analysis",
-    name: "Conjoint Analysis / MaxDiff",
-    id: "conjoint-maxdiff",
-    dataType: ["quantitative","attitudinal"],
-    approach: [],
-    phases: ["phase3","phase4"],
-    effort: "high",
-    description: "Estimate the relative importance of features or attributes from the trade-offs respondents make between options.",
-    outputType: "Priorities/Ranking",
-    level: "Advanced",
-    inputMethods: ["surveys"],
-    rigourNote: "Design the choice tasks to be balanced and realistic, and report attribute utilities or importance scores with their uncertainty.",
-    softwareTools: ["Sawtooth Software","Qualtrics","R (support.CEs, conjoint)"],
-    references: ["Orme (2020)","Louviere, Hensher & Swait (2000)"],
-    whenToUse: "",
-    steps: [],
-    strengths: [],
-    limitations: [],
-    howToConduct: "",
-    sampleSize: "",
-    analysisMethods: []
+    id: "reliability-analysis-cronbach-s-alpha",
+    name: "Reliability analysis (Cronbach's alpha)",
+    outputType: ["Statistical Significance","Scores/Measures"],
+    dataType: ["quantitative"],
+    whatItIs: "Assessing the internal consistency of a multi-item scale — the degree to which items intended to measure the same construct agree — most commonly via Cronbach's alpha (or McDonald's omega).",
+    produces: "Reliability coefficients (α/ω), item-total correlations, and \"alpha-if-item-deleted\" diagnostics for refining a scale.",
+    rigour: "Apply only to unidimensional item sets (check with factor analysis first); report ω alongside α (α has known limitations); inspect item-total correlations; don't inflate α by adding redundant items; interpret thresholds in context (≈.70–.95).",
+    tools: "R (psych::alpha, omega), SPSS, JASP, jamovi.",
+    example: "A trust subscale shows α=.86 with one weak item flagged for removal by the alpha-if-deleted table.",
+    references: ["Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. Psychometrika, 16(3), 297–334.","Tavakol, M. & Dennick, R. (2011). Making sense of Cronbach's alpha. International Journal of Medical Education, 2, 53–55."],
+    analysesDataFrom: ["Questionnaires","Questionnaires & Evaluation","Surveys","Semantic Differential (any multi-item rating scale)"]
+  },
+  {
+    id: "inter-rater-reliability",
+    name: "Inter-rater reliability",
+    outputType: ["Statistical Significance","Scores/Measures"],
+    dataType: ["quantitative"],
+    whatItIs: "Quantifying agreement between independent coders/raters applying the same scheme — via Cohen's/Fleiss' kappa or Krippendorff's alpha — to show that qualitative coding or expert ratings are reproducible.",
+    produces: "Agreement coefficients (κ, α) with interpretation, and identification of categories where coders diverge.",
+    rigour: "Use chance-corrected statistics (not raw % agreement); double-code an adequate, representative subset; reconcile disagreements and refine the codebook; report the statistic, value, and n; choose the coefficient to match the data (nominal/ordinal, 2+ raters).",
+    tools: "R (irr, icr), Python (nltk/krippendorff), ReCal, SPSS.",
+    example: "Two coders reach Krippendorff's α=.81 on the issue-type scheme, justifying single-coding the remainder.",
+    references: ["Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and Psychological Measurement, 20(1), 37–46.","Hayes, A. F. & Krippendorff, K. (2007). Answering the call for a standard reliability measure for coding data. Communication Methods and Measures, 1(1), 77–89."],
+    analysesDataFrom: ["Card Sorting","Content Analysis (and any coded qualitative analysis requiring multiple raters)"]
+  },
+  {
+    id: "literature-evidence-synthesis",
+    name: "Literature & evidence synthesis",
+    outputType: ["Model/Framework","Themes"],
+    dataType: ["qualitative"],
+    whatItIs: "Systematically locating, appraising, and combining existing evidence — from systematic and scoping reviews to narrative and best-evidence synthesis — to ground decisions in what is already known.",
+    produces: "A synthesised evidence base: themes/claims with strength-of-evidence, an inclusion/exclusion trail, and gaps for primary research.",
+    rigour: "Pre-specify the question and inclusion criteria; search systematically and document it (PRISMA flow); appraise study quality; grade certainty (e.g., GRADE); synthesise transparently; distinguish strong from weak evidence.",
+    tools: "Covidence, Rayyan, Zotero/Mendeley; PRISMA templates; spreadsheets for extraction.",
+    example: "A rapid evidence review of onboarding studies yields five well-supported principles and two contested ones flagged for testing.",
+    references: ["Booth, A., Sutton, A. & Papaioannou, D. (2016). Systematic Approaches to a Successful Literature Review (2nd ed.). SAGE.","Page, M. J. et al. (2021). The PRISMA 2020 statement. BMJ, 372, n71."],
+    analysesDataFrom: ["Elito Method","Evidence-Based Design","Literature Review","Scenario-Based Evaluation","Triangulation"]
+  },
+  {
+    id: "triangulation",
+    name: "Triangulation",
+    outputType: ["Model/Framework"],
+    dataType: ["qualitative","quantitative"],
+    whatItIs: "Combining multiple data sources, methods, investigators, or theories to corroborate findings and offset the weaknesses of any single approach — a validity strategy applied across the analysis, not a stand-alone technique.",
+    produces: "Convergent (or divergent) findings with an account of where sources agree, conflict, and why — strengthening confidence or surfacing nuance.",
+    rigour: "Plan triangulation deliberately (which sources/methods and why); treat divergence as informative, not error; keep an audit trail of how conclusions were reconciled; avoid implying that more sources automatically equals more truth.",
+    tools: "Mixed-methods matrices in NVivo/Dedoose/Sheets; joint-display templates for mixed-methods integration.",
+    example: "Survey scores, analytics, and interviews all point to onboarding friction, raising confidence; one diverging source reveals a power-user exception.",
+    references: ["Denzin, N. K. (1978). The Research Act (2nd ed.). McGraw-Hill.","Flick, U. (2018). Doing Triangulation and Mixed Methods. SAGE."],
+    analysesDataFrom: ["Secondary Research (and, by design, across any combination of the collection methods above)"]
   }
 ];
 
@@ -2877,7 +3108,7 @@ function escHtml(s) {
   return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-const FILTER_GROUP_IDS = { dataType:'dataTypeFilters', approach:'approachFilters', phase:'phaseFilters', effort:'effortFilters' };
+const FILTER_GROUP_IDS = { dataType:'dataTypeFilters', approach:'approachFilters', phase:'phaseFilters', effort:'effortFilters', outputType:'outputTypeFilters' };
 
 function renderActiveFilters(f) {
   const c = document.getElementById('activeFilters');
@@ -3286,7 +3517,8 @@ function runAdvisor() {
     Object.entries(want.approach).forEach(([tag,w]) => { if ((m.approach||[]).includes(tag)) score += w*3; });
     Object.entries(want.data).forEach(([tag,w]) => { if (m.dataType.includes(tag)) score += w*2; });
     Object.entries(want.phase).forEach(([tag,w]) => { if ((m.phases||[]).includes(tag)) score += w*2; });
-    const text = (m.name+' '+m.description+' '+(m.whenToUse||'')+' '+(m.outputType||'')).toLowerCase();
+    const outStr = Array.isArray(m.outputType) ? m.outputType.join(' ') : (m.outputType || '');
+    const text = (m.name+' '+(m.description||m.whatItIs||'')+' '+(m.whenToUse||'')+' '+outStr).toLowerCase();
     const matchedWords = tokens.filter(t => text.includes(t));
     score += Math.min(matchedWords.length, 4);
     // Which of the fired intent signals this method actually satisfies (for the "Why" line)
@@ -3347,61 +3579,41 @@ const phaseLabels = {
 };
 
 /* ---------- Collection <-> Analysis bridge ---------- */
-const LEVEL_ORDER = { Beginner:0, Intermediate:1, Advanced:2 };
-let showAdvanced = false;
-try { showAdvanced = localStorage.getItem('showAdvanced') === '1'; } catch (e) {}
-
-function analysisForCollection(collectionId) {
-  return analysisMethods
-    .filter(a => a.inputMethods.includes(collectionId))
-    .sort((a, b) => (LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]) || a.name.localeCompare(b.name));
+// Name/id lookups into the analysis catalog
+const analysisById = new Map(analysisMethods.map(a => [a.id, a]));
+const analysisByName = new Map(analysisMethods.map(a => [a.name, a]));
+// A collection method's linked analysis-catalog entries (its canonical analysisMethods labels)
+function analysisForCollection(m) {
+  return (m.analysisMethods || []).map(l => analysisByName.get(l)).filter(Boolean);
+}
+// Labels on a collection method that have no catalog entry (kept-as-is terms -> plain text)
+function unmatchedAnalysisLabels(m) {
+  return (m.analysisMethods || []).filter(l => !analysisByName.has(l));
+}
+// Resolve an "analyse data from" name to a collection method (exact, then parenthetical-stripped)
+function collectionForName(name) {
+  return methods.find(x => x.name === name)
+      || methods.find(x => x.name === name.replace(/\s*\(.*\)\s*$/, '').trim());
 }
 
 function analysisChip(a) {
-  const adv = a.level === 'Advanced';
-  return `<button type="button" class="analysis-chip${adv ? ' adv' : ''}" role="listitem"
+  const out = a.outputType[0] || '';
+  return `<button type="button" class="analysis-chip" role="listitem"
       onclick="event.stopPropagation();openAnalysisModal('${a.id}')"
-      aria-label="Analyse with ${escHtml(a.name)}, produces ${escHtml(a.outputType)}${adv ? ' (advanced technique)' : ''}">
-      <span class="ac-name">${escHtml(a.name)}</span>
-      <span class="ac-out">· ${escHtml(a.outputType)}</span>
-      ${adv ? '<span class="ac-adv">Advanced</span>' : ''}
+      aria-label="Open analysis method ${escHtml(a.name)}${out ? ', produces ' + escHtml(out) : ''}">
+      <span class="ac-name">${escHtml(a.name)}</span>${out ? `<span class="ac-out">· ${escHtml(out)}</span>` : ''}
     </button>`;
 }
-
-// Bridge section for a collection card/modal; '' when no analysis methods link to it
-// Apply the "Show advanced analysis methods" toggle: hide Advanced when off,
-// but if a list is ALL advanced still surface the single best one (never empty/silent).
-function visibleAnalysis(list) {
-  if (showAdvanced) return { shown: list, hiddenAdv: 0, allAdvForced: false };
-  const nonAdv = list.filter(a => a.level !== 'Advanced');
-  if (nonAdv.length) return { shown: nonAdv, hiddenAdv: list.length - nonAdv.length, allAdvForced: false };
-  return { shown: list.slice(0, 1), hiddenAdv: list.length - 1, allAdvForced: true };
-}
-function analysisBridgeHTML(collectionId) {
-  const list = analysisForCollection(collectionId);
-  if (!list.length) return '';
-  const { shown, hiddenAdv } = visibleAnalysis(list);
-  const note = hiddenAdv > 0
-    ? `<div class="bridge-adv-note">+${hiddenAdv} advanced — turn on “Show advanced analysis methods”.</div>`
-    : '';
+// Collection modal "Analyse this data with": linked chips for canonical labels + plain text for kept-as-is
+function analysisBridgeHTML(m) {
+  const linked = analysisForCollection(m);
+  const plain = unmatchedAnalysisLabels(m);
+  if (!linked.length && !plain.length) return '';
   return `<div class="analysis-bridge">
-    <div class="analysis-bridge-title">Once you have this data, analyse it with</div>
-    <div class="analysis-chips" role="list">${shown.map(analysisChip).join('')}</div>
-    ${note}
+    <div class="analysis-bridge-title">Analyse this data with</div>
+    ${linked.length ? `<div class="analysis-chips" role="list">${linked.map(analysisChip).join('')}</div>` : ''}
+    ${plain.length ? `<div class="bridge-plain">Also noted: ${plain.map(escHtml).join(', ')}.</div>` : ''}
   </div>`;
-}
-
-function setShowAdvanced(on, rerender = true) {
-  showAdvanced = !!on;
-  try { localStorage.setItem('showAdvanced', showAdvanced ? '1' : '0'); } catch (e) {}
-  document.body.classList.toggle('show-advanced', showAdvanced);
-  const cb = document.getElementById('advToggle');
-  if (cb) cb.checked = showAdvanced;
-  if (!rerender) return;
-  // Analysis grid filters advanced out when off, so refresh the active surface
-  if (currentTab === 'explore') applyFilters();
-  else if (currentTab === 'project') renderProject();
-  else if (currentTab === 'advisor' && document.getElementById('advisorInput').value.trim().length >= 8) runAdvisor();
 }
 
 /* ---------- Analysis Plan (My Project) ---------- */
@@ -3414,10 +3626,10 @@ function orderOutputs(set) {
 }
 function analysisPlanData() {
   const selected = selectedMethods.map(n => methods.find(x => x.name === n)).filter(Boolean);
-  const groups = selected.map(m => ({ m, list: analysisForCollection(m.id) }));
+  const groups = selected.map(m => ({ m, list: analysisForCollection(m) }));
   const hasQual = selected.some(m => m.dataType.includes('qualitative'));
   const hasQuant = selected.some(m => m.dataType.includes('quantitative'));
-  const outputs = orderOutputs(new Set(groups.flatMap(g => g.list.map(a => a.outputType))));
+  const outputs = orderOutputs(new Set(groups.flatMap(g => g.list.flatMap(a => a.outputType))));
   return { selected, groups, hasQual, hasQuant, outputs };
 }
 function renderAnalysisPlan() {
@@ -3430,24 +3642,18 @@ function renderAnalysisPlan() {
     ? `<div class="plan-output">Your project will produce: ${outputs.map(o => `<span class="po-tag">${escHtml(o)}</span>`).join('')}</div>`
     : '';
 
-  const triMethod = analysisMethods.find(a => a.id === 'triangulation');
+  const triMethod = analysisById.get('triangulation');
   const triHTML = (hasQual && hasQuant) ? `<div class="plan-callout">
       <span class="pc-icon" aria-hidden="true">&#128279;</span>
       <div>You have both <strong>qualitative</strong> and <strong>quantitative</strong> data — consider <strong>triangulation</strong> / a joint display to integrate findings.${
-        triMethod ? `<br><button type="button" class="feeds-chip" onclick="openAnalysisModal('triangulation')" aria-label="Open Triangulation (Joint Displays)">Triangulation (Joint Displays) · ${escHtml(triMethod.outputType)}</button>` : ''
+        triMethod ? `<br><button type="button" class="feeds-chip" onclick="openAnalysisModal('triangulation')" aria-label="Open Triangulation">Triangulation${triMethod.outputType[0] ? ` · ${escHtml(triMethod.outputType[0])}` : ''}</button>` : ''
       }</div>
     </div>` : '';
 
   const groupsHTML = groups.map(({ m, list }) => {
-    let body;
-    if (!list.length) {
-      body = `<p class="plan-none">No linked analysis methods yet.</p>`;
-    } else {
-      const { shown, hiddenAdv, allAdvForced } = visibleAnalysis(list);
-      body = `<div class="analysis-chips" role="list">${shown.map(analysisChip).join('')}</div>`;
-      if (allAdvForced) body += `<p class="plan-adv-note">${escHtml(shown[0].name)} is an advanced technique — the simplest option available for this kind of data.</p>`;
-      else if (hiddenAdv > 0) body += `<p class="plan-adv-note">+${hiddenAdv} advanced ${hiddenAdv > 1 ? 'methods' : 'method'} hidden — turn on “Show advanced analysis methods”.</p>`;
-    }
+    const body = list.length
+      ? `<div class="analysis-chips" role="list">${list.map(analysisChip).join('')}</div>`
+      : `<p class="plan-none">No linked analysis methods.</p>`;
     return `<div class="plan-group">
       <div class="plan-group-head">For <strong>${escHtml(m.name)}</strong> <span class="pg-tags">— analyse with:</span></div>
       ${body}
@@ -3456,7 +3662,7 @@ function renderAnalysisPlan() {
 
   el.innerHTML = `<div class="analysis-plan">
     <h3 class="plan-title">Analysis Plan</h3>
-    <p class="plan-sub">Recommended ways to turn the data your selected methods produce into findings. Beginner-first; advanced techniques are badged.</p>
+    <p class="plan-sub">Recommended ways to turn the data your selected methods produce into findings.</p>
     ${outputHTML}
     ${triHTML}
     ${groupsHTML}
@@ -3470,11 +3676,8 @@ function buildAnalysisPlanText() {
   if (hasQual && hasQuant) t += 'Note: You have both qualitative and quantitative data — consider triangulation / a joint display to integrate findings.\n\n';
   groups.forEach(({ m, list }) => {
     t += `For ${m.name} — analyse with:\n`;
-    if (!list.length) { t += '  (no linked analysis methods yet)\n\n'; return; }
-    const allAdv = list.every(a => a.level === 'Advanced');
-    const show = allAdv ? [list[0]] : list;
-    show.forEach(a => { t += `  - ${a.name} [${a.level}] -> ${a.outputType}\n`; });
-    if (allAdv) t += `    (${show[0].name} is an advanced technique — the simplest option for this data)\n`;
+    if (!list.length) { t += '  (no linked analysis methods)\n\n'; return; }
+    list.forEach(a => { t += `  - ${a.name} -> ${a.outputType.join(', ')}\n`; });
     t += '\n';
   });
   return t;
@@ -3487,10 +3690,9 @@ function buildAnalysisPlanHTML() {
   if (hasQual && hasQuant) h += `<p><strong>Note:</strong> You have both qualitative and quantitative data — consider triangulation / a joint display to integrate findings.</p>`;
   groups.forEach(({ m, list }) => {
     h += `<p><strong>For ${escHtml(m.name)} — analyse with:</strong></p>`;
-    if (!list.length) { h += '<ul><li>(no linked analysis methods yet)</li></ul>'; return; }
-    const allAdv = list.every(a => a.level === 'Advanced');
-    const show = allAdv ? [list[0]] : list;
-    h += '<ul>' + show.map(a => `<li>${escHtml(a.name)} [${escHtml(a.level)}] &rarr; ${escHtml(a.outputType)}</li>`).join('') + '</ul>';
+    h += list.length
+      ? '<ul>' + list.map(a => `<li>${escHtml(a.name)} &rarr; ${escHtml(a.outputType.join(', '))}</li>`).join('') + '</ul>'
+      : '<ul><li>(no linked analysis methods)</li></ul>';
   });
   return h;
 }
@@ -3501,30 +3703,35 @@ function analysisCardKeydown(e, id) {
   if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); openAnalysisModal(id); }
 }
 function analysisCardHTML(a, whyHTML) {
-  const adv = a.level === 'Advanced';
   return `
       <div class="method-card analysis-card" role="button" tabindex="0" aria-label="View details for ${escHtml(a.name)}"
         onclick="openAnalysisModal('${a.id}')" onkeydown="analysisCardKeydown(event,'${a.id}')">
-        <div class="card-top">
-          <h3>${escHtml(a.name)}</h3>
-          ${adv ? '<span class="card-adv">Advanced</span>' : ''}
-        </div>
+        <div class="card-top"><h3>${escHtml(a.name)}</h3></div>
         <div class="card-tags">
           ${a.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
-          <span class="tag" style="background:#EEF2FF;color:var(--accentText)">${escHtml(a.outputType)}</span>
+          ${a.outputType.map(o => `<span class="tag tag-output">${escHtml(o)}</span>`).join('')}
         </div>
-        <div class="card-desc">${escHtml(a.description.substring(0,120))}…</div>
+        <div class="card-desc">${escHtml(a.whatItIs.substring(0,120))}…</div>
         ${whyHTML || ''}
-        <div class="card-phases" style="margin-top:.5rem;">
-          ${a.phases.map(p => `<span class="phase-pip active" style="background:var(--${p})" role="img" aria-label="${phaseLabels[p]}" title="${phaseLabels[p]}">P${p.replace('phase','')}</span>`).join('')}
-        </div>
       </div>`;
 }
 function passesAnalysisFilters(a, f) {
-  if (f.search && !a.name.toLowerCase().includes(f.search) && !a.description.toLowerCase().includes(f.search) && !a.outputType.toLowerCase().includes(f.search)) return false;
+  if (f.search && !a.name.toLowerCase().includes(f.search) && !a.whatItIs.toLowerCase().includes(f.search)) return false;
   if (f.dataTypes.length && !f.dataTypes.some(d => a.dataType.includes(d))) return false;
-  if (f.outputTypes.length && !f.outputTypes.includes(a.outputType)) return false;
+  if (f.outputTypes.length && !f.outputTypes.some(o => a.outputType.includes(o))) return false;
   return true;
+}
+function renderAnalysisActiveFilters(f) {
+  const c = document.getElementById('activeFilters');
+  if (!c) return;
+  const chip = (group, value, label) =>
+    `<button class="filter-chip" onclick="removeFilter('${group}','${escHtml(value)}')" aria-label="Remove filter ${escHtml(label)}">${escHtml(label)} <span class="chip-x" aria-hidden="true">×</span></button>`;
+  const chips = [];
+  if (f.search) chips.push(`<button class="filter-chip" onclick="removeFilter('search','')" aria-label="Clear search">Search: “${escHtml(f.search)}” <span class="chip-x" aria-hidden="true">×</span></button>`);
+  f.dataTypes.forEach(v => chips.push(chip('dataType', v, cap(v))));
+  f.outputTypes.forEach(v => chips.push(chip('outputType', v, v)));
+  c.innerHTML = chips.join('');
+  c.style.display = chips.length ? 'flex' : 'none';
 }
 function applyAnalysisFilters() {
   const f = {
@@ -3532,25 +3739,18 @@ function applyAnalysisFilters() {
     dataTypes: getChecked('dataTypeFilters'),
     outputTypes: getChecked('outputTypeFilters')
   };
-  let filtered = analysisMethods.filter(a => passesAnalysisFilters(a, f));
-  let hiddenAdv = 0;
-  if (!showAdvanced) { const b = filtered.length; filtered = filtered.filter(a => a.level !== 'Advanced'); hiddenAdv = b - filtered.length; }
-
+  const filtered = analysisMethods.filter(a => passesAnalysisFilters(a, f));
   document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${analysisMethods.length} analysis methods`;
   const fb = document.getElementById('filtersBtn');
   if (fb) { const n = f.dataTypes.length + f.outputTypes.length; fb.textContent = n ? `Filters (${n})` : 'Filters'; }
   const cbtn = document.getElementById('clearFiltersBtn');
   if (cbtn) { const active = !!(f.search || f.dataTypes.length || f.outputTypes.length); cbtn.disabled = !active; cbtn.style.opacity = active ? '1' : '.45'; cbtn.style.cursor = active ? 'pointer' : 'default'; }
-
   const container = document.getElementById('methodsContainer');
   container.className = 'methods-grid';
-  if (!filtered.length) {
-    container.innerHTML = `<div class="adv-hidden-note">No analysis methods match. Try “any” / “anything” in the chooser, or clear the filters.${hiddenAdv ? ` (${hiddenAdv} advanced hidden — enable “Show advanced analysis methods”.)` : ''}</div>`;
-  } else {
-    let html = filtered.map(a => analysisCardHTML(a)).join('');
-    if (hiddenAdv > 0) html += `<div class="adv-hidden-note">${hiddenAdv} advanced method${hiddenAdv > 1 ? 's' : ''} hidden. Enable “Show advanced analysis methods” to include ${hiddenAdv > 1 ? 'them' : 'it'}.</div>`;
-    container.innerHTML = html;
-  }
+  container.innerHTML = filtered.length
+    ? filtered.map(a => analysisCardHTML(a)).join('')
+    : `<div class="adv-hidden-note">No analysis methods match. Try “any” / “anything” in the chooser, or clear the filters.</div>`;
+  renderAnalysisActiveFilters(f);
   syncChoosers(f);
   updateURL();
 }
@@ -3586,51 +3786,36 @@ function updateLensUI() {
   // chooser shown only in analysis; collection view-toggle + active-filter chips hidden in analysis
   const ch = document.getElementById('analysisChooser'); if (ch) ch.style.display = analysis ? 'flex' : 'none';
   const vt = document.getElementById('viewToggle'); if (vt) vt.style.display = analysis ? 'none' : 'flex';
-  const af = document.getElementById('activeFilters'); if (af && analysis) af.style.display = 'none';
+  // active-filter chips are rendered by whichever applyX runs; no forced hide here
 }
 
 function openAnalysisModal(id) {
-  const a = analysisMethods.find(x => x.id === id);
+  const a = analysisById.get(id);
   if (!a) return;
   const overlay = document.getElementById('modalOverlay');
   if (!overlay.classList.contains('open')) lastFocusedModalTrigger = document.activeElement;
   const modal = document.getElementById('modal');
-  const feeds = a.inputMethods.map(cid => methods.find(m => m.id === cid)).filter(Boolean);
+  const feeds = a.analysesDataFrom.map(name => ({ name, m: collectionForName(name) }));
+  const sec = (h, body) => body ? `<div class="modal-section"><h4>${h}</h4>${body}</div>` : '';
   modal.innerHTML = `
     <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
     <h2 id="modalTitle">${escHtml(a.name)}</h2>
     <div class="card-tags" style="margin-bottom:.8rem">
       ${a.dataType.map(t => `<span class="tag tag-${t}">${cap(t)}</span>`).join('')}
-      <span class="tag" style="background:#EEF2FF;color:var(--accentText)">${escHtml(a.outputType)}</span>
-      <span class="tag" style="background:#f0f0f0;color:#555">Level: ${escHtml(a.level)}</span>
-      <span class="tag" style="background:#f0f0f0;color:#555">Effort: ${cap(a.effort)}</span>
+      ${a.outputType.map(o => `<span class="tag tag-output">${escHtml(o)}</span>`).join('')}
     </div>
-    <div class="modal-section">
-      <h4>What it is</h4>
-      <p>${escHtml(a.description)}</p>
-    </div>
-    <div class="modal-section">
-      <h4>Produces</h4>
-      <p>${escHtml(a.outputType)}</p>
-    </div>
-    ${a.rigourNote ? `<div class="modal-section">
-      <h4>Doing it rigorously</h4>
-      <p>${escHtml(a.rigourNote)}</p>
-    </div>` : ''}
-    ${a.softwareTools && a.softwareTools.length ? `<div class="modal-section">
-      <h4>Software / tools</h4>
-      <ul>${a.softwareTools.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>
-    </div>` : ''}
-    ${a.references && a.references.length ? `<div class="modal-section">
-      <h4>References</h4>
-      <ul>${a.references.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>
-    </div>` : ''}
+    ${sec('What it is', `<p>${escHtml(a.whatItIs)}</p>`)}
+    ${sec('Produces', `<p>${escHtml(a.produces)}</p>`)}
+    ${sec('Doing it rigorously', `<p>${escHtml(a.rigour)}</p>`)}
+    ${sec('Software / tools', `<p>${escHtml(a.tools)}</p>`)}
+    ${sec('Example', `<p>${escHtml(a.example)}</p>`)}
+    ${a.references.length ? sec('References', `<ul>${a.references.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>`) : ''}
     ${feeds.length ? `<div class="modal-section">
       <h4>Use this to analyse data from</h4>
       <div class="feeds-chips" role="list">
-        ${feeds.map(m => `<button type="button" class="feeds-chip" role="listitem"
-            onclick="openModal('${m.name.replace(/'/g, "\\'")}')"
-            aria-label="Open ${escHtml(m.name)}">${escHtml(m.name)}</button>`).join('')}
+        ${feeds.map(f => f.m
+          ? `<button type="button" class="feeds-chip" role="listitem" onclick="openModal('${f.m.name.replace(/'/g, "\\'")}')" aria-label="Open ${escHtml(f.m.name)}">${escHtml(f.name)}</button>`
+          : `<span class="feeds-plain">${escHtml(f.name)}</span>`).join('')}
       </div>
     </div>` : ''}
   `;
@@ -3687,11 +3872,7 @@ function openModal(name) {
       <h4>Sample Size</h4>
       <p>${m.sampleSize}</p>
     </div>` : ''}
-    ${m.analysisMethods && m.analysisMethods.length ? `<div class="modal-section">
-      <h4>Analysis Methods</h4>
-      <ul>${m.analysisMethods.map(s => '<li>'+s+'</li>').join('')}</ul>
-    </div>` : ''}
-    ${analysisBridgeHTML(m.id)}
+    ${analysisBridgeHTML(m)}
     <button class="modal-add-btn ${selectedMethods.includes(m.name)?'added':''}"
       onclick="toggleSelect('${m.name.replace(/'/g,"\\'")}');openModal('${m.name.replace(/'/g,"\\'")}')">
       ${selectedMethods.includes(m.name)?'Remove from My Project':'Add to My Project'}
@@ -4144,7 +4325,6 @@ const initialTab = restoreFromURL();
 if (localStorage.getItem('hideFilterHelp')) document.getElementById('filterHelp').classList.add('hidden');
 document.getElementById('projectCount').textContent = selectedMethods.length;
 updateDeselectBtn();
-setShowAdvanced(showAdvanced, false);   // sets body class + checkbox before first render (no re-render yet)
 updateLensUI();           // reflects restored lens (chooser/sidebar/view-toggle visibility)
 setView(currentView);     // reflects restored view + runs applyFilters()
 switchTab(initialTab);    // reflects restored tab
