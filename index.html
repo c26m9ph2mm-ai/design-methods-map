@@ -629,85 +629,85 @@
     .tour-spot.ring::after { animation:none; }
     .tour-pop { animation:none; }
   }
-  /* ---------- Learn Analysis tab (ported from the tutor prototype, scoped) ---------- */
-  .learn-ui .btn{border:none;border-radius:9px;font-size:.86rem;font-weight:600;cursor:pointer;padding:.55rem 1rem;transition:.15s;font-family:inherit}
-  .learn-ui .btn-primary{background:var(--accent);color:#fff}
-  .learn-ui .btn-primary:hover{background:var(--accentHover)}
-  .learn-ui .btn-ghost{background:#fff;color:var(--accentText);border:1px solid var(--border)}
-  .learn-ui .btn-ghost:hover{border-color:var(--accent)}
-  .learn-ui .btn-sm{padding:.35rem .7rem;font-size:.76rem}
-  .learn-ui .btn-link{background:none;border:none;color:var(--accentText);cursor:pointer;font-size:.78rem;font-weight:600;text-decoration:underline;padding:0;font-family:inherit}
-  .learn-ui .btn:focus-visible,.learn-ui .btn-link:focus-visible,.learn-ui .step-item:focus-visible,.learn-ui .mc button:focus-visible,.learn-ui .learn-pick button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .learn-ui .small{font-size:.82rem;color:var(--textLight)}
-  .learn-title{font-size:1.3rem;font-weight:700;margin:.3rem 0 .2rem}
-  .learn-sub{font-size:.9rem;color:var(--textLight);max-width:680px;margin-bottom:1.1rem}
-  .learn-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
-  .learn-ui .ai-status{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--textLight)}
-  .learn-ui .dot{width:8px;height:8px;border-radius:50%;background:#F4A75A}
-  .learn-ui .dot.on{background:#5AD18C}
-  .learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-  .learn-pick{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem}
-  .learn-pick.has{border-color:#C7D2FE}
-  .learn-pick .lp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
-  .learn-pick h3{font-size:.98rem;font-weight:700}
-  .lp-badge{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;background:var(--goodBg);color:var(--good);border:1px solid #BfE6CC;border-radius:10px;padding:2px 7px;white-space:nowrap;flex-shrink:0}
-  .lp-soon{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--textLight);background:#F0F4FF;border-radius:10px;padding:2px 7px;white-space:nowrap;flex-shrink:0}
-  .learn-pick button{align-self:flex-start;margin-top:auto}
-  .learn-layout{display:flex;gap:1.2rem;align-items:flex-start}
-  .learn-ui .stepper{width:230px;min-width:230px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:.8rem;position:sticky;top:0}
-  .learn-ui .stepper h2{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--textLight);margin:.2rem .4rem .6rem}
-  .learn-ui .step-item{display:flex;gap:.6rem;align-items:center;padding:.5rem;border-radius:9px;cursor:pointer;font-size:.82rem;transition:.12s;width:100%;text-align:left;background:none;border:none;font-family:inherit;color:var(--text)}
-  .learn-ui .step-item:hover{background:#F0F4FF}
-  .learn-ui .step-item.active{background:#EEF2FF}
-  .learn-ui .step-item.active .step-name{color:var(--accentText);font-weight:700}
-  .learn-ui .step-num{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:#EAEef7;color:var(--textLight);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
-  .learn-ui .step-item.active .step-num{background:var(--accent);color:#fff}
-  .learn-ui .step-item.done .step-num{background:var(--good);color:#fff}
-  .learn-ui .step-item.visited .step-num{background:#CBD5E0;color:#fff}
-  .learn-ui textarea:focus-visible,.learn-ui input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-  .learn-ui .progress-wrap{height:6px;background:#EAEef7;border-radius:4px;margin:.6rem .4rem 0;overflow:hidden}
-  .learn-ui .progress-bar{height:100%;background:var(--accent);transition:width .3s}
-  .learn-aside-actions{margin-top:.7rem;display:flex;gap:.4rem;flex-wrap:wrap}
-  .learn-main{flex:1;min-width:0}
-  .learn-ui .panel{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;margin-bottom:1rem}
-  .learn-ui .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--textLight);font-weight:700}
-  .learn-ui .panel h3{font-size:1.15rem;margin:.2rem 0;outline:none}
-  .learn-ui .block{border-left:3px solid var(--border);padding:.2rem 0 .2rem .9rem;margin:1rem 0}
-  .learn-ui .block .label{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--textLight);margin-bottom:.25rem;display:flex;align-items:center;gap:.4rem}
-  .learn-ui .block.why{border-color:var(--accent)}
-  .learn-ui .block.example{border-color:#9B59B6;background:#FBF7FE;border-radius:0 8px 8px 0}
-  .learn-ui .block.task{border-color:var(--qualitative)}
-  .learn-ui textarea,.learn-ui input[type=text],.learn-ui input[type=password]{width:100%;border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;font:inherit;font-size:.9rem;resize:vertical;outline:none;line-height:1.55;background:#fff;color:var(--text)}
-  .learn-ui textarea:focus,.learn-ui input:focus{border-color:var(--accent)}
-  .learn-ui .fieldlabel{font-size:.82rem;font-weight:600;display:block;margin:.6rem 0 .25rem}
-  .learn-ui .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.8rem}
-  .learn-privacy{margin-top:.6rem}
-  .learn-ui .hint{background:#fff;border:1px dashed var(--border);border-radius:10px;padding:.6rem .8rem;margin-top:.5rem;font-size:.84rem}
-  .learn-ui .hint .htag{font-weight:700;color:var(--accentText)}
-  .learn-ui .tutor{background:var(--tutorBg);border:1px solid #D5DEFB;border-radius:12px;padding:.9rem 1rem;margin-top:.9rem}
-  .learn-ui .tutor .who{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.84rem;color:var(--accentText);margin-bottom:.35rem}
-  .learn-ui .tutor-body{font-size:.88rem;white-space:pre-wrap}
-  .learn-ui .tutor.good{background:var(--goodBg);border-color:#BfE6CC}
-  .learn-ui .tutor.good .who{color:var(--good)}
-  .learn-ui .tutor.warn{background:var(--warnBg);border-color:#F2D8BD}
-  .learn-ui .tutor.warn .who{color:var(--warn)}
-  .learn-ui .mc{margin-top:.6rem}
-  .learn-ui .mc button{display:block;width:100%;text-align:left;border:1px solid var(--border);background:#fff;border-radius:9px;padding:.5rem .7rem;margin-bottom:.4rem;cursor:pointer;font-size:.85rem;font-family:inherit;color:var(--text)}
-  .learn-ui .mc button:hover{border-color:var(--accent)}
-  .learn-ui .mc button.correct{border-color:var(--good);background:var(--goodBg)}
-  .learn-ui .mc button.wrong{border-color:var(--qualitative);background:#FDECEA}
-  .learn-ui .mc-fb{margin-top:.2rem}
-  .learn-nav{display:flex;justify-content:space-between;align-items:center}
-  .learn-ui .spinner{width:14px;height:14px;border:2px solid #cdd6f5;border-top-color:var(--accent);border-radius:50%;display:inline-block;animation:learnspin .7s linear infinite;vertical-align:middle}
-  @keyframes learnspin{to{transform:rotate(360deg)}}
-  .learn-ui .note{font-size:.78rem;color:var(--textLight);background:#F7F8FA;border-radius:8px;padding:.55rem .7rem;margin-top:.6rem}
-  .learn-ui code{background:#EEF1F6;padding:.05rem .3rem;border-radius:4px;font-size:.85em}
-  @media (prefers-reduced-motion:reduce){ .learn-ui .spinner{animation:none} .learn-ui .progress-bar{transition:none} }
+  /* ---------- Learn Analysis tab (multi-method tutor; ported & scoped to #learnView / #laSettings) ---------- */
+  #learnView .la-wrap{max-width:1080px;margin:0 auto}
+  #learnView .la-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+  #learnView .la-toolbar .ai-status{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--textLight)}
+  #learnView .la-toolbar .dot{width:8px;height:8px;border-radius:50%;background:#F4A75A}
+  #learnView .la-toolbar .dot.on{background:#5AD18C}
+  #learnView .la-toolbar .btn-link{background:none;border:none;color:var(--accentText);cursor:pointer;font-size:.78rem;font-weight:600;text-decoration:underline;padding:0;font-family:inherit}
+  #learnView .hdr-ctrl{color:var(--accentText);background:#EEF2FF;border:1px solid #C7D2FE;border-radius:20px;padding:.32rem .8rem;font-size:.76rem;font-weight:600;cursor:pointer;font-family:inherit}
+  #learnView .hdr-ctrl:hover{background:#E0E7FF}
+  #learnView .btn,#laSettings .btn{border:none;border-radius:9px;font-size:.86rem;font-weight:600;cursor:pointer;padding:.55rem 1rem;transition:.15s;font-family:inherit}
+  #learnView .btn-primary,#laSettings .btn-primary{background:var(--accent);color:#fff}
+  #learnView .btn-primary:hover,#laSettings .btn-primary:hover{background:var(--accentHover)}
+  #learnView .btn-ghost,#laSettings .btn-ghost{background:#fff;color:var(--accentText);border:1px solid var(--border)}
+  #learnView .btn-ghost:hover,#laSettings .btn-ghost:hover{border-color:var(--accent)}
+  #learnView .btn-sm{padding:.35rem .7rem;font-size:.78rem}
+  #learnView .btn:focus-visible,#learnView .step-item:focus-visible,#learnView .mc-opt:focus-visible,#learnView .pick-card:focus-visible,#learnView textarea:focus-visible,#learnView input:focus-visible,#learnView .hdr-ctrl:focus-visible,#learnView .btn-link:focus-visible,#laSettings .btn:focus-visible,#laSettings input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  #learnView .pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+  #learnView .pick-card{text-align:left;background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.1rem;cursor:pointer;transition:.18s;font:inherit;color:var(--text)}
+  #learnView .pick-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.08);border-color:var(--accent)}
+  #learnView .pick-card h3{font-size:1rem;margin-bottom:.3rem}
+  #learnView .pick-card p{font-size:.82rem;color:var(--textLight)}
+  #learnView .pill{display:inline-block;font-size:.68rem;font-weight:700;border-radius:12px;padding:.15rem .55rem;margin-top:.6rem}
+  #learnView .pill.ready{background:var(--goodBg);color:var(--good)}
+  #learnView .tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.5rem}
+  #learnView .tag{font-size:.66rem;font-weight:700;border-radius:10px;padding:2px 8px;background:#EEF1F6;color:#5A6577}
+  #learnView .la-count{font-size:.82rem;color:var(--textLight);margin-bottom:.8rem}
+  #learnView .layout{display:flex;gap:1.2rem;align-items:flex-start}
+  #learnView .stepper{width:230px;min-width:230px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:.8rem;position:sticky;top:0}
+  #learnView .stepper h2{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--textLight);margin:.2rem .4rem .5rem}
+  #learnView .step-item{display:flex;gap:.6rem;align-items:center;width:100%;text-align:left;padding:.45rem .5rem;border:none;background:none;border-radius:9px;cursor:pointer;font:inherit;font-size:.82rem;transition:.12s;color:var(--text)}
+  #learnView .step-item:hover{background:#F0F4FF}
+  #learnView .step-item[aria-current="step"]{background:#EEF2FF}
+  #learnView .step-item[aria-current="step"] .step-name{color:var(--accentText);font-weight:700}
+  #learnView .step-num{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:#EAEef7;color:var(--textLight);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
+  #learnView .step-item[aria-current="step"] .step-num{background:var(--accent);color:#fff}
+  #learnView .step-item.done .step-num{background:var(--good);color:#fff}
+  #learnView .progress-wrap{height:6px;background:#EAEef7;border-radius:4px;margin:.6rem .4rem 0;overflow:hidden}
+  #learnView .progress-bar{height:100%;background:var(--accent);width:0;transition:width .3s}
+  #learnView .main{flex:1;min-width:0}
+  #learnView .panel{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;margin-bottom:1rem}
+  #learnView .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--textLight);font-weight:700}
+  #learnView .panel h3{font-size:1.15rem;margin:.2rem 0;outline:none}
+  #learnView .block{border-left:3px solid var(--border);padding:.2rem 0 .2rem .9rem;margin:1rem 0}
+  #learnView .block .label{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--textLight);margin-bottom:.25rem}
+  #learnView .block.why{border-color:var(--accent)}
+  #learnView .block.example{border-color:#9B59B6;background:#FBF7FE;border-radius:0 8px 8px 0}
+  #learnView .block.task{border-color:#E8655A}
+  #learnView .small,#laSettings .small{font-size:.83rem;color:var(--textLight)}
+  #learnView textarea,#learnView input[type=text],#laSettings input[type=text],#laSettings input[type=password]{width:100%;border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;font:inherit;font-size:.9rem;resize:vertical;outline:none;line-height:1.55;background:#fff;color:var(--text)}
+  #learnView textarea:focus,#learnView input:focus,#laSettings input:focus{border-color:var(--accent)}
+  #learnView .fieldlabel,#laSettings .fieldlabel{font-size:.83rem;font-weight:600;display:block;margin:.7rem 0 .25rem}
+  #learnView .fieldhint{font-weight:400;color:var(--textLight)}
+  #learnView .row,#laSettings .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.8rem}
+  #learnView .hint{background:#fff;border:1px dashed var(--border);border-radius:10px;padding:.6rem .8rem;margin-top:.5rem;font-size:.84rem}
+  #learnView .hint .htag{font-weight:700;color:var(--accentText)}
+  #learnView .tutor{background:var(--tutorBg);border:1px solid #D5DEFB;border-radius:12px;padding:.9rem 1rem;margin-top:.9rem}
+  #learnView .tutor .who{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.84rem;color:var(--accentText);margin-bottom:.35rem}
+  #learnView .tutor-body{font-size:.88rem;white-space:pre-wrap}
+  #learnView .tutor.good{background:var(--goodBg);border-color:#BfE6CC}#learnView .tutor.good .who{color:var(--good)}
+  #learnView .tutor.warn{background:var(--warnBg);border-color:#F2D8BD}#learnView .tutor.warn .who{color:var(--warn)}
+  #learnView .mc button.mc-opt{display:block;width:100%;text-align:left;border:1px solid var(--border);background:#fff;border-radius:9px;padding:.5rem .7rem;margin-bottom:.4rem;cursor:pointer;font:inherit;font-size:.85rem;color:var(--text)}
+  #learnView .mc button.mc-opt:hover{border-color:var(--accent)}
+  #learnView .mc button.correct{border-color:var(--good);background:var(--goodBg)}
+  #learnView .mc button.wrong{border-color:#E8655A;background:#FDECEA}
+  #learnView .spinner,#laSettings .spinner{width:14px;height:14px;border:2px solid #cdd6f5;border-top-color:var(--accent);border-radius:50%;display:inline-block;animation:laspin .7s linear infinite;vertical-align:middle}
+  @keyframes laspin{to{transform:rotate(360deg)}}
+  #learnView .note,#laSettings .note{font-size:.78rem;color:var(--textLight);background:#F7F8FA;border-radius:8px;padding:.55rem .7rem;margin-top:.6rem}
+  #learnView code{background:#EEF1F6;padding:.05rem .3rem;border-radius:4px;font-size:.85em}
+  /* Connect-AI dialog — separate from the app's #modalOverlay */
+  #laSettings{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:1.5rem;z-index:410;backdrop-filter:blur(3px)}
+  #laSettings.open{display:flex}
+  #laSettings .la-modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  #laSettings h3{margin-bottom:.5rem}
+  @media (prefers-reduced-motion:reduce){ #learnView .spinner,#laSettings .spinner{animation:none} #learnView .progress-bar{transition:none} #learnView .pick-card{transition:none} }
   @media(max-width:820px){
-    .learn-layout{flex-direction:column}
-    .learn-ui .stepper{width:100%;position:static;display:flex;overflow-x:auto;gap:.3rem}
-    .learn-ui .stepper h2,.learn-ui .progress-wrap,.learn-aside-actions{display:none}
-    .learn-ui .step-item{flex-direction:column;align-items:center;min-width:84px;text-align:center;font-size:.7rem}
+    #learnView .layout{flex-direction:column}
+    #learnView .stepper{width:100%;position:static;display:flex;overflow-x:auto;gap:.3rem}
+    #learnView .stepper h2,#learnView .progress-wrap{display:none}
+    #learnView .step-item{flex-direction:column;min-width:78px;text-align:center;font-size:.68rem}
   }
 </style>
 </head>
@@ -951,6 +951,23 @@
 <div id="tourOverlay" aria-hidden="true">
   <div class="tour-spot" id="tourSpot"></div>
   <div class="tour-pop" id="tourPop" role="dialog" aria-modal="true" aria-labelledby="tourTitle"></div>
+</div>
+
+<!-- Learn Analysis: Connect-AI dialog (separate from the detail modal) -->
+<div id="laSettings">
+  <div class="la-modal" role="dialog" aria-modal="true" aria-labelledby="laSetTitle">
+    <h3 id="laSetTitle">Connect an AI tutor</h3>
+    <p class="small">Works fully in <b>Demo tutor</b> mode with no key. For adaptive, content-aware coaching on your own data, paste an Anthropic API key — it stays in your browser.</p>
+    <label class="fieldlabel" for="laApiKey">Anthropic API key</label>
+    <input type="password" id="laApiKey" placeholder="sk-ant-..." autocomplete="off">
+    <label class="fieldlabel" for="laApiModel">Model</label>
+    <input type="text" id="laApiModel" value="claude-3-5-haiku-latest">
+    <div class="note">⚠️ In AI mode the text you submit each step is sent to Anthropic. Don't paste data you lack consent to share. In Demo mode nothing leaves your device.</div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="LA.useDemo()">Use Demo tutor</button>
+      <button class="btn btn-primary" onclick="LA.saveKey()">Save &amp; use AI</button>
+    </div>
+  </div>
 </div>
 
 <!-- Detail Modal -->
@@ -3151,7 +3168,7 @@ function passesFilters(m, f) {
 
 function applyFilters() {
   // In the Learn tab the search box filters the method picker (when no walkthrough is open)
-  if (currentTab === 'learn') { if (!learnState.methodId) renderLearn(); return; }
+  if (currentTab === 'learn') { if (window.LA) LA.applySearch(); return; }
   if (currentLens === 'analysis') { applyAnalysisFilters(); return; }
   const f = {
     search: document.getElementById('searchInput').value.toLowerCase(),
@@ -4015,7 +4032,7 @@ let mapMode = 'landscape';
 function setMapMode(mode) { mapMode = mode; applyFilters(); }
 
 function switchTab(tab) {
-  if (currentTab === 'learn' && tab !== 'learn') learnCollectCurrent();
+  if (currentTab === 'learn' && tab !== 'learn' && window.LA) LA.collectOnLeave();
   currentTab = tab;
   closeFilters();
   document.querySelectorAll('#tablist [role="tab"]').forEach(t => {
@@ -4038,7 +4055,7 @@ function switchTab(tab) {
   if (tab==='advisor') initAdvisor();
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
-  if (tab==='learn') renderLearn();
+  if (tab==='learn' && window.LA) LA.mount('learnView');
   updateURL();
 }
 
@@ -4409,433 +4426,630 @@ function positionTour() {
     : Math.max(8, rect.top - gap - popH) + 'px';
 }
 
-/* ===================== Learn Analysis tab (guided tutor) ===================== */
-const LEARN_SAMPLE = `P3: Honestly the first time I tried to send money I just froze. There's a button that says "Continue" but I couldn't tell if that meant it would actually send it or just go to the next screen. So I backed out and called my daughter.
-P3: I always double-check by taking a screenshot. I don't trust that it saved.
-P7: I skipped the tutorial because I wanted to get in and do the thing. Then I got stuck and there was no way back to it.
-P7: When it asked me to verify my identity I almost gave up — it wasn't clear why they needed my passport just to look at my own balance.`;
+/* ===== Learn Analysis tab — multi-method guided tutor (ported from analysis-helper-multimethod.html;
+   wrapped in an IIFE so the ONLY global is window.LA; state/save/load/etc. stay local — no app collisions.
+   GUARDRAIL: all numeric/statistical results (descriptive summary, CI, Cohen's d) are computed by the JS
+   helpers inside each step.check(); the LLM tutor only EXPLAINS them, never produces a statistic. ===== */
+(function(){
 
-let learnState = learnLoad() || {
-  methodId: null, step: 0,
-  rq:"", data:"", familiar:"", codes:"", clusters:"", themes:"", interpret:"", reflection:"",
-  mc:{}, ai:{ on:false, key:"", model:"claude-3-5-haiku-latest" }, hintsShown:{}
-};
-function learnSave(){ try{ localStorage.setItem('learnAnalysis', JSON.stringify(learnState)); }catch(e){} }
-function learnLoad(){ try{ return JSON.parse(localStorage.getItem('learnAnalysis')||'null'); }catch(e){ return null; } }
-function learnVal(id){ const el=document.getElementById(id); return el?el.value.trim():''; }
+/* ============================ helpers ============================ */
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function wc(s){return (s||'').trim().split(/\s+/).filter(Boolean).length;}
+function lines(s){return (s||'').split('\n').map(l=>l.trim()).filter(Boolean);}
+/* numeric helpers — stats are computed in JS, never by the LLM */
+function parseNums(s){return (s||'').split(/[\s,;]+/).map(Number).filter(x=>!isNaN(x)&&isFinite(x));}
+function mean(a){return a.reduce((x,y)=>x+y,0)/a.length;}
+function median(a){const b=[...a].sort((x,y)=>x-y),m=Math.floor(b.length/2);return b.length%2?b[m]:(b[m-1]+b[m])/2;}
+function sd(a){if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1));}
+function r2(x){return Math.round(x*100)/100;}
 
-// 7-step Thematic Analysis path (content ported verbatim from the tutor prototype)
-const LEARN_STEPS = [
-  {
-    id:'frame', name:'Frame', title:'1 · Frame your question & data',
-    why:`Thematic analysis answers "what patterns of meaning run through qualitative data?" Before coding, name what you want to learn and gather text you actually collected (interview transcripts, open-ended survey answers, field notes). A focused question keeps your coding honest.`,
-    example:`Question: "Why do first-time users abandon onboarding?" Data: 4 interview excerpts.`,
-    render(s){ return `
-      <label class="fieldlabel" for="f_rq">Your research question</label>
-      <input type="text" id="f_rq" placeholder="e.g. Why do older adults avoid online banking?" value="${escHtml(s.rq)}">
-      <label class="fieldlabel" for="f_data">Paste your qualitative data <span class="small">(stays in your browser)</span></label>
-      <textarea id="f_data" rows="8" aria-label="Your qualitative data — stays in your browser" placeholder="Paste transcripts / open-ended responses. Prefix speakers like P1:, P2: if you can.">${escHtml(s.data)}</textarea>
-      <div class="row"><button class="btn btn-ghost btn-sm" onclick="learnUseSample()">Use a sample dataset</button></div>`;
-    },
-    collect(){ learnState.rq=learnVal('f_rq'); learnState.data=learnVal('f_data'); },
-    feedbackKind:'fit',
-    mc:{ q:"Which is a question thematic analysis can answer well?",
-      options:[ {t:"Which of two layouts converts better?",ok:false,why:"That's a comparative/quantitative question — use an experiment or A/B test."},
-                {t:"What concerns shape how people feel about a task?",ok:true,why:"Yes — TA surfaces patterns of meaning and concern across accounts."},
-                {t:"How many users completed onboarding?",ok:false,why:"That's a metric — use descriptive analytics, not TA."} ] }
-  },
-  {
-    id:'familiar', name:'Familiarise', title:'2 · Familiarise yourself',
-    why:`Before coding, read everything once and jot first impressions. This "immersion" stops you from coding mechanically and helps you notice tone, contradictions, and surprises. Write notes in your own words — not codes yet.`,
-    example:`Note: "Several people improvise safety checks (screenshots, phoning family) — they don't trust feedback."`,
-    render(s){ return `
-      <label class="fieldlabel small" for="f_fam">Re-read your data, then write 2–4 first-impression notes. What stands out? What surprised you?</label>
-      <textarea id="f_fam" rows="5" placeholder="First impressions, in your own words...">${escHtml(s.familiar)}</textarea>`;
-    },
-    collect(){ learnState.familiar=learnVal('f_fam'); },
-    feedbackKind:'familiar'
-  },
-  {
-    id:'code', name:'Open code', title:'3 · Open coding',
-    why:`A code is a short label that captures the meaning of a specific excerpt. Good codes are interpretive (what's going on) not just topics (what it's about). "Distrust of system feedback" is a code; "feedback" is only a topic. Code closely — one idea per excerpt.`,
-    example:`Excerpt: "I always double-check by taking a screenshot." → Code: <code>Improvising safety to compensate for low trust</code> (not just "screenshots").`,
-    render(s){ return `
-      <label class="fieldlabel small" for="f_codes">Pick 4–6 excerpts from your data and give each an interpretive code. One per line, format:
-      <code>excerpt → your code</code></label>
-      <textarea id="f_codes" rows="7" placeholder='"I couldn&apos;t tell if Continue would send it" → Uncertainty about consequence of an action'>${escHtml(s.codes)}</textarea>`;
-    },
-    collect(){ learnState.codes=learnVal('f_codes'); },
-    feedbackKind:'codes',
-    mc:{ q:"Which is the stronger code for: \"I skipped the tutorial because I wanted to get in and do the thing\"?",
-      options:[ {t:"Tutorial",ok:false,why:"That's a topic label — it carries no interpretation."},
-                {t:"Skipping help in favour of acting immediately",ok:true,why:"Yes — it captures the behaviour and the motive."},
-                {t:"User is impatient",ok:false,why:"Too much of a judgement and not grounded in the words; stay close to the data."} ] }
-  },
-  {
-    id:'cluster', name:'Cluster', title:'4 · Cluster codes into candidate themes',
-    why:`Group related codes that seem to "belong together" into candidate themes. A theme is a pattern of shared meaning, not a bucket of everything on a topic. Watch for codes that sit alone (maybe a sub-theme, maybe noise) and codes that overlap (maybe one code).`,
-    example:`Codes "improvising safety", "distrust of feedback", "double-checking" → candidate theme <code>Compensating for untrustworthy feedback</code>.`,
-    render(s){ return `
-      <label class="fieldlabel small" for="f_clusters">Group your codes into 2–3 candidate themes. One group per line, format:
-      <code>Theme guess: code, code, code</code></label>
-      <textarea id="f_clusters" rows="6" placeholder="Compensating for untrustworthy feedback: improvising safety, distrust of feedback, double-checking">${escHtml(s.clusters)}</textarea>`;
-    },
-    collect(){ learnState.clusters=learnVal('f_clusters'); },
-    feedbackKind:'clusters'
-  },
-  {
-    id:'theme', name:'Name themes', title:'5 · Define & name your themes',
-    why:`Name each theme so it tells a reader something (a short phrase, not one word), write a 1–2 sentence definition of its boundary, and attach at least one verbatim quote as evidence. If you can't find a quote, the theme isn't grounded yet.`,
-    example:`Theme: "Compensating for untrustworthy feedback" — Def: users build their own safety rituals because the system doesn't reassure them an action worked. Quote: "I always double-check by taking a screenshot."`,
-    render(s){ return `
-      <label class="fieldlabel small" for="f_themes">For each theme: name, definition, and a quote. Separate themes with a blank line.</label>
-      <textarea id="f_themes" rows="8" placeholder="Theme: ...&#10;Definition: ...&#10;Quote: &quot;...&quot;">${escHtml(s.themes)}</textarea>`;
-    },
-    collect(){ learnState.themes=learnVal('f_themes'); },
-    feedbackKind:'themes',
-    mc:{ q:"A theme with no supporting quote means…",
-      options:[ {t:"It's fine if it feels true",ok:false,why:"Themes must be evidenced — a hunch isn't a finding."},
-                {t:"It isn't grounded yet; find evidence or revise it",ok:true,why:"Exactly — every theme needs verbatim support."},
-                {t:"You need more participants",ok:false,why:"Maybe later, but first the claim must be grounded in the data you have."} ] }
-  },
-  {
-    id:'interpret', name:'Interpret', title:'6 · Interpret — claims, contrasts, limits',
-    why:`Turn each theme into a claim that answers your question, note any disconfirming case (where the pattern breaks — this strengthens credibility), and state limitations (small sample, single context). Interpretation is where themes become insight.`,
-    example:`Claim: distrust of feedback, not lack of skill, drives abandonment. Disconfirming: P7 abandoned over identity verification, not feedback. Limit: 4 participants, one app.`,
-    render(s){ return `
-      <label class="fieldlabel small" for="f_interp">For each theme: a claim that answers your question, a disconfirming case, and limitations.</label>
-      <textarea id="f_interp" rows="7" placeholder="Claim per theme...&#10;Disconfirming case...&#10;Limitations...">${escHtml(s.interpret)}</textarea>`;
-    },
-    collect(){ learnState.interpret=learnVal('f_interp'); },
-    feedbackKind:'interpret'
-  },
-  {
-    id:'reflect', name:'Reflect', title:'7 · Reflect & export',
-    why:`Reflection consolidates learning. Name what surprised you, where your evidence is weakest, and how your own assumptions might have shaped your coding (reflexivity). Then export your work as a mini findings write-up with an audit trail of your decisions.`,
-    example:`"I assumed older users struggle with tech, but the data pointed to trust, not ability — I had to re-code."`,
-    render(s){ return `
-      <label class="fieldlabel small" for="f_reflect">Reflect: what surprised you? Where is your evidence weakest? How might your assumptions have shaped your coding?</label>
-      <textarea id="f_reflect" rows="5" placeholder="What surprised you? Where is your evidence weakest? How might your assumptions have shaped your coding?">${escHtml(s.reflection)}</textarea>
-      <div class="row"><button class="btn btn-primary" onclick="learnExport()">Export findings + audit trail</button></div>`;
-    },
-    collect(){ learnState.reflection=learnVal('f_reflect'); },
-    feedbackKind:'reflect'
-  }
+/* ============================ method definitions ============================
+   Each step: {id,name,title,why,example, fields:[{id,label,type,rows,placeholder}],
+               sample?:{fieldId:text}, hints:[], mc?:{q,options:[{t,ok,why}]},
+               check(d): returns {kind:'good'|'warn'|'', text}  -- d = this method's saved field values }
+*/
+const TA_NOTE='Keep work in your browser. Use the format shown; one idea per line.';
+const METHODS=[
+{
+ id:'content-analysis', name:'Content analysis',
+ blurb:'Systematically categorise text/media against a coding scheme and (optionally) count categories.',
+ tags:['Themes','Scores/Measures','Qual + Quant'],
+ steps:[
+  {id:'frame',name:'Frame',title:'1 · Frame & gather your content',
+   why:'Content analysis turns a body of text or media into categories you can compare and count. Decide your question and your <b>unit of analysis</b> — the chunk you code (a whole review? a sentence? an image?). The unit must be consistent.',
+   example:'Q: "What do users complain about in reviews?" Unit: one review. Content: 200 app-store reviews.',
+   fields:[{id:'q',label:'Your question',type:'text',placeholder:'e.g. What concerns appear in onboarding feedback?'},
+           {id:'unit',label:'Unit of analysis',type:'text',placeholder:'e.g. one review / one sentence / one image'},
+           {id:'content',label:'Paste your content',hint:'(stays in your browser)',type:'textarea',rows:7,placeholder:'Paste reviews / open-ended answers / documents…'}],
+   sample:{q:'What do first-time users complain about?',unit:'one review',content:'R1: Couldn’t tell if my transfer actually went through.\nR2: Why do I need my passport just to see my balance?\nR3: The tutorial vanished and I couldn’t get back to it.\nR4: I take a screenshot every time because I don’t trust it saved.\nR5: Setup was quick but verification took days.'},
+   hints:['Pick a unit you can apply the same way every time — mixing sentence-level and review-level coding breaks your counts.','If your question is purely "how many", you still need categories first — content analysis quantifies categories, it doesn’t invent them.'],
+   mc:{q:'Coding the literal, surface content (e.g. the word "slow" appears) is…',
+     options:[{t:'Latent coding',ok:false,why:'Latent coding interprets underlying meaning; counting explicit words is manifest.'},
+              {t:'Manifest coding',ok:true,why:'Yes — manifest = the visible, explicit content; latent = interpreted meaning.'},
+              {t:'Axial coding',ok:false,why:'That belongs to grounded theory, not content analysis.'}]},
+   check:d=>{ if(!d.content) return {kind:'warn',text:'Paste some content so you have something to code — even 5 lines is enough to practise.'};
+     if(!d.unit) return {kind:'warn',text:'Name your unit of analysis. Will you code each whole '+(d.content?'review':'item')+', or each sentence? Pick one and apply it consistently.'};
+     return {kind:'good',text:'Good setup — a clear question and a defined unit ("'+d.unit+'"). Keep that unit fixed; consistency is what makes the counts meaningful.'}; } },
+  {id:'scheme',name:'Coding scheme',title:'2 · Build your coding scheme',
+   why:'A coding scheme is a small set of categories with <b>definitions</b>. Aim for categories that are clear and, ideally, mutually exclusive so each unit lands in one place. Definitions are what let a second person code the same way you do.',
+   example:'Trust in feedback — "doubt that an action saved/worked". Verification burden — "effort to prove identity". Lost help — "can’t return to guidance".',
+   fields:[{id:'scheme',label:'Your categories + definitions',type:'textarea',rows:7,placeholder:'Category — short definition\nCategory — short definition\n…'}],
+   hints:['Give every category a one-line definition. "Usability" alone isn’t a category — what exactly counts as in vs out?','3–7 categories is a good start. Too many and you’ll never reach reliable counts.'],
+   check:d=>{ const ls=lines(d.scheme); if(ls.length<3) return {kind:'warn',text:'Draft at least 3 categories. Each should be something a unit can clearly belong to.'};
+     const undef=ls.filter(l=>!/[-:—=]/.test(l));
+     if(undef.length) return {kind:'warn',text:'These look like labels without a definition: '+undef.slice(0,3).map(x=>'"'+x+'"').join(', ')+'. Add "— definition" so a second coder could apply them the same way.'};
+     return {kind:'good',text:'Nice — '+ls.length+' defined categories. Before coding everything, test them on a few units and watch for overlaps (units that fit two categories).'}; } },
+  {id:'pilot',name:'Pilot',title:'3 · Pilot & refine',
+   why:'Code a handful of units first. Note any that are ambiguous or fit two categories — those signal a definition you need to sharpen or a category you need to split or merge. Refining now saves re-coding later.',
+   example:'"Verification took days" fit both Verification burden and Speed — I split Speed out as its own category.',
+   fields:[{id:'pilot',label:'What you changed after a test run',type:'textarea',rows:5,placeholder:'Ambiguous cases, overlaps, and how you revised the scheme…'}],
+   hints:['If two categories keep catching the same units, merge them or sharpen the boundary in the definitions.','A unit that fits nothing may need a new category — or an "Other" bucket you keep small.'],
+   check:d=>{ if(wc(d.pilot)<6) return {kind:'warn',text:'Try coding ~5 units and note what was ambiguous. Refining the scheme now is the single biggest lever on quality.'};
+     return {kind:'good',text:'Good — you treated the scheme as a draft and revised it against real units. That’s exactly the discipline content analysis needs.'}; } },
+  {id:'code',name:'Code',title:'4 · Code the content',
+   why:'Apply your (refined) scheme to every unit. Keep the link from unit to category so your counts stay traceable to evidence.',
+   example:'R1 → Trust in feedback · R2 → Verification burden · R3 → Lost help · R4 → Trust in feedback',
+   fields:[{id:'codes',label:'Your coded units',type:'textarea',rows:7,placeholder:'unit id / quote → category (one per line)'}],
+   hints:['Keep the <unit → category> link so every count can be traced back to the exact text.','Code consistently — if you’re unsure, go back to the definition rather than inventing a new rule on the fly.'],
+   check:d=>{ const ls=lines(d.codes); if(ls.length<4) return {kind:'warn',text:'Code more units (aim to cover your sample) so the pattern is real, not anecdotal.'};
+     const noLink=ls.filter(l=>!/[→:>-]/.test(l)).length;
+     if(noLink) return {kind:'warn',text:'Some lines don’t link a unit to a category — keep the <unit → category> format so counts stay traceable.'};
+     return {kind:'good',text:'You coded '+ls.length+' units with traceable links. Next, count them.'}; } },
+  {id:'quantify',name:'Quantify',title:'5 · Quantify',
+   why:'Count how often each category occurs (and, if useful, percentages or a category × group matrix). Remember: a high count means <i>frequent</i>, not necessarily <i>important</i> — that’s your interpretation later.',
+   example:'Trust in feedback 2/5 (40%) · Verification burden 1/5 · Lost help 1/5 · Speed 1/5.',
+   fields:[{id:'counts',label:'Your category counts',type:'textarea',rows:5,placeholder:'Category — count (and % if you like)'}],
+   hints:['Report the denominator (count out of how many units) so a reader can judge the frequency.','A simple bar of counts communicates better than a paragraph — but keep the raw numbers.'],
+   check:d=>{ if(!/\d/.test(d.counts||'')) return {kind:'warn',text:'Add actual counts (numbers) per category. Frequencies are the output content analysis exists to produce.'};
+     return {kind:'good',text:'Good — you have counts. Resist reading importance straight off frequency; we’ll interpret with care next.'}; } },
+  {id:'reliability',name:'Reliability',title:'6 · Check reliability',
+   why:'If decisions ride on the coding, have a second person code a subset and measure agreement (e.g., Cohen’s/Krippendorff’s coefficient), not just raw % agreement. Disagreements reveal fuzzy definitions to fix.',
+   example:'Second coder agreed on 17/20 units (Krippendorff’s α ≈ .80); we reconciled the 3 and clarified "Speed".',
+   fields:[{id:'rel',label:'Your reliability plan / result',type:'textarea',rows:4,placeholder:'Who double-codes, how many units, what agreement, what you reconciled…'}],
+   hints:['Raw % agreement overstates reliability because some agreement happens by chance — use a chance-corrected coefficient.','Even double-coding 10–20% of units and discussing disagreements improves your scheme noticeably.'],
+   check:d=>{ if(!/cod|agree|kappa|alpha|reliab|second/i.test(d.rel||'')) return {kind:'warn',text:'Describe how you’d check reliability — a second coder on a subset, and a chance-corrected agreement figure. This is what separates content analysis from casual tagging.'};
+     return {kind:'good',text:'Good — building agreement in makes your categories defensible. Treat disagreements as feedback on your definitions.'}; } },
+  {id:'interpret',name:'Interpret',title:'7 · Interpret & report',
+   why:'Turn counts into claims that answer your question, note trends or group differences, and caveat honestly: counts depend on your scheme and sample, and frequency isn’t importance.',
+   example:'Claim: distrust of feedback is the most frequent complaint (40%). Caveat: 5 reviews, one app; a rare-but-severe issue could be under-counted.',
+   fields:[{id:'interp',label:'Your interpretation',type:'textarea',rows:5,placeholder:'Claims, any trends/differences, and caveats…'}],
+   hints:['Say what the counts can’t tell you (severity, why) — that’s honest and points to follow-up methods.','Tie the headline claim back to the exact question you set in step 1.'],
+   check:d=>{ if(wc(d.interp)<10) return {kind:'warn',text:'Write a claim per major category plus a caveat about scheme/sample. Interpretation is where counts become findings.'};
+     if(!/caveat|limit|sample|not |only|may /i.test(d.interp)) return {kind:'warn',text:'Add a caveat — counts reflect your scheme and sample, and frequency ≠ importance. Naming that makes the claim credible.'};
+     return {kind:'good',text:'Strong — claims tied to counts, with honest limits. You can export your work now.'}; } }
+ ]
+},
+{
+ id:'affinity', name:'Affinity diagramming',
+ blurb:'Cluster individual observations bottom-up into labelled themes (the KJ method).',
+ tags:['Themes','Model/Framework','Qualitative'],
+ steps:[
+  {id:'notes',name:'Make notes',title:'1 · Turn data into notes (one idea each)',
+   why:'Affinity diagramming works on atomic notes: one observation, quote, or idea per note. Breaking data down first is what lets new structure emerge — don’t pre-sort.',
+   example:'"I screenshot every transfer" · "Didn’t know if Continue would send it" · "Skipped the tutorial to just start".',
+   fields:[{id:'q',label:'What are you trying to understand?',type:'text',placeholder:'e.g. Why do people hesitate during transfers?'},
+           {id:'notes',label:'Your notes — one idea per line',hint:'(stays in your browser)',type:'textarea',rows:8,placeholder:'One observation, quote, or idea per line…'}],
+   sample:{q:'Why do people hesitate during onboarding?',notes:'Couldn’t tell if "Continue" would actually send the money\nTook a screenshot to prove the transfer saved\nPhoned my daughter when I got unsure\nSkipped the tutorial to get started\nNo way back to the tutorial once I’d skipped it\nDidn’t see why my passport was needed to view a balance\nGave up at identity verification\nFelt the app never confirmed anything worked'},
+   hints:['If a line contains two ideas ("and", "but", commas joining clauses), split it into two notes.','Keep notes in participants’ own words where you can — it preserves meaning for clustering.'],
+   mc:{q:'Why one idea per note?',
+     options:[{t:'It looks tidier',ok:false,why:'Tidiness isn’t the point — atomic notes let new groupings emerge freely.'},
+              {t:'So each idea can move into the group it truly fits',ok:true,why:'Exactly — compound notes get trapped in one group and hide patterns.'},
+              {t:'To reduce the number of notes',ok:false,why:'Splitting usually increases notes — that’s fine.'}]},
+   check:d=>{ const ls=lines(d.notes); if(ls.length<6) return {kind:'warn',text:'Aim for at least 6–8 notes so patterns can emerge. Break your data into single ideas.'};
+     const avg=ls.reduce((a,l)=>a+wc(l),0)/ls.length;
+     if(avg>22) return {kind:'warn',text:'Some notes look like full paragraphs (avg '+Math.round(avg)+' words). Split multi-idea lines so each note holds one idea.'};
+     return {kind:'good',text:ls.length+' atomic notes — good raw material. Now read them all before grouping.'}; } },
+  {id:'immerse',name:'Immerse',title:'2 · Read everything first',
+   why:'Before grouping, read all notes once to get the whole picture. Jot what feels related or surprising. Resist labelling groups yet — premature labels force notes into the wrong place.',
+   example:'Note: "lots of these are about not trusting that something worked".',
+   fields:[{id:'immerse',label:'First impressions across all notes',type:'textarea',rows:4,placeholder:'What feels related? What surprised you?'}],
+   hints:['Look for tensions, not just topics — where do notes pull in different directions?','Don’t name groups yet; just notice gravitational pulls between notes.'],
+   check:d=>{ if(wc(d.immerse)<6) return {kind:'warn',text:'Write a couple of impressions first. This immersion stops you from sorting on autopilot.'};
+     return {kind:'good',text:'Good — you’ve got a feel for the whole set. Now let groups form from the bottom up.'}; } },
+  {id:'cluster',name:'Cluster',title:'3 · Cluster by affinity (silently)',
+   why:'Group notes that <i>belong together</i> by meaning. Done with a team, do it silently first to avoid one voice dominating. A note that fits nowhere can wait to one side — don’t force it.',
+   example:'Group: "screenshot to prove it saved" + "app never confirmed anything" + "phoned daughter when unsure".',
+   fields:[{id:'clusters',label:'Your groups',type:'textarea',rows:7,placeholder:'Group 1: note, note, note\nGroup 2: note, note\n…'}],
+   hints:['Group by shared meaning, not shared keyword — "verification" the feature vs "verifying I succeeded" are different.','Singletons are allowed; they may be sub-themes or genuine outliers worth noting.'],
+   check:d=>{ const g=lines(d.clusters); if(g.length<2) return {kind:'warn',text:'Form at least 2–3 groups. If everything clumps into one, look for a tension that splits it.'};
+     return {kind:'good',text:'You formed '+g.length+' groups. Test each: do these notes share a meaning, or only a topic? Then label them.'}; } },
+  {id:'label',name:'Label',title:'4 · Label groups with insight sentences',
+   why:'Label each group with a short <b>sentence</b> that states the insight, not a one-word topic. "Trust" is a topic; "Users build their own proof that an action worked" is an insight a reader can act on.',
+   example:'Group label: "People invent their own confirmation because the app never reassures them."',
+   fields:[{id:'labels',label:'Your group labels (one per line)',type:'textarea',rows:5,placeholder:'A full-sentence insight per group…'}],
+   hints:['If your label is one or two words, it’s a topic — push it into a claim ("X happens because Y").','A good label makes the group’s point without needing to read the notes inside.'],
+   check:d=>{ const ls=lines(d.labels); if(!ls.length) return {kind:'warn',text:'Write a label for each group.'};
+     const oneWord=ls.filter(l=>wc(l)<=2);
+     if(oneWord.length) return {kind:'warn',text:'These read as topics, not insights: '+oneWord.map(x=>'"'+x+'"').join(', ')+'. Rewrite each as a sentence that states what’s going on and why.'};
+     return {kind:'good',text:'Strong — sentence-level labels carry the insight. These become your themes.'}; } },
+  {id:'hierarchy',name:'Organise',title:'5 · Build the hierarchy',
+   why:'Cluster the labels themselves into a few super-themes. The resulting tree (notes → groups → super-themes) is your finding’s structure and often a candidate information architecture.',
+   example:'Super-theme "Trust must be re-earned each session" gathers the confirmation, screenshot, and phone-a-friend groups.',
+   fields:[{id:'hierarchy',label:'Your super-themes',type:'textarea',rows:5,placeholder:'Super-theme: group label, group label…'}],
+   hints:['Aim for 2–4 super-themes — more than that and you haven’t really synthesised yet.','If a group resists grouping, it might be its own top-level theme.'],
+   check:d=>{ if(wc(d.hierarchy)<6) return {kind:'warn',text:'Try grouping your labels into 2–4 super-themes. This is the synthesis step that turns piles into a story.'};
+     return {kind:'good',text:'Good — a tidy hierarchy. Now turn it into design direction.'}; } },
+  {id:'opportunity',name:'Opportunities',title:'6 · Derive opportunities',
+   why:'For each theme, write a "How might we…" or a design implication. Affinity diagrams earn their keep when clusters become directions, not just a tidy wall.',
+   example:'HMW make every money action feel confirmed without users inventing their own proof?',
+   fields:[{id:'opps',label:'Opportunities / How-might-we',type:'textarea',rows:5,placeholder:'One opportunity per theme…'}],
+   hints:['Phrase as "How might we…" to keep it open, not a pre-baked solution.','Tie each opportunity to the theme it came from so the rationale is visible.'],
+   check:d=>{ if(!/how might we|hmw|opportunit|might |could /i.test(d.opps||'')&&wc(d.opps)<6) return {kind:'warn',text:'Turn at least two themes into "How might we…" opportunities — that’s the payoff of the exercise.'};
+     return {kind:'good',text:'Lovely — themes have become directions. Export your structure and opportunities.'}; } },
+  {id:'reflect',name:'Reflect',title:'7 · Reflect & export',
+   why:'Note what surprised you, which group is weakest (fewest notes / shakiest label), and how your own framing may have shaped the clusters. Then export.',
+   example:'"I expected an ‘ability’ theme but the data was about trust — I had to regroup."',
+   fields:[{id:'reflect',label:'Your reflection',type:'textarea',rows:4,placeholder:'Surprises, weakest group, how your assumptions shaped grouping…'}],
+   hints:['Name the group you’d defend least — honesty about weak evidence is a strength.','Reflexivity: another analyst might have clustered differently. Why did you split where you did?'],
+   check:d=>{ if(wc(d.reflect)<8) return {kind:'warn',text:'Go a little deeper — what surprised you, and how might your framing have shaped the groups?'};
+     return {kind:'good',text:'Great reflection — you can export your themes, hierarchy, and opportunities now.'}; } }
+ ]
+},
+{
+ id:'persona', name:'Persona & empathy mapping',
+ blurb:'Synthesise research into evidence-based archetypes and empathy maps that guide decisions.',
+ tags:['Model/Framework','Segments/Clusters','Qual + Attitudinal'],
+ steps:[
+  {id:'frame',name:'Frame',title:'1 · Frame & ground in research',
+   why:'Personas are only useful if they’re grounded in research and tied to a decision they’ll inform. Start from behaviour and goals you observed — <b>not</b> demographics or assumptions.',
+   example:'Decision: how to design onboarding. Evidence: 12 interviews + analytics on first-week behaviour.',
+   fields:[{id:'decision',label:'What decision will these personas inform?',type:'text',placeholder:'e.g. How should we redesign onboarding?'},
+           {id:'evidence',label:'What research are you basing them on?',hint:'(stays in your browser)',type:'textarea',rows:6,placeholder:'Summarise your interviews / observations / analytics — focus on goals and behaviours, not just age/gender.'}],
+   sample:{decision:'How should we redesign onboarding for a banking app?',evidence:'12 interviews + first-week analytics. Recurring: people improvise proof that actions worked (screenshots, phoning family); some skip help to act fast then get stuck; a group abandons at identity verification because the reason isn’t clear. Goals range from "just check my balance safely" to "move money quickly without thinking".'},
+   hints:['If your evidence is mostly age/gender/job title, you’re building a marketing segment, not a design persona — add goals and behaviours.','State the decision out loud; it tells you which differences between users actually matter.'],
+   mc:{q:'The strongest basis for distinguishing design personas is…',
+     options:[{t:'Age and gender',ok:false,why:'Demographics rarely predict how someone uses a product.'},
+              {t:'Goals and behaviours',ok:true,why:'Yes — personas should be distinguished by what people are trying to do and how they behave.'},
+              {t:'Job titles',ok:false,why:'Useful context sometimes, but not the primary axis for design personas.'}]},
+   check:d=>{ if(wc(d.evidence)<8) return {kind:'warn',text:'Summarise the research first — personas not grounded in data are just stereotypes. A few sentences on goals and behaviours is enough to practise.'};
+     if(/\bage\b|gender|\byears old\b/i.test(d.evidence)&&!/goal|behav|want|try|need/i.test(d.evidence)) return {kind:'warn',text:'Your evidence leans demographic. What are these users trying to DO, and how do they behave? That’s what a design persona is built on.'};
+     return {kind:'good',text:'Good grounding — tied to a real decision and focused on goals/behaviour. That’s the foundation personas need.'}; } },
+  {id:'patterns',name:'Patterns',title:'2 · Find behavioural patterns',
+   why:'Look across participants for axes of difference — goals, attitudes, behaviours — and cluster people who pattern together. These clusters, not individuals, become personas.',
+   example:'Axis: trust in the system (cautious ↔ confident). Cautious users double-check everything; confident users move fast and skip help.',
+   fields:[{id:'patterns',label:'Patterns / axes of difference you see',type:'textarea',rows:6,placeholder:'Axes (e.g. cautious↔confident), and which behaviours cluster together…'}],
+   hints:['Name 1–3 axes that actually change how people use the product — ignore differences that don’t.','A persona is a cluster on these axes, not a single interviewee.'],
+   check:d=>{ if(wc(d.patterns)<8) return {kind:'warn',text:'Describe the axes of difference (e.g. cautious↔confident, occasional↔power user) and which behaviours cluster. Personas come from these patterns.'};
+     return {kind:'good',text:'Good — you’re segmenting on behaviour and goals. Each meaningful cluster is a candidate persona.'}; } },
+  {id:'empathy',name:'Empathy map',title:'3 · Draft an empathy map',
+   why:'For one cluster, fill the four quadrants — <b>Says, Thinks, Does, Feels</b> — each grounded in evidence. Gaps and contradictions (e.g., says one thing, does another) are exactly the insight you want.',
+   example:'Says "I’m no good with tech"; Does meticulously screenshots each step; Thinks "did that actually work?"; Feels anxious, then relieved.',
+   fields:[{id:'says',label:'Says (quotes)',type:'textarea',rows:2,placeholder:'What they say, in their words…'},
+           {id:'thinks',label:'Thinks',type:'textarea',rows:2,placeholder:'Beliefs/worries they may not say aloud…'},
+           {id:'does',label:'Does (observed behaviour)',type:'textarea',rows:2,placeholder:'What they actually do…'},
+           {id:'feels',label:'Feels (emotions)',type:'textarea',rows:2,placeholder:'Emotions across the experience…'}],
+   hints:['Put real quotes in "Says" and observed actions in "Does" — those two anchor the map in evidence.','A gap between Says and Does is gold: it often reveals an unmet need.'],
+   check:d=>{ const filled=['says','thinks','does','feels'].filter(k=>wc(d[k])>=2);
+     if(filled.length<4) return {kind:'warn',text:'Fill all four quadrants (Says, Thinks, Does, Feels). The missing ones: '+['says','thinks','does','feels'].filter(k=>wc(d[k])<2).join(', ')+'. Each should be grounded in something you observed or heard.'};
+     return {kind:'good',text:'Good — all four quadrants grounded. Watch for any Says↔Does tension; that’s usually your sharpest insight.'}; } },
+  {id:'define',name:'Define',title:'4 · Define the persona',
+   why:'Write the persona: a name, primary goals, key needs, frustrations, context of use, and a representative quote. Every attribute should be traceable to your evidence — no invented hobbies.',
+   example:'"Cautious Carol" — Goal: move money without fear of mistakes. Frustration: no confirmation actions worked. Quote: "I screenshot everything."',
+   fields:[{id:'persona',label:'Your persona',type:'textarea',rows:7,placeholder:'Name:\nGoals:\nNeeds:\nFrustrations:\nContext:\nQuote: "…"'}],
+   hints:['Every line should trace to data. If you can’t cite evidence for an attribute, cut it.','Goals and frustrations do the real work — invented demographics and stock photos don’t.'],
+   check:d=>{ const p=d.persona||''; if(wc(p)<12) return {kind:'warn',text:'Flesh the persona out: name, goals, needs, frustrations, context, and a quote.'};
+     if(!/goal/i.test(p)) return {kind:'warn',text:'Make the goals explicit — they’re what the persona is for. What is this person trying to achieve?'};
+     if(!/["“].+["”]/.test(p)&&!/quote/i.test(p)) return {kind:'warn',text:'Add a representative verbatim quote — it grounds the persona and makes it memorable.'};
+     return {kind:'good',text:'Strong — goal-led and evidence-grounded, with a quote. That’s a usable design persona.'}; } },
+  {id:'limit',name:'Validate',title:'5 · Limit, validate, de-bias',
+   why:'Keep the set small (often 3–5), make each persona falsifiable, and check for stereotyping. Plan how you’ll validate them against more data. More personas means less focus, not more truth.',
+   example:'Three personas; plan to validate by checking analytics segments match the cautious/confident split; reviewed for bias.',
+   fields:[{id:'validate',label:'How many personas, and your validation/bias check',type:'textarea',rows:5,placeholder:'Number of personas, how you’ll validate, any stereotyping you guarded against…'}],
+   hints:['If you have more than ~5 personas, you probably haven’t clustered tightly enough.','Sanity-check against stereotypes — would this persona survive meeting a real user who breaks the mould?'],
+   check:d=>{ const m=(d.validate||'').match(/\b([0-9]|one|two|three|four|five|six|seven|eight)\b/i);
+     if(/\b(6|7|8|9|10|six|seven|eight|nine|ten)\b/i.test(d.validate||'')) return {kind:'warn',text:'That’s a lot of personas. Each extra one dilutes focus — can any be merged? Aim for 3–5 distinct ones.'};
+     if(wc(d.validate)<6) return {kind:'warn',text:'Note how many personas you’ll keep and how you’ll validate them (e.g. against analytics segments), plus a bias check.'};
+     return {kind:'good',text:'Good — a tight, validatable set with a bias check. Personas you can defend, not decorate with.'}; } },
+  {id:'use',name:'Use it',title:'6 · Put the persona to work',
+   why:'A persona earns its place by changing a decision. Walk it through a scenario ("How would Carol react to this screen?") and name a concrete design implication.',
+   example:'Scenario: Carol hits "Continue" on a transfer. Implication: show an explicit "Sent ✓" confirmation so she doesn’t need a screenshot.',
+   fields:[{id:'use',label:'A scenario + the design implication',type:'textarea',rows:5,placeholder:'How would your persona react to a specific situation, and what should change because of it?'}],
+   hints:['Make the scenario specific (one screen, one moment), not generic.','End with a decision: what will you design differently because of this persona?'],
+   check:d=>{ if(wc(d.use)<8) return {kind:'warn',text:'Run your persona through a concrete moment and name what should change in the design. That’s how a persona avoids becoming a poster.'};
+     return {kind:'good',text:'Excellent — the persona drove a design implication. That’s the whole point. Export your work.'}; } },
+  {id:'reflect',name:'Reflect',title:'7 · Reflect & export',
+   why:'Note where your personas are thinnest on evidence, and how your assumptions might have shaped them. Then export the personas, empathy map, and implications.',
+   example:'"My ‘confident’ persona rests on just two interviews — I’ll treat it as provisional."',
+   fields:[{id:'reflect',label:'Your reflection',type:'textarea',rows:4,placeholder:'Weakest evidence, assumptions that may have crept in…'}],
+   hints:['Flag the persona with the least data as provisional — that’s honest and useful.','Whose perspective might be missing from your sample entirely?'],
+   check:d=>{ if(wc(d.reflect)<8) return {kind:'warn',text:'Reflect on where the evidence is thinnest and what you assumed. That keeps personas honest.'};
+     return {kind:'good',text:'Great — export your personas, empathy map, and implications.'}; } }
+ ]
+},
+{
+ id:'descriptive-stats', name:'Descriptive statistics & UX metrics',
+ blurb:'Summarise numbers with the right average, spread, and confidence — and use UX metrics correctly.',
+ tags:['Scores/Measures','Quantitative','Behavioural'],
+ steps:[
+  {id:'frame',name:'Frame',title:'1 · Frame & enter your numbers',
+   why:'Descriptive statistics summarise a set of measurements — task times, error counts, SUS scores. Name the metric and its unit, then enter your numbers. The tool computes the statistics; your job is to choose and interpret them.',
+   example:'Metric: task completion time (seconds). Data: 38, 42, 41, 95, 39, 44.',
+   fields:[{id:'q',label:'What do you want to summarise?',type:'text',placeholder:'e.g. How long does the transfer task take?'},
+           {id:'metric',label:'Metric + unit',type:'text',placeholder:'e.g. task time (seconds) / SUS score (0–100)'},
+           {id:'data',label:'Your numbers',hint:'(one per line or comma-separated; stays in your browser)',type:'textarea',rows:6,placeholder:'38, 42, 41, 95, 39, 44'}],
+   sample:{q:'How long does the transfer task take?',metric:'task time (seconds)',data:'38, 42, 41, 95, 39, 44, 40, 110, 37, 43'},
+   hints:['Enter raw values, not pre-averaged numbers — the tool needs the distribution.','Keep one measure per walkthrough; mixing times and scores muddles the summary.'],
+   check:d=>{ const a=parseNums(d.data); if(a.length<3) return {kind:'warn',text:'Enter at least a few numbers (one per line or comma-separated) so there’s a distribution to summarise.'};
+     return {kind:'good',text:'Got n='+a.length+' values for "'+(d.metric||'your metric')+'". Next, decide what kind of variable this is — it changes which average is honest.'}; } },
+  {id:'type',name:'Variable type',title:'2 · Know your variable type',
+   why:'The measurement type decides which summary is valid. Interval/ratio data (times, counts) can be averaged; ordinal data (e.g., a single Likert item) is better summarised by the median and frequencies. Averaging ranks pretends a "4" is twice a "2".',
+   example:'Task time = ratio → mean/median both fine. A single 1–5 satisfaction item = ordinal → report median + the distribution.',
+   fields:[{id:'vartype',label:'What type is your metric, and why?',type:'text',placeholder:'e.g. ratio (seconds) — equal intervals, true zero'}],
+   hints:['Ask: are the gaps between values equal and meaningful? If not, it’s ordinal.','SUS as a whole scale is treated as interval; a single Likert item is ordinal.'],
+   mc:{q:'Task-completion times are right-skewed (a few very slow users). The most honest "typical" value is the…',
+     options:[{t:'Mean',ok:false,why:'The mean is dragged up by the slow outliers, overstating the typical time.'},
+              {t:'Median',ok:true,why:'Yes — the median resists outliers and better represents the typical user for skewed times.'},
+              {t:'Mode',ok:false,why:'The mode is rarely informative for continuous times.'}]},
+   check:d=>{ if(wc(d.vartype)<2) return {kind:'warn',text:'State the type and your reasoning. It determines whether the mean is even meaningful.'};
+     return {kind:'good',text:'Good — being explicit about measurement type is what stops people from averaging things they shouldn’t.'}; } },
+  {id:'summary',name:'Centre & spread',title:'3 · Summarise centre and spread',
+   why:'Report a measure of centre AND of spread — a mean with no spread hides everything. For skewed data, lead with the median. Compare the mean and median: if they differ a lot, you have skew or outliers.',
+   example:'mean 53s but median 41.5s → the mean is inflated by two slow users; report the median.',
+   fields:[{id:'summary',label:'Your computed centre & spread (then check below)',type:'text',placeholder:'e.g. median 41.5s, mean 53s, SD 25s, range 37–110'}],
+   hints:['Always pair a centre with a spread (SD, IQR, or range).','If mean and median diverge, say which you’re reporting and why.'],
+   check:d=>{ const a=parseNums(d.data); if(a.length<3) return {kind:'warn',text:'Go back and enter your numbers in step 1 first.'};
+     const m=mean(a),md=median(a),s=sd(a),lo=Math.min(...a),hi=Math.max(...a);
+     const skew=Math.abs(m-md)>0.5*s&&s>0;
+     return {kind:'good',text:'Computed from your '+a.length+' values:\n• mean = '+r2(m)+'\n• median = '+r2(md)+'\n• SD = '+r2(s)+'\n• range = '+r2(lo)+'–'+r2(hi)+'\n\n'+(skew?'Mean and median differ noticeably → your data is skewed; report the MEDIAN as the typical value and mention the spread.':'Mean and median are close → roughly symmetric; either centre is fine, but still report the spread.')}; } },
+  {id:'ci',name:'Uncertainty',title:'4 · Show uncertainty (confidence interval)',
+   why:'A point estimate from a sample is uncertain. Report a confidence interval so readers see the precision. Small samples give wide intervals — that honesty matters more in UX, where n is often small.',
+   example:'Mean 53s, 95% CI [38, 68]. With n=10 that interval is wide — don’t over-claim.',
+   fields:[{id:'ci',label:'Your interval (then check the computed one below)',type:'text',placeholder:'e.g. 95% CI for the mean ≈ [.., ..]'}],
+   hints:['Never report a bare mean/rate without an interval or at least the sample size.','For small n the interval is wide on purpose — it’s telling you to collect more before strong claims.'],
+   check:d=>{ const a=parseNums(d.data); if(a.length<2) return {kind:'warn',text:'Enter your numbers in step 1 first.'};
+     const m=mean(a),s=sd(a),n=a.length,se=s/Math.sqrt(n),mo=1.96*se;
+     return {kind:'good',text:'Approx 95% CI for the mean (normal approximation):\n• mean '+r2(m)+' ± '+r2(mo)+'  →  ['+r2(m-mo)+', '+r2(m+mo)+']\n• n='+n+(n<10?'  — that’s small, so treat this interval as rough and the estimate as provisional. For small samples a t-based interval is wider and more honest.':'')+'\n\nReport the estimate WITH this interval, never alone.'}; } },
+  {id:'metrics',name:'UX metrics',title:'5 · Use validated UX metrics correctly',
+   why:'Standardised instruments (SUS, SEQ, UMUX-Lite, NPS) are powerful because they’re validated and benchmarkable — but only if scored as designed. Don’t invent your own thresholds; compare to published norms.',
+   example:'SUS 68 is the average; "below 68" is below average — not an arbitrary "fail" line you made up.',
+   fields:[{id:'instrument',label:'Which validated metric are you using, and how is it scored?',type:'text',placeholder:'e.g. SUS (10 items, 0–100), compared to the 68 benchmark'}],
+   hints:['Score the instrument exactly per its manual — don’t drop or reword items.','Interpret against published benchmarks/percentiles, not gut-feel cut-offs.'],
+   check:d=>{ if(wc(d.instrument)<3) return {kind:'warn',text:'Name the instrument and its scoring. If you’re using a home-made scale, say how you validated it.'};
+     return {kind:'good',text:'Good — using a validated metric as designed makes your numbers comparable to the wider field.'}; } },
+  {id:'viz',name:'Visualise',title:'6 · Visualise honestly',
+   why:'Show the distribution, not just a single bar. A dot/box plot reveals spread and outliers that a mean hides. Label axes, start counts at zero, and don’t truncate to exaggerate differences.',
+   example:'A box plot of task times shows the two slow users as outliers — far more informative than "mean = 53s".',
+   fields:[{id:'viz',label:'What chart will you use, and why?',type:'text',placeholder:'e.g. box plot to show spread + outliers; bar of success rate with CI'}],
+   hints:['Prefer charts that show variability (box/dot/strip) over a lone bar of the mean.','One honesty check: would the chart look different with a zero baseline? If so, use one.'],
+   check:d=>{ if(wc(d.viz)<3) return {kind:'warn',text:'Pick a chart that shows the distribution, and say why. The chart is part of the argument.'};
+     return {kind:'good',text:'Good choice — showing spread keeps the reader from over-reading a single number.'}; } },
+  {id:'interpret',name:'Interpret',title:'7 · Interpret & report',
+   why:'State the estimate with its interval and n, compare to a benchmark if you have one, and avoid causal language — descriptives describe, they don’t explain why.',
+   example:'Typical transfer takes ~42s (median; 95% CI [38,68], n=10), slower than our 30s target. This describes, not explains — pair with qualitative data for the why.',
+   fields:[{id:'interp',label:'Your interpretation',type:'textarea',rows:4,placeholder:'Estimate + interval + n, any benchmark, and a caveat…'}],
+   hints:['Always carry the n and interval into the sentence — a number alone invites over-confidence.','Resist "because"; a descriptive stat can’t tell you cause.'],
+   check:d=>{ if(wc(d.interp)<10) return {kind:'warn',text:'Write the headline estimate WITH its interval and n, plus one caveat.'};
+     if(!/\bn\b|\bci\b|interval|±|sample/i.test(d.interp)) return {kind:'warn',text:'Carry the sample size / interval into your statement so the precision is visible.'};
+     return {kind:'good',text:'Clear and honest — estimate, uncertainty, and a caveat. Export your work.'}; } }
+ ]
+},
+{
+ id:'inferential-stats', name:'Inferential statistics & hypothesis tests',
+ blurb:'Decide if a difference is real: pick the right test, check assumptions, and interpret beyond p.',
+ tags:['Statistical Significance','Quantitative'],
+ steps:[
+  {id:'hyp',name:'Hypotheses',title:'1 · State your hypotheses',
+   why:'A test compares a null hypothesis (no difference/association) against an alternative. Decide what you’re comparing and whether you have a direction, BEFORE looking at the data — that keeps the test honest.',
+   example:'H0: variant A and B have equal completion rates. H1: they differ. Comparison: two independent groups.',
+   fields:[{id:'h0',label:'Null hypothesis (H0)',type:'text',placeholder:'e.g. No difference in task time between A and B'},
+           {id:'h1',label:'Alternative hypothesis (H1)',type:'text',placeholder:'e.g. Task time differs between A and B'},
+           {id:'design',label:'What are you comparing?',type:'text',placeholder:'two independent groups / paired (same users) / 3+ groups / an association'}],
+   sample:{h0:'No difference in task time between the old and new design',h1:'The new design changes task time',design:'two independent groups, continuous outcome (seconds)'},
+   hints:['Set the hypotheses before seeing results — deciding direction after the fact inflates false positives.','Be precise about the comparison; it dictates the test in the next step.'],
+   check:d=>{ if(!d.h0||!d.design) return {kind:'warn',text:'State the null hypothesis and what you’re comparing (two groups? paired? more than two? an association?). Everything downstream depends on this.'};
+     return {kind:'good',text:'Good — a clear null and a defined comparison ("'+d.design+'"). Now choose the test that fits it.'}; } },
+  {id:'test',name:'Choose test',title:'2 · Choose the right test',
+   why:'The test follows from: the outcome type (continuous vs categorical), the number of groups, and whether groups are independent or paired. Match those, and the test chooses itself.',
+   example:'Two independent groups, continuous, roughly normal → independent t-test. Categorical outcome → chi-square. 3+ groups → ANOVA.',
+   fields:[{id:'test',label:'Which test, and why does it fit your design?',type:'text',placeholder:'e.g. independent-samples t-test, because two independent groups, continuous outcome'}],
+   hints:['Continuous + 2 independent groups → t-test (or Mann–Whitney if not normal). Paired → paired t (or Wilcoxon).','3+ groups → ANOVA (or Friedman/Kruskal–Wallis). Counts/proportions → chi-square.'],
+   mc:{q:'Same users rated two prototypes (a 1–7 score each). Which test?',
+     options:[{t:'Independent-samples t-test',ok:false,why:'The groups aren’t independent — the same people rated both.'},
+              {t:'Paired t-test (or Wilcoxon signed-rank)',ok:true,why:'Yes — same users = paired/repeated measures; use a paired test (Wilcoxon if non-normal/ordinal).'},
+              {t:'Chi-square',ok:false,why:'Chi-square is for categorical frequencies, not paired ratings.'}]},
+   check:d=>{ const t=(d.test||'').toLowerCase(), dz=(d.design||'').toLowerCase();
+     if(!t) return {kind:'warn',text:'Name a test and tie it to your design from step 1.'};
+     if(/paired|same (users|people|participants)|repeated/.test(dz)&&/independent t|two-sample|unpaired/.test(t)) return {kind:'warn',text:'Your design sounds paired (same users) but you picked an independent test. Use a paired t-test or Wilcoxon signed-rank.'};
+     if(/3\+|three|more than two|anova/.test(dz)&&/t-test/.test(t)) return {kind:'warn',text:'With 3+ groups a t-test inflates error from multiple comparisons — use ANOVA (or Kruskal–Wallis).'};
+     return {kind:'good',text:'Reasonable choice. Double-check it matches outcome type + #groups + independent/paired — that triad is the whole decision.'}; } },
+  {id:'assume',name:'Assumptions',title:'3 · Check the assumptions',
+   why:'Parametric tests assume things — independence of observations, roughly normal residuals, and (often) equal variances. If they’re violated, switch to a non-parametric test rather than pushing on.',
+   example:'Task times are skewed and fail normality → use Mann–Whitney instead of the t-test.',
+   fields:[{id:'assume',label:'Which assumptions apply, and how will you check / handle them?',type:'textarea',rows:4,placeholder:'Independence, normality, equal variance — how you’ll check, and your fallback…'}],
+   hints:['Independence is the big one — repeated measures or clustered data break it and need a different model.','Don’t just assume normality; check it (plots/tests) or use a robust/non-parametric alternative.'],
+   check:d=>{ if(!/independ|normal|variance|distribut|non-?parametric|skew/i.test(d.assume||'')) return {kind:'warn',text:'Name the assumptions of your chosen test and how you’ll check them (especially independence and normality), plus your fallback if they fail.'};
+     return {kind:'good',text:'Good — testing assumptions, not assuming them, is what separates a valid result from a fragile one.'}; } },
+  {id:'compute',name:'Compute',title:'4 · Enter your two groups',
+   why:'Paste the two groups and the tool computes the descriptive comparison and the effect size (Cohen’s d). The formal p-value comes from running your chosen test in a stats package — the size of the difference is what you must interpret either way.',
+   example:'Group A mean 41s, Group B 53s, difference 12s, d ≈ 0.6 (a medium effect).',
+   fields:[{id:'groupA',label:'Group A numbers',type:'textarea',rows:3,placeholder:'38, 42, 41, 39, 44, 40'},
+           {id:'groupB',label:'Group B numbers',type:'textarea',rows:3,placeholder:'55, 60, 48, 70, 52, 58'}],
+   sample:{groupA:'38, 42, 41, 39, 44, 40, 37, 43',groupB:'55, 60, 48, 70, 52, 58, 64, 51'},
+   hints:['Effect size (Cohen’s d) answers "how big?" — a tiny, significant difference can be practically meaningless.','The tool gives d; get the exact p from JASP, jamovi, R, or SPSS using the test you chose.'],
+   check:d=>{ const A=parseNums(d.groupA),B=parseNums(d.groupB); if(A.length<2||B.length<2) return {kind:'warn',text:'Enter at least a few numbers in each group to compare them.'};
+     const mA=mean(A),mB=mean(B),sA=sd(A),sB=sd(B),nA=A.length,nB=B.length;
+     const sp=Math.sqrt(((nA-1)*sA*sA+(nB-1)*sB*sB)/(nA+nB-2)), dCoh=sp?(mA-mB)/sp:0;
+     const mag=Math.abs(dCoh)<0.2?'negligible':Math.abs(dCoh)<0.5?'small':Math.abs(dCoh)<0.8?'medium':'large';
+     return {kind:'good',text:'Computed:\n• Group A: mean '+r2(mA)+', SD '+r2(sA)+', n='+nA+'\n• Group B: mean '+r2(mB)+', SD '+r2(sB)+', n='+nB+'\n• Difference: '+r2(mA-mB)+'\n• Cohen’s d ≈ '+r2(dCoh)+' ('+mag+' effect)\n\nNow run your chosen test (step 2) in a stats tool to get the p-value and CI — then interpret BOTH the effect size and significance.'}; } },
+  {id:'power',name:'Power',title:'5 · Power & sampling',
+   why:'A non-significant result with a tiny sample is uninformative — you may have lacked power to detect a real effect. Plan sample size for a meaningful effect beforehand, and don’t peek-and-stop, which inflates false positives.',
+   example:'Powered for a medium effect at 80% → ~26 per group. Stopping the moment p<.05 would not be valid.',
+   fields:[{id:'power',label:'Your sample-size reasoning',type:'textarea',rows:3,placeholder:'Effect you care about, target power, planned n, and your stopping rule…'}],
+   hints:['Decide the smallest effect worth detecting, then compute n (G*Power, pwr in R, MeasuringU).','Fix your sample size or use a sequential method designed for peeking — don’t just stop at the first p<.05.'],
+   check:d=>{ if(wc(d.power)<6) return {kind:'warn',text:'Note the effect size you care about, your target power, the planned n, and your stopping rule. This is what makes a non-significant result interpretable.'};
+     return {kind:'good',text:'Good — planning power up front protects you from both false positives and uninformative nulls.'}; } },
+  {id:'interpret',name:'Interpret',title:'6 · Interpret beyond p',
+   why:'Report the effect size and its confidence interval alongside p — not just "significant". A significant result can be trivially small; a non-significant one does NOT prove "no effect". State practical significance and correct for multiple comparisons.',
+   example:'B was slower by 12s, d≈0.6, 95% CI [4, 20], p=.01 — statistically and practically meaningful. (A p=.20 would mean "not enough evidence", not "no difference".)',
+   fields:[{id:'interp',label:'Your interpretation',type:'textarea',rows:4,placeholder:'Effect size + CI + p, practical meaning, multiple-comparison note…'}],
+   hints:['"Not significant" = insufficient evidence to reject H0, NOT proof the effect is zero.','If you ran several tests, adjust (e.g. Holm/Bonferroni) or treat extra results as exploratory.'],
+   mc:{q:'A test returns p = 0.20. The correct reading is…',
+     options:[{t:'There is no difference',ok:false,why:'A non-significant result doesn’t prove the null — you may just lack power.'},
+              {t:'Not enough evidence to conclude a difference',ok:true,why:'Exactly — failing to reject H0 ≠ accepting it.'},
+              {t:'The result is 20% likely to be true',ok:false,why:'p is not the probability the hypothesis is true; it’s P(data this extreme | H0).'}]},
+   check:d=>{ if(!/effect|cohen|\bd\b|ci|interval|practical/i.test(d.interp||'')) return {kind:'warn',text:'Report the effect size and interval, not just whether it’s "significant". And be careful: non-significant ≠ no effect.'};
+     return {kind:'good',text:'Strong — effect size, uncertainty, and practical meaning. That’s a defensible inference. Export your work.'}; } }
+ ]
+},
+{
+ id:'cluster-segmentation', name:'Cluster & segmentation analysis',
+ blurb:'Group items or users into segments that are internally similar and externally distinct.',
+ tags:['Segments/Clusters','Quantitative'],
+ steps:[
+  {id:'frame',name:'Frame',title:'1 · Frame & prepare your features',
+   why:'Clustering groups cases (users, items, cards) by similarity on a set of variables (features). Decide what you’re segmenting and on which behaviour/attitude features — and standardise features so a big-scaled one doesn’t dominate.',
+   example:'Segment users by: transfers/week, % sessions with help opened, double-check behaviour. Standardise each to z-scores.',
+   fields:[{id:'cases',label:'What are you segmenting?',type:'text',placeholder:'e.g. users / survey respondents / sorted cards'},
+           {id:'features',label:'Which features (variables) will you cluster on?',type:'textarea',rows:4,placeholder:'List the behaviour/attitude variables — not demographics by default…'}],
+   sample:{cases:'banking-app users',features:'transfers per week; % of sessions where help is opened; whether they re-check after an action; days-to-first-transfer'},
+   hints:['Pick features tied to behaviour and goals, the things that should drive a segment — add demographics only if they matter.','Standardise (z-score) features measured on different scales, or the largest-range variable will dominate distance.'],
+   mc:{q:'Before distance-based clustering on variables with different scales, you should…',
+     options:[{t:'Cluster on the raw values',ok:false,why:'A variable with a big range (e.g. seconds) would swamp small-range ones.'},
+              {t:'Standardise the features (e.g. z-scores)',ok:true,why:'Yes — put features on a comparable scale so distance is fair.'},
+              {t:'Delete the smallest variable',ok:false,why:'No need — standardisation handles scale differences without losing information.'}]},
+   check:d=>{ if(wc(d.features)<3) return {kind:'warn',text:'List the features you’ll cluster on. Choose behaviour/goal variables, and remember to standardise mixed scales.'};
+     return {kind:'good',text:'Good — clustering on behaviour/attitude features is what yields actionable segments. Standardise them, then choose your method.'}; } },
+  {id:'method',name:'Method',title:'2 · Choose distance & method',
+   why:'Pick a distance (often Euclidean on standardised data) and a method: hierarchical clustering (gives a dendrogram, good for exploring) or k-means (fast, needs k up front). Card-sort data typically uses a similarity matrix → dendrogram.',
+   example:'Standardised features → Euclidean distance → hierarchical (Ward) to see the dendrogram, then confirm with k-means.',
+   fields:[{id:'method',label:'Your distance + clustering method (and why)',type:'text',placeholder:'e.g. Euclidean + hierarchical Ward; or k-means after choosing k'}],
+   hints:['Hierarchical clustering lets you see structure before committing to a number; k-means needs k chosen first.','For card sorting, the platform’s similarity matrix and dendrogram are your clustering.'],
+   check:d=>{ if(wc(d.method)<3) return {kind:'warn',text:'Name a distance and a method, and why they suit your data (e.g. hierarchical to explore, k-means to confirm).'};
+     return {kind:'good',text:'Sensible — just keep the distance consistent with your (standardised) features. Next, decide how many clusters.'}; } },
+  {id:'k',name:'How many',title:'3 · Decide the number of clusters',
+   why:'Don’t pick the number of clusters by eye. Use a rule — the silhouette score, an elbow/scree plot, or a sensible dendrogram cut — and balance statistical fit against interpretability. More clusters fit better but mean less.',
+   example:'Silhouette peaks at k=3; the dendrogram also cuts cleanly into 3 — so three segments.',
+   fields:[{id:'k',label:'How many clusters, and what rule justified it?',type:'text',placeholder:'e.g. k=3, chosen by silhouette + dendrogram cut'}],
+   hints:['Cross-check two signals (e.g. silhouette + interpretability) rather than trusting one number.','A "better-fitting" 8-cluster solution you can’t describe is worse than a clear 3.'],
+   check:d=>{ if(!/silhou|elbow|scree|dendrogram|gap|bic|cross|interpret/i.test(d.k||'')) return {kind:'warn',text:'Justify the number with a rule (silhouette, elbow/scree, dendrogram cut), not by eye — and sanity-check that the clusters are describable.'};
+     return {kind:'good',text:'Good — a defensible k. Now make the clusters mean something by profiling them.'}; } },
+  {id:'profile',name:'Profile',title:'4 · Profile & name the clusters',
+   why:'A cluster is only useful once you can describe it. Profile each by the features that distinguish it (its centroid vs the others) and name it from that behaviour — not from a stereotype.',
+   example:'Cluster 1 = high transfers, never opens help, low re-checking → "Confident fast-movers".',
+   fields:[{id:'profile',label:'Your clusters: name + what defines each',type:'textarea',rows:5,placeholder:'Cluster name — the features that make it distinct…'}],
+   hints:['Describe each cluster by where it sits on the features, relative to the others.','Name from behaviour ("Cautious re-checkers"), not assumptions about who they are.'],
+   check:d=>{ const ls=lines(d.profile); if(ls.length<2) return {kind:'warn',text:'Profile at least two clusters by their defining features and give each a behaviour-based name.'};
+     return {kind:'good',text:'Good — named, feature-grounded clusters. Now check they’re real and useful.'}; } },
+  {id:'validate',name:'Validate',title:'5 · Validate & stability',
+   why:'Clusters can be artefacts. Check they’re stable (re-run on a subset or another method), distinct, and actionable. Segments that no one can act on, or that dissolve on re-sampling, aren’t worth keeping.',
+   example:'Re-running on a held-out half reproduces the three segments; each implies a different onboarding need.',
+   fields:[{id:'validate',label:'How will you check the segments are real and useful?',type:'textarea',rows:4,placeholder:'Stability check, distinctness, and the decision each segment informs…'}],
+   hints:['Re-cluster on a held-out sample or with a second method — do the same groups reappear?','Ask "what would we do differently for this segment?" If nothing, merge it away.'],
+   check:d=>{ if(wc(d.validate)<6) return {kind:'warn',text:'Say how you’ll test stability (re-sampling / second method) and what decision each segment supports. Unstable or unactionable segments should be dropped.'};
+     return {kind:'good',text:'Good — validating stability and usefulness stops you over-reading noise as structure.'}; } },
+  {id:'interpret',name:'Interpret',title:'6 · Interpret & use',
+   why:'Tie segments to decisions — different journeys, messaging, or defaults per segment — and stay humble: clusters describe your sample and feature choices, and can over-fit. State that.',
+   example:'Three segments → three onboarding paths. Caveat: based on four behavioural features from one cohort; revisit as data grows.',
+   fields:[{id:'interp',label:'Your interpretation & use',type:'textarea',rows:4,placeholder:'What each segment means for design, plus caveats…'}],
+   hints:['Connect each segment to a concrete design or product decision.','Name the dependence on your feature choice and sample — clustering is descriptive, not destiny.'],
+   check:d=>{ if(wc(d.interp)<10) return {kind:'warn',text:'Turn the segments into decisions and add a caveat about feature choice / sample. That’s the payoff and the honesty.'};
+     return {kind:'good',text:'Strong — segments tied to decisions, with limits acknowledged. Export your work.'}; } }
+ ]
+}
 ];
-const LEARN_METHODS = [ { id:'thematic-analysis', name:'Thematic analysis', steps: LEARN_STEPS } ];
-const LEARN_HINTS = {
-  frame:["Keep the question about meaning or experience ('why', 'how do people feel/decide'), not numbers.","If your question contains 'how many' or 'which is better', thematic analysis is the wrong tool — note that."],
-  familiar:["Don't write codes yet — just reactions. What's the emotional tone? Any contradictions?","Try completing: 'I keep noticing that…' and 'I didn't expect…'."],
-  code:["A topic answers 'what is this about?'; a code answers 'what's going on here?'. Push each label toward the second.","Re-read one excerpt and finish: 'This person is …-ing because …'. That sentence is your code."],
-  cluster:["Ask of each group: do these codes share a *meaning*, or just a topic? Only meaning makes a theme.","A code that fits nowhere may be a sub-theme or an outlier — don't force it in."],
-  theme:["Every theme needs a verbatim quote. If you can't find one, the theme is a hunch — revise it.","A one-word theme ('Trust') is usually a topic. Make it a claim-like phrase ('Trust must be re-earned each session')."],
-  interpret:["A disconfirming case is a gift — find the participant who breaks the pattern and say why.","Limitations aren't weakness; naming them (sample size, one context) makes your claim credible."],
-  reflect:["Reflexivity = how *you* shaped the analysis. What did you assume going in?","Name the single weakest piece of evidence in your themes — that's honest and useful."]
-};
 
-function learnMethod(){ return LEARN_METHODS.find(m => m.id === learnState.methodId) || null; }
-function learnSteps(){ const m = learnMethod(); return m ? m.steps : []; }
-function learnCollectCurrent(){ const st = learnSteps()[learnState.step]; if (st && st.collect) st.collect(); }
+/* ============================ state ============================ */
+let state = load() || { methodId:null, step:0, work:{}, mc:{}, hints:{}, ai:{on:false,key:'',model:'claude-3-5-haiku-latest'} };
+function save(){ try{ localStorage.setItem('analysisHelperMM', JSON.stringify(state)); }catch(e){} }
+function load(){ try{ return JSON.parse(localStorage.getItem('analysisHelperMM')||'null'); }catch(e){ return null; } }
+function method(){ return METHODS.find(m=>m.id===state.methodId); }
+function curStep(){ return method().steps[state.step]; }
+function workOf(mid){ return (state.work[mid]=state.work[mid]||{}); }
+function getF(fid){ return (workOf(state.methodId)[fid])||''; }
 
-let learnAutosaveTimer = null;
-function learnAutosave(){ clearTimeout(learnAutosaveTimer); learnAutosaveTimer = setTimeout(() => { learnCollectCurrent(); learnSave(); }, 300); }
-function renderLearn(focusHeading){
-  const v = document.getElementById('learnView');
-  if (!learnState.methodId) { v.innerHTML = learnPickerHTML(); return; }
-  const m = learnMethod();
-  if (learnState.step >= m.steps.length) learnState.step = m.steps.length - 1;
-  v.innerHTML = `
-    <div class="learn-head">
-      <div>
-        <button class="btn-link" onclick="learnBackToPicker()">← Choose another method</button>
-        <h2 class="learn-title">${escHtml(m.name)} — learn by doing</h2>
-        <p class="small">You do the thinking on your own data; the tutor coaches, it never does the work.</p>
-      </div>
-      <div class="ai-status"><span class="dot" id="learnAiDot"></span><span id="learnAiLabel">Demo tutor</span>
-        <button class="btn-link" onclick="learnOpenSettings()">Connect AI</button></div>
-    </div>
-    <div class="learn-layout">
-      <aside class="stepper" id="learnStepper" aria-label="Your progress"></aside>
-      <main class="learn-main">
-        <div id="learnStepPanel"></div>
-        <div class="panel learn-nav">
-          <button class="btn btn-ghost" id="learnPrevBtn" onclick="learnGo(-1)">← Back</button>
-          <span class="small" id="learnCounter"></span>
-          <button class="btn btn-primary" id="learnNextBtn" onclick="learnGo(1)">Next →</button>
-        </div>
-      </main>
-    </div>`;
-  learnUpdateAiBadge();
-  // autosave every keystroke (panel element persists across step re-renders; input events bubble to it)
-  const panel = document.getElementById('learnStepPanel');
-  if (panel) panel.addEventListener('input', learnAutosave);
-  learnRenderStep(!!focusHeading);
+/* ============================ rendering ============================ */
+const app=()=>document.getElementById('la-app');
+function render(){ state.methodId ? renderMethod() : renderPicker(); }
+
+function renderPicker(){
+  document.getElementById('laChange').style.display='none';
+  app().innerHTML=`<h2 style="font-size:1.1rem;margin-bottom:.2rem">Choose a method to learn</h2>
+    <p class="small" style="margin-bottom:1rem">Each walkthrough coaches you through the method on your own data. Demo tutor works with no setup.</p>
+    ${laPickerNote()}<div class="pick-grid">${laPickerList().map(m=>`
+      <button class="pick-card" onclick="LA.pick('${m.id}')">
+        <h3>${m.name}</h3><p>${m.blurb}</p>
+        <div class="tags">${m.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <span class="pill ready">Guided path · ${m.steps.length} steps</span>
+      </button>`).join('')}</div>`;
 }
-function learnPickerHTML(){
-  const guided = new Set(LEARN_METHODS.map(m => m.id));
-  const all = (typeof analysisMethods !== 'undefined' ? analysisMethods : []);
-  const q = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase().trim();
-  const list = q ? all.filter(a => a.name.toLowerCase().includes(q) || a.whatItIs.toLowerCase().includes(q)) : all;
-  const cards = list.map(a => {
-    const has = guided.has(a.id);
-    return `<div class="learn-pick ${has ? 'has' : ''}">
-      <div class="lp-top"><h3>${escHtml(a.name)}</h3>${has ? '<span class="lp-badge">Guided path available</span>' : '<span class="lp-soon">Walkthrough coming soon</span>'}</div>
-      <p class="small">${escHtml(a.whatItIs.substring(0,110))}…</p>
-      ${has
-        ? `<button class="btn btn-primary btn-sm" onclick="learnPick('${a.id}')">Start guided walkthrough</button>`
-        : `<button class="btn btn-ghost btn-sm" onclick="openAnalysisModal('${a.id}')">View reference card</button>`}
-    </div>`;
+
+function renderMethod(){
+  document.getElementById('laChange').style.display='';
+  const m=method(), st=curStep();
+  app().innerHTML=`<div class="layout">
+    <aside class="stepper"><h2>${esc(m.name)}</h2><div id="laStepList"></div>
+      <div class="progress-wrap"><div class="progress-bar" id="laBar"></div></div>
+      <div class="row" style="margin-top:.7rem">
+        <button class="btn btn-ghost btn-sm" onclick="LA.exportWork()">Export</button>
+        <button class="btn btn-ghost btn-sm" onclick="LA.resetMethod()">Restart</button>
+      </div></aside>
+    <main class="main">
+      <div class="panel">
+        <div class="eyebrow">Step ${state.step+1} of ${m.steps.length}</div>
+        <h3 id="laStepHeading" tabindex="-1">${esc(st.title)}</h3>
+        <div class="block why"><div class="label">💡 Why this step</div><div class="small" style="color:var(--text)">${st.why}</div></div>
+        <div class="block example"><div class="label">👀 Worked example</div><div class="small" style="color:var(--text)">${st.example}</div></div>
+        <div class="block task"><div class="label">✏️ Your turn — on your data</div>
+          <div id="laFields">${fieldsHtml(st)}</div>
+          ${st.sample?`<div class="row"><button class="btn btn-ghost btn-sm" onclick="LA.useSample()">Use a sample dataset</button></div>`:''}
+          <p class="small" style="margin-top:.5rem">🔒 ${TA_NOTE}</p>
+          <div class="row">
+            <button class="btn btn-ghost btn-sm" onclick="LA.showHint()">Need a hint?</button>
+            <button class="btn btn-primary btn-sm" id="laFbBtn" onclick="LA.getFeedback()">Ask the tutor for feedback</button>
+          </div>
+          <div id="laHintBox" aria-live="polite" aria-atomic="true"></div>
+          <div id="laTutorBox" aria-live="polite" aria-atomic="true"></div>
+        </div>
+        ${st.mc?mcHtml(st):''}
+      </div>
+      <div class="panel" style="display:flex;justify-content:space-between;align-items:center">
+        <button class="btn btn-ghost" id="laPrevBtn" onclick="LA.go(-1)">← Back</button>
+        <span class="small">Step ${state.step+1} / ${m.steps.length}</span>
+        <button class="btn btn-primary" id="laNextBtn" onclick="LA.go(1)">${state.step===m.steps.length-1?'Finish':'Next →'}</button>
+      </div>
+    </main></div>`;
+  renderStepper();
+  document.getElementById('laPrevBtn').style.visibility=state.step===0?'hidden':'visible';
+  // save-as-you-type
+  document.getElementById('laFields').addEventListener('input', e=>{ if(e.target.dataset.fid){ workOf(state.methodId)[e.target.dataset.fid]=e.target.value; save(); } });
+  const h=document.getElementById('laStepHeading'); if(h) h.focus();
+}
+
+function fieldsHtml(st){
+  return st.fields.map(f=>{
+    const id='fld_'+f.id, v=esc(getF(f.id));
+    const lbl=`<label class="fieldlabel" for="${id}">${esc(f.label)} ${f.hint?`<span class="fieldhint">${esc(f.hint)}</span>`:''}</label>`;
+    if(f.type==='text') return `${lbl}<input type="text" id="${id}" data-fid="${f.id}" value="${v}" placeholder="${esc(f.placeholder||'')}">`;
+    return `${lbl}<textarea id="${id}" data-fid="${f.id}" rows="${f.rows||5}" placeholder="${esc(f.placeholder||'')}">${v}</textarea>`;
   }).join('');
-  const countNote = q
-    ? `<p class="small" role="status" style="margin-bottom:.8rem">Showing ${list.length} of ${all.length} analysis methods for “${escHtml(q)}”.${list.length ? '' : ' Nothing matched — try a different term or clear the search.'}</p>`
-    : '';
-  return `<h2 class="learn-title">Learn Analysis</h2>
-    <p class="learn-sub">Pick a method and get coached through it step by step, working on your own data (it stays in your browser). Use the search box above to find a method. Start with a guided walkthrough, or open any method's reference card.</p>
-    ${countNote}
-    <div class="learn-grid">${cards}</div>`;
 }
-function learnPick(id){ learnCollectCurrent(); learnState.methodId = id; if (learnState.step == null) learnState.step = 0; learnSave(); renderLearn(true); }
-function learnBackToPicker(){ learnCollectCurrent(); learnState.methodId = null; learnSave(); renderLearn(); }
 
-function learnRenderStep(focusHeading){
-  const steps = learnSteps(), st = steps[learnState.step];
-  if (!st) return;
-  const mc = st.mc ? learnMcHtml(st) : '';
-  document.getElementById('learnStepPanel').innerHTML = `
-    <div class="panel">
-      <div class="eyebrow">Step ${learnState.step+1} of ${steps.length}</div>
-      <h3 id="learnStepHeading" tabindex="-1">${st.title}</h3>
-      <div class="block why"><div class="label">💡 Why this step</div><div class="small" style="color:var(--text)">${st.why}</div></div>
-      <div class="block example"><div class="label">👀 Worked example</div><div class="small" style="color:var(--text)">${st.example}</div></div>
-      <div class="block task"><div class="label">✏️ Your turn — on your data</div>
-        ${st.render(learnState)}
-        <p class="learn-privacy small">🔒 Your text stays in your browser. It is only sent to a provider if you connect an AI key (next to “Connect AI”).</p>
-        <div class="row">
-          <button class="btn btn-ghost btn-sm" onclick="learnShowHint()">Need a hint?</button>
-          <button class="btn btn-primary btn-sm" onclick="learnGetFeedback()" id="learnFbBtn">Ask the tutor for feedback</button>
-        </div>
-        <div id="learnHintBox" aria-live="polite" aria-atomic="true"></div>
-        <div id="learnTutorBox" aria-live="polite" aria-atomic="true"></div>
-      </div>
-      <div id="learnMcWrap">${mc}</div>
-    </div>`;
-  document.getElementById('learnCounter').textContent = `Step ${learnState.step+1} / ${steps.length}`;
-  document.getElementById('learnPrevBtn').style.visibility = learnState.step===0 ? 'hidden' : 'visible';
-  document.getElementById('learnNextBtn').textContent = learnState.step===steps.length-1 ? 'Finish' : 'Next →';
-  learnRenderStepper();
-  if (focusHeading) { const hd = document.getElementById('learnStepHeading'); if (hd) hd.focus(); }
+function renderStepper(){
+  const m=method();
+  document.getElementById('laStepList').innerHTML=m.steps.map((st,i)=>{
+    const done=i<state.step && stepHasInput(i);
+    const cur=i===state.step;
+    return `<button class="step-item ${done?'done':''}" ${cur?'aria-current="step"':''} aria-label="Go to step ${i+1}: ${esc(st.name)}" onclick="LA.jump(${i})">
+      <span class="step-num" aria-hidden="true">${done?'✓':i+1}</span><span class="step-name">${esc(st.name)}</span></button>`;
+  }).join('');
+  document.getElementById('laBar').style.width=(state.step/(m.steps.length-1)*100)+'%';
 }
-const LEARN_FIELD = { frame:['rq','data'], familiar:['familiar'], code:['codes'], cluster:['clusters'], theme:['themes'], interpret:['interpret'], reflect:['reflection'] };
-function learnStepHasInput(st){ return (LEARN_FIELD[st.id]||[]).some(k => (learnState[k]||'').trim().length>0); }
-function learnRenderStepper(){
-  const steps = learnSteps();
-  document.getElementById('learnStepper').innerHTML =
-    `<h2>Your progress</h2>` +
-    steps.map((st,i) => {
-      const active = i===learnState.step, has = learnStepHasInput(st), visited = i<learnState.step && !has;
-      const cls = active ? 'active' : (has ? 'done' : (visited ? 'visited' : ''));
-      const status = active ? ' (current)' : (has ? ' (completed)' : (visited ? ' (visited, no input yet)' : ' (not started)'));
-      return `<button type="button" class="step-item ${cls}" ${active?'aria-current="step"':''} aria-label="Go to step ${i+1}: ${escHtml(st.name)}${status}" onclick="learnJump(${i})">
-        <span class="step-num">${has?'✓':i+1}</span><span class="step-name">${escHtml(st.name)}</span></button>`;
-    }).join('') +
-    `<div class="progress-wrap"><div class="progress-bar" style="width:${(learnState.step/(steps.length-1)*100)}%"></div></div>
-     <div class="learn-aside-actions">
-       <button class="btn btn-ghost btn-sm" onclick="learnExport()">Export my work</button>
-       <button class="btn btn-ghost btn-sm" onclick="learnReset()">Reset</button>
-     </div>`;
-}
-function learnMcHtml(st){
-  const ans = learnState.mc[st.id];
+function stepHasInput(i){ const st=method().steps[i], w=workOf(state.methodId); return st.fields.some(f=>(w[f.id]||'').trim().length>0); }
+
+/* ---- quick check ---- */
+function mcHtml(st){
+  const key=state.methodId+'_'+st.id, ans=state.mc[key];
   return `<div class="block"><div class="label">🧠 Quick check</div>
-    <div class="small" style="color:var(--text);margin-bottom:.3rem">${st.mc.q}</div>
-    <div class="mc" role="group" aria-label="Quick check">${st.mc.options.map((o,i) => {
-      let cls=''; if (ans!=null) { if (o.ok) cls='correct'; else if (ans===i) cls='wrong'; }
-      const tag = ans!=null ? (o.ok ? ', correct answer' : (ans===i ? ', your answer — incorrect' : '')) : '';
-      return `<button type="button" class="${cls}" aria-pressed="${ans===i}" aria-label="${escHtml(o.t)}${tag}" onclick="learnAnswerMc('${st.id}',${i})">${escHtml(o.t)}</button>`;
+    <div class="small" style="color:var(--text);margin-bottom:.3rem">${esc(st.mc.q)}</div>
+    <div class="mc" id="mc_${st.id}">${st.mc.options.map((o,i)=>{
+      let cls=''; if(ans!=null){ if(o.ok)cls='correct'; else if(ans===i)cls='wrong'; }
+      return `<button class="mc-opt ${cls}" ${ans!=null&&(o.ok||ans===i)?`aria-label="${o.ok?'Correct: ':'Not quite: '}${esc(o.t)}"`:''} onclick="LA.answerMc('${st.id}',${i})">${(ans!=null&&o.ok)?'✓ ':((ans===i&&!o.ok)?'✗ ':'')}${esc(o.t)}</button>`;
     }).join('')}</div>
-    <div class="small mc-fb">${ans!=null ? `<strong>${st.mc.options[ans].ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${escHtml(st.mc.options[ans].why)}` : ''}</div></div>`;
+    <div class="small" id="mcfb_${st.id}">${ans!=null?(esc((st.mc.options[ans].ok?'✓ Correct. ':'✗ Not quite. ')+st.mc.options[ans].why)):''}</div></div>`;
 }
-function learnAnswerMc(id,i){
-  learnCollectCurrent();          // save typed inputs first so nothing is lost
-  learnState.mc[id]=i; learnSave();
-  // update only the quick-check, not the whole step (keeps textareas intact)
-  const w=document.getElementById('learnMcWrap');
-  if (w) w.innerHTML = learnMcHtml(learnSteps()[learnState.step]);
-}
-
-function learnShowHint(){
-  learnCollectCurrent();          // preserve typed inputs before re-render-safe ops
-  const id = learnSteps()[learnState.step].id;
-  const n = (learnState.hintsShown[id]||0), hints = LEARN_HINTS[id]||[];
-  if (n>=hints.length) { document.getElementById('learnHintBox').innerHTML = `<div class="hint"><span class="htag">No more hints —</span> try asking the tutor for feedback on what you've written.</div>`; return; }
-  learnState.hintsShown[id]=n+1; learnSave();
-  let html=''; for (let i=0;i<=n;i++) html += `<div class="hint"><span class="htag">Hint ${i+1}:</span> ${escHtml(hints[i])}</div>`;
-  document.getElementById('learnHintBox').innerHTML = html;
+function answerMc(id,i){ collectCurrent(); state.mc[state.methodId+'_'+id]=i; save();
+  const st=method().steps.find(s=>s.id===id);
+  document.getElementById('mc_'+id).outerHTML=mcHtml(st).match(/<div class="mc"[\s\S]*?<\/div>/)[0];
+  const fb=document.getElementById('mcfb_'+id); if(fb) fb.textContent=(st.mc.options[i].ok?'✓ Correct. ':'✗ Not quite. ')+st.mc.options[i].why;
+  // re-bind the option buttons (outerHTML replaced)
+  [...document.querySelectorAll('#mc_'+id+' .mc-opt')].forEach((b,bi)=>{ b.onclick=()=>answerMc(id,bi); });
 }
 
-/* Tutor feedback — Demo (heuristic) by default, optional real LLM.
-   NOTE for future quantitative paths: compute every numeric/statistical result in JS and
-   pass it to the model only to EXPLAIN — never let the LLM produce the numbers. */
-function learnTutorBox(kind,text){
-  document.getElementById('learnTutorBox').innerHTML = `<div class="tutor ${kind}" role="group" aria-label="Tutor feedback"><div class="who"><span aria-hidden="true">✨</span> Tutor feedback ${learnState.ai.on?'(AI)':'(demo)'}</div><div class="tutor-body">${escHtml(text)}</div></div>`;
-}
-async function learnGetFeedback(){
-  learnCollectCurrent(); learnSave();
-  const st = learnSteps()[learnState.step];
-  const btn = document.getElementById('learnFbBtn');
-  if (learnState.ai.on && learnState.ai.key) {
-    btn.innerHTML = '<span class="spinner"></span> Thinking…'; btn.disabled = true;
-    document.getElementById('learnTutorBox').innerHTML = `<div class="tutor" role="status"><div class="who"><span aria-hidden="true">✨</span> Tutor feedback (AI)</div><div class="tutor-body"><span class="spinner" aria-hidden="true"></span> Tutor is thinking…</div></div>`;
-    try { const txt = await learnAiFeedback(st); learnTutorBox('', txt); }
-    catch(e){ learnTutorBox('warn', 'AI request failed ('+(e.message||e)+'). Falling back to the demo tutor.\n\n'+learnDemoFeedback(st)); }
-    btn.innerHTML = 'Ask the tutor for feedback'; btn.disabled = false;
-  } else {
-    const { kind, text } = learnDemoFeedbackObj(st); learnTutorBox(kind, text);
-  }
-}
-function learnWordCount(s){ return (s||'').trim().split(/\s+/).filter(Boolean).length; }
-function learnDemoFeedbackObj(st){
-  const k = st.feedbackKind, s = learnState;
-  if (k==='fit'){
-    const q = s.rq.toLowerCase();
-    if (!s.rq || !s.data) return {kind:'warn',text:"Add both a question and some data so I can check the fit. Paste a few real excerpts — even 3–4 lines is enough to practise."};
-    if (/how many|how much|which is better|conversion|rate|percentage|faster|significan/.test(q))
-      return {kind:'warn',text:"Your question sounds quantitative ('"+s.rq+"'). Thematic analysis won't give you numbers or a 'better' verdict. Either reframe it toward meaning ('why do people…', 'how do they experience…') or pick a quantitative method. Want to rewrite it?"};
-    return {kind:'good',text:"Good fit. '"+s.rq+"' is about meaning and experience, which is exactly what thematic analysis surfaces. As you code, keep checking each code earns its place against this question."};
-  }
-  if (k==='familiar'){
-    if (learnWordCount(s.familiar)<8) return {kind:'warn',text:"Push a bit further — write 2–4 fuller notes. What's the emotional tone? Any contradictions between participants? Immersion now pays off when you code."};
-    if (/code|theme/i.test(s.familiar)) return {kind:'warn',text:"You're jumping to codes/themes already. For now stay with impressions in plain language — you'll code next. What surprised you?"};
-    return {kind:'good',text:"Nice — these are genuine impressions, not premature codes. Hold on to anything that surprised you; surprises often become your most interesting themes."};
-  }
-  if (k==='codes'){
-    const lines = s.codes.split('\n').map(l=>l.trim()).filter(Boolean);
-    if (lines.length<3) return {kind:'warn',text:"Code at least 4 excerpts so patterns can emerge. Use the format <excerpt → code> so each label stays tied to evidence."};
-    const topicish = lines.filter(l=>{ const code=(l.split('→')[1]||l).trim(); return code && code.split(/\s+/).length<=2; });
-    const noArrow = lines.filter(l=>!l.includes('→')).length;
-    let msg = "You coded "+lines.length+" excerpts — good momentum. ";
-    if (noArrow) msg += "A few lines don't link an excerpt to a code; keep the <excerpt → code> link so your codes stay grounded. ";
-    if (topicish.length) msg += "These look like topics rather than interpretations: "+topicish.slice(0,3).map(l=>'"'+(l.split('→')[1]||l).trim()+'"').join(', ')+". Ask 'what is this person *doing* or *feeling*?' and lengthen the label. ";
-    else msg += "Your codes read as interpretive (they say what's going on, not just the topic) — that's the hard part done well. ";
-    return {kind: topicish.length||noArrow ? 'warn' : 'good', text: msg+"Next we'll group them."};
-  }
-  if (k==='clusters'){
-    const groups = s.clusters.split('\n').map(l=>l.trim()).filter(Boolean);
-    if (groups.length<2) return {kind:'warn',text:"Aim for 2–3 candidate themes. Group codes that share a *meaning*. If everything lands in one group, look for a tension that splits it."};
-    return {kind:'good',text:"You formed "+groups.length+" candidate themes. Test each one: do these codes share meaning, or just a topic? And is any code stranded alone — that could be a sub-theme or an outlier worth noting. Refine, then name them."};
-  }
-  if (k==='themes'){
-    const hasQuote = /["“].+["”]/.test(s.themes) || /quote\s*:/i.test(s.themes);
-    const oneWord = (s.themes.match(/theme\s*:\s*(\w+)\s*(\n|$)/gi)||[]).length;
-    if (learnWordCount(s.themes)<10) return {kind:'warn',text:"Flesh each theme out: a phrase-length name, a 1–2 sentence definition, and a verbatim quote."};
-    if (!hasQuote) return {kind:'warn',text:"I can't see a verbatim quote attached. Every theme needs evidence — pull the exact words from a participant. If you can't, the theme isn't grounded yet and should be revised."};
-    if (oneWord) return {kind:'warn',text:"At least one theme is a single word (a topic). Rewrite it as a claim-like phrase that tells the reader what the pattern *is*."};
-    return {kind:'good',text:"Strong: named, defined, and evidenced with quotes. That's a defensible theme. Now turn each into a claim that answers your question."};
-  }
-  if (k==='interpret'){
-    const hasDis = /disconfirm|except|but P|however|counter/i.test(s.interpret);
-    const hasLim = /limit|small|sample|one (app|context)|caution/i.test(s.interpret);
-    let msg = "";
-    if (!hasDis) msg += "Add a disconfirming case — the participant who breaks the pattern. It makes your reading more credible, not less. ";
-    if (!hasLim) msg += "State a limitation or two (sample size, single context) so the claim is appropriately bounded. ";
-    if (!msg) return {kind:'good',text:"Good interpretation — claims tied to themes, a disconfirming case, and honest limits. That's the difference between a hunch and a finding."};
-    return {kind:'warn',text:msg};
-  }
-  if (k==='reflect'){
-    if (learnWordCount(s.reflection)<8) return {kind:'warn',text:"Go a little deeper: what surprised you, and how might your own assumptions have shaped what you coded? That reflexivity is part of rigour."};
-    return {kind:'good',text:"Lovely reflection. You can now export your write-up and audit trail. Notice how much of the insight came from *your* interpretation — the method just kept you honest."};
-  }
-  return {kind:'',text:"Keep going."};
-}
-function learnDemoFeedback(st){ return learnDemoFeedbackObj(st).text; }
-function learnAiContext(st){
-  const s = learnState;
-  const fields = { frame:`Question: ${s.rq}\nData:\n${s.data}`, familiar:`First impressions:\n${s.familiar}`,
-    code:`Their codes:\n${s.codes}`, cluster:`Their clusters:\n${s.clusters}`, theme:`Their themes:\n${s.themes}`,
-    interpret:`Their interpretation:\n${s.interpret}`, reflect:`Their reflection:\n${s.reflection}` };
-  return fields[st.id] || '';
-}
-async function learnAiFeedback(st){
-  const method = learnMethod();
-  const sys = `You are a warm, patient research-methods tutor helping a design student learn ${(method?method.name:'this method').toUpperCase()} by doing it on their own data. Current step: "${st.title}".
-Coach, don't do the work: give specific, improvement-oriented feedback on THEIR input, point out one or two concrete things to reconsider and WHY, and ask one Socratic question. NEVER write their codes/themes for them or hand over a finished analysis. NEVER invent data or quotes. Be concrete and reference their actual words. Keep it under 130 words, encouraging in tone.`;
-  const user = `Research question: ${learnState.rq||'(not set)'}\n\nStep focus: ${st.title}\n\nStudent's work for this step:\n${learnAiContext(st)}\n\nGive your coaching feedback now.`;
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST',
-    headers:{'content-type':'application/json','x-api-key':learnState.ai.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({ model: learnState.ai.model||'claude-3-5-haiku-latest', max_tokens:400, system:sys, messages:[{role:'user',content:user}] })
-  });
-  if (!res.ok) { const t = await res.text(); throw new Error(res.status+' '+t.slice(0,120)); }
-  const j = await res.json();
-  return (j.content && j.content[0] && j.content[0].text) || '(no response)';
+/* ---- hints ---- */
+function showHint(){ collectCurrent(); const st=curStep(), key=state.methodId+'_'+st.id;
+  const n=state.hints[key]||0, hs=st.hints||[];
+  if(n>=hs.length){ document.getElementById('laHintBox').innerHTML=`<div class="hint"><span class="htag">No more hints —</span> ask the tutor for feedback on what you’ve written.</div>`; return; }
+  state.hints[key]=n+1; save();
+  let html=''; for(let i=0;i<=n;i++) html+=`<div class="hint"><span class="htag">Hint ${i+1}:</span> ${esc(hs[i])}</div>`;
+  document.getElementById('laHintBox').innerHTML=html;
 }
 
-function learnGo(d){
-  learnCollectCurrent();
-  const steps = learnSteps(), n = learnState.step+d;
-  if (n<0 || n>=steps.length) { if (n>=steps.length) learnExport(); return; }
-  learnState.step = n; learnSave(); learnRenderStep(true);
+/* ---- tutor ---- */
+function collectCurrent(){ const w=workOf(state.methodId); curStep().fields.forEach(f=>{ const el=document.getElementById('fld_'+f.id); if(el) w[f.id]=el.value; }); save(); }
+function tutorBox(kind,text){ document.getElementById('laTutorBox').innerHTML=`<div class="tutor ${kind}"><div class="who">✨ Tutor ${state.ai.on?'(AI)':'(demo)'}</div><div class="tutor-body">${esc(text)}</div></div>`; }
+async function getFeedback(){
+  collectCurrent(); const st=curStep(), btn=document.getElementById('laFbBtn');
+  if(state.ai.on && state.ai.key){
+    btn.innerHTML='<span class="spinner"></span> Thinking…'; btn.disabled=true;
+    document.getElementById('laTutorBox').innerHTML='<div class="small" style="margin-top:.5rem">Tutor is thinking…</div>';
+    try{ tutorBox('', await aiFeedback(st)); }
+    catch(e){ const demo=st.check(workOf(state.methodId)); tutorBox('warn','AI request failed ('+(e.message||e)+'). Demo feedback instead:\n\n'+demo.text); }
+    btn.innerHTML='Ask the tutor for feedback'; btn.disabled=false;
+  } else { const r=st.check(workOf(state.methodId)); tutorBox(r.kind,r.text); }
 }
-function learnJump(i){ learnCollectCurrent(); learnState.step = i; learnSave(); learnRenderStep(true); }
-function learnUseSample(){ learnCollectCurrent(); learnState.data = LEARN_SAMPLE; if (!learnState.rq) learnState.rq = "Why do first-time users abandon onboarding?"; learnSave(); learnRenderStep(false); }
-function learnExport(){
-  learnCollectCurrent(); learnSave();
-  const s = learnState, m = learnMethod();
-  let t = `${(m?m.name:'ANALYSIS').toUpperCase()} — MY WORK\n${'='.repeat(40)}\n\nResearch question: ${s.rq}\n\n`;
-  t += `STEP 2 · Familiarisation notes\n${s.familiar}\n\n`;
-  t += `STEP 3 · Open codes\n${s.codes}\n\n`;
-  t += `STEP 4 · Candidate themes (clusters)\n${s.clusters}\n\n`;
-  t += `STEP 5 · Defined themes + evidence\n${s.themes}\n\n`;
-  t += `STEP 6 · Interpretation (claims, disconfirming case, limits)\n${s.interpret}\n\n`;
-  t += `STEP 7 · Reflection\n${s.reflection}\n\n`;
-  const mcTotal = learnSteps().filter(x=>x.mc).length;
-  t += `AUDIT TRAIL\n- Quick-checks answered: ${Object.keys(s.mc).length}/${mcTotal}\n- Hints used: ${Object.values(s.hintsShown).reduce((a,b)=>a+b,0)}\n- Tutor mode: ${s.ai.on?'AI':'Demo'}\n`;
-  const blob = new Blob([t], {type:'text/plain'}); const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'my-thematic-analysis.txt'; a.click();
+function aiFeedback(st){
+  const m=method();
+  const sys=`You are a warm, patient research-methods tutor helping a design student learn ${m.name} by doing it on THEIR data. Current step: "${st.title}". Coach, don't do the work: give specific, improvement-oriented feedback on their input, point out one or two things to reconsider and WHY, and ask one Socratic question. NEVER produce their codes/themes/personas for them or invent data or quotes. Reference their actual words. Under 130 words, encouraging.`;
+  const w=workOf(state.methodId);
+  const body=st.fields.map(f=>f.label+': '+(w[f.id]||'(blank)')).join('\n');
+  const user=`Method: ${m.name}\nStep: ${st.title}\n\nStudent's work:\n${body}\n\nGive your coaching feedback now.`;
+  return fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+    headers:{'content-type':'application/json','x-api-key':state.ai.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:state.ai.model||'claude-3-5-haiku-latest',max_tokens:400,system:sys,messages:[{role:'user',content:user}]})
+  }).then(async r=>{ if(!r.ok){throw new Error(r.status+' '+(await r.text()).slice(0,120));} const j=await r.json(); return (j.content&&j.content[0]&&j.content[0].text)||'(no response)'; });
 }
-function learnReset(){
-  if (!confirm('Clear your Learn Analysis work and start over?')) return;
-  try { localStorage.removeItem('learnAnalysis'); } catch(e){}
-  learnState = { methodId:null, step:0, rq:"", data:"", familiar:"", codes:"", clusters:"", themes:"", interpret:"", reflection:"", mc:{}, ai:{on:false,key:"",model:"claude-3-5-haiku-latest"}, hintsShown:{} };
-  renderLearn();
+
+/* ---- navigation ---- */
+function pick(id){ state.methodId=id; state.step=0; save(); render(); }
+function toPicker(){ collectCurrent(); state.methodId=null; save(); render(); }
+function go(d){ collectCurrent(); const m=method(); const n=state.step+d; if(n<0) return; if(n>=m.steps.length){ exportWork(); return; } state.step=n; save(); renderMethod(); }
+function jump(i){ collectCurrent(); state.step=i; save(); renderMethod(); }
+function useSample(){ collectCurrent(); const st=curStep(); Object.assign(workOf(state.methodId), st.sample); save(); renderMethod(); }
+function resetMethod(){ if(!confirm('Clear your work for this method and restart it?')) return; state.work[state.methodId]={}; Object.keys(state.mc).forEach(k=>{if(k.startsWith(state.methodId+'_'))delete state.mc[k];}); Object.keys(state.hints).forEach(k=>{if(k.startsWith(state.methodId+'_'))delete state.hints[k];}); state.step=0; save(); renderMethod(); }
+
+/* ---- export ---- */
+function exportWork(){ collectCurrent(); const m=method(), w=workOf(state.methodId);
+  let t=`${m.name.toUpperCase()} — MY WORK\n${'='.repeat(m.name.length+10)}\n\n`;
+  m.steps.forEach((st,i)=>{ t+=`STEP ${i+1} · ${st.name}\n`; st.fields.forEach(f=>{ t+=`  ${f.label}: ${w[f.id]||''}\n`; }); t+='\n'; });
+  const mcN=Object.keys(state.mc).filter(k=>k.startsWith(state.methodId+'_')).length;
+  const hN=Object.keys(state.hints).filter(k=>k.startsWith(state.methodId+'_')).reduce((a,k)=>a+state.hints[k],0);
+  t+=`AUDIT TRAIL\n- Quick-checks answered: ${mcN}\n- Hints used: ${hN}\n- Tutor mode: ${state.ai.on?'AI':'Demo'}\n`;
+  const blob=new Blob([t],{type:'text/plain'}), a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=m.id+'-my-work.txt'; a.click();
 }
-function learnUpdateAiBadge(){
-  const dot = document.getElementById('learnAiDot'), lab = document.getElementById('learnAiLabel');
-  if (dot) dot.classList.toggle('on', learnState.ai.on);
-  if (lab) lab.textContent = learnState.ai.on ? ('AI tutor · '+(learnState.ai.model||'')) : 'Demo tutor';
+
+/* ---- settings dialog (focus trap) ---- */
+let lastFocus=null;
+function openSettings(){ lastFocus=document.activeElement; document.getElementById('laApiKey').value=state.ai.key||''; document.getElementById('laApiModel').value=state.ai.model||'claude-3-5-haiku-latest';
+  const o=document.getElementById('laSettings'); o.classList.add('open'); document.getElementById('laApiKey').focus(); }
+function closeSettings(){ document.getElementById('laSettings').classList.remove('open'); if(lastFocus)lastFocus.focus(); }
+function saveKey(){ state.ai.key=document.getElementById('laApiKey').value.trim(); state.ai.model=document.getElementById('laApiModel').value.trim()||'claude-3-5-haiku-latest'; state.ai.on=!!state.ai.key; save(); closeSettings(); updateAi(); }
+function useDemo(){ state.ai.on=false; save(); closeSettings(); updateAi(); }
+function updateAi(){ document.getElementById('laAiDot').classList.toggle('on',state.ai.on); document.getElementById('laAiLabel').textContent=state.ai.on?('AI tutor · '+state.ai.model):'Demo tutor'; }
+document.getElementById('laSettings').addEventListener('click',e=>{ if(e.target.id==='settings') closeSettings(); });
+document.addEventListener('keydown',e=>{ const o=document.getElementById('laSettings'); if(!o.classList.contains('open'))return;
+  if(e.key==='Escape'){ closeSettings(); return; }
+  if(e.key==='Tab'){ const f=[...o.querySelectorAll('button,input')].filter(x=>x.offsetParent!==null); if(!f.length)return;
+    const first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();} } });
+
+/* ---- init ---- */
+/* mounted on demand via LA.mount */
+
+
+/* ---- Learn-tab entry points (namespaced) ---- */
+function mount(containerId){
+  const v=document.getElementById(containerId||'learnView'); if(!v) return;
+  v.innerHTML=`<div class="la-wrap">
+    <div class="la-toolbar">
+      <button class="hdr-ctrl" id="laChange" onclick="LA.toPicker()" style="display:none">↤ Change method</button>
+      <div class="ai-status"><span class="dot" id="laAiDot"></span><span id="laAiLabel">Demo tutor</span>
+        <button class="btn-link" onclick="LA.openSettings()">Connect AI</button></div>
+    </div>
+    <div id="la-app"></div>
+  </div>`;
+  updateAi(); render();
 }
-// Connect-AI panel reuses the app's #modal dialog (focus trap, Escape, inert background)
-function learnOpenSettings(){
-  const overlay = document.getElementById('modalOverlay');
-  if (!overlay.classList.contains('open')) lastFocusedModalTrigger = document.activeElement;
-  const modal = document.getElementById('modal');
-  modal.innerHTML = `
-    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
-    <div class="learn-ui">
-      <h2 id="modalTitle">Connect an AI tutor</h2>
-      <p class="small">This works fully in <b>Demo tutor</b> mode with no key. To get adaptive, content-aware coaching on your actual data, paste an Anthropic API key — it stays in your browser and calls the API directly from this page.</p>
-      <label class="fieldlabel" for="learnApiKey">Anthropic API key</label>
-      <input type="password" id="learnApiKey" autocomplete="off" placeholder="sk-ant-..." value="${escHtml(learnState.ai.key||'')}">
-      <label class="fieldlabel" for="learnApiModel">Model</label>
-      <input type="text" id="learnApiModel" value="${escHtml(learnState.ai.model||'claude-3-5-haiku-latest')}">
-      <div class="note">⚠️ Privacy: in AI mode, the text you submit at each step is sent to Anthropic for feedback. Don't paste data you don't have consent to share. In Demo mode nothing leaves your device.</div>
-      <div class="row" style="justify-content:flex-end">
-        <button class="btn btn-ghost" onclick="learnUseDemo()">Use Demo tutor</button>
-        <button class="btn btn-primary" onclick="learnSaveKey()">Save &amp; use AI</button>
-      </div>
-    </div>`;
-  setInertEls(MODAL_INERT, true);
-  overlay.classList.add('open');
-  (modal.querySelector('#learnApiKey') || modal.querySelector('.modal-close')).focus();
-}
-function learnSaveKey(){
-  learnState.ai.key = learnVal('learnApiKey');
-  learnState.ai.model = learnVal('learnApiModel') || 'claude-3-5-haiku-latest';
-  learnState.ai.on = !!learnState.ai.key;
-  learnSave(); closeModal();
-  if (currentTab === 'learn') renderLearn();
-}
-function learnUseDemo(){ learnState.ai.on = false; learnSave(); closeModal(); if (currentTab === 'learn') renderLearn(); }
+// header search filters the picker (when no walkthrough is open)
+function laQuery(){ const sb=document.getElementById('searchInput'); return (sb?sb.value:'').toLowerCase().trim(); }
+function laPickerList(){ const q=laQuery(); return q?METHODS.filter(m=>(m.name+' '+m.blurb+' '+m.tags.join(' ')).toLowerCase().includes(q)):METHODS; }
+function laPickerNote(){ const q=laQuery(); if(!q) return ''; const n=laPickerList().length; return `<p class="la-count" role="status">Showing ${n} of ${METHODS.length} guided methods for “${esc(q)}”.${n?'':' Nothing matched — clear the search.'}</p>`; }
+function applySearch(){ if(!state.methodId) renderPicker(); }
+function collectOnLeave(){ if(state.methodId) collectCurrent(); }
+window.LA={ mount, pick, toPicker, go, jump, useSample, showHint, getFeedback, answerMc, exportWork, resetMethod, openSettings, saveKey, useDemo, applySearch, collectOnLeave };
+
+})();
 
 // Init
 const initialTab = restoreFromURL();
