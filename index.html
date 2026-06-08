@@ -671,28 +671,61 @@
   #learnView .panel{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;margin-bottom:1rem}
   #learnView .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--textLight);font-weight:700}
   #learnView .panel h3{font-size:1.15rem;margin:.2rem 0;outline:none}
-  #learnView .block{border-left:3px solid var(--border);padding:.2rem 0 .2rem .9rem;margin:1rem 0}
-  #learnView .block .label{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--textLight);margin-bottom:.25rem}
-  #learnView .block.why{border-color:var(--accent)}
-  #learnView .block.example{border-color:#9B59B6;background:#FBF7FE;border-radius:0 8px 8px 0}
-  #learnView .block.task{border-color:#E8655A}
+  /* ---------- Four content identities: DO · ASK · HINT · REPLY · READ (icon + word label + shape, never colour-only) ---------- */
+  #learnView{--la-do:#2D5BD0;--la-do-bg:#F4F8FF;--la-do-bd:#BCD2FF;--la-ask:#0B7A7A;--la-ask-bg:#EAF7F6;--la-ask-bd:#A9E0DC;--la-hint:#8A5A00;--la-hint-bg:#FFF8E8;--la-hint-bd:#EFD08A;--la-reply:#4338CA;--la-reply-bg:#F1F1FE;--la-reply-bd:#D3D2FA;--la-read:#5A6577;--la-okc:#1E7F4F;--la-okbg:#E9F7EE}
+  #learnView .la-kind{border-radius:14px;padding:1rem 1.1rem;margin:.9rem 0}
+  #learnView .la-khead{display:flex;align-items:center;gap:.45rem;margin-bottom:.5rem}
+  #learnView .la-kicon{font-size:1rem;line-height:1}
+  #learnView .la-klabel{font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  #learnView .la-kbody{font-size:.9rem;color:var(--text);line-height:1.55}
+  /* DO — the hero: filled card, accent edge, soft shadow, sits above all else */
+  #learnView .la-do{background:var(--la-do-bg);border:1px solid var(--la-do-bd);border-left:4px solid var(--la-do);padding:1.2rem 1.3rem;box-shadow:0 6px 20px rgba(45,91,208,.10)}
+  #learnView .la-do .la-klabel{color:var(--la-do)}
+  #learnView .la-reassure{font-size:.84rem;color:var(--la-do);background:#fff;border:1px solid var(--la-do-bd);border-radius:9px;padding:.45rem .65rem;margin-bottom:.75rem}
+  #learnView .la-do textarea,#learnView .la-do input[type=text]{background:#fff;border:1.5px solid var(--la-do-bd)}
+  #learnView .la-do textarea:focus,#learnView .la-do input:focus{border-color:var(--la-do);box-shadow:0 0 0 3px rgba(45,91,208,.15)}
+  /* ASK — calm teal quiz with a pill header */
+  #learnView .la-ask{background:var(--la-ask-bg);border:1px solid var(--la-ask-bd)}
+  #learnView .la-ask .la-khead{background:var(--la-ask);border-radius:999px;padding:.25rem .7rem;display:inline-flex;margin-bottom:.6rem}
+  #learnView .la-ask .la-klabel{color:#fff}
+  #learnView .la-ask .la-q{font-size:.9rem;font-weight:600;margin-bottom:.55rem;color:var(--text)}
+  /* HINT — amber sticky-note aside, secondary/optional */
+  #learnView .la-hint{background:var(--la-hint-bg);border:1px dashed var(--la-hint-bd);border-radius:12px;padding:.7rem .85rem;margin-top:.55rem;animation:lafade .25s ease}
+  #learnView .la-hint .la-khead{margin-bottom:.3rem}
+  #learnView .la-hint .la-klabel{color:var(--la-hint)}
+  #learnView .la-hint .la-kbody{font-size:.85rem}
+  /* REPLY — coach speech bubble with a little tail */
+  #learnView .la-reply{background:var(--la-reply-bg);border:1px solid var(--la-reply-bd);border-radius:14px;padding:1rem 1.1rem;margin-top:1rem;position:relative;animation:lafade .25s ease}
+  #learnView .la-reply::before{content:"";position:absolute;top:-8px;left:22px;width:14px;height:14px;background:inherit;border-left:1px solid var(--la-reply-bd);border-top:1px solid var(--la-reply-bd);transform:rotate(45deg)}
+  #learnView .la-reply .la-klabel{color:var(--la-reply)}
+  #learnView .la-coachdot{width:9px;height:9px;border-radius:50%;background:var(--la-reply);display:inline-block;flex:0 0 auto}
+  #learnView .la-reply.good{background:var(--la-okbg);border-color:#BCE3CC}#learnView .la-reply.good::before{border-color:#BCE3CC}#learnView .la-reply.good .la-klabel{color:var(--la-okc)}#learnView .la-reply.good .la-coachdot{background:var(--la-okc)}
+  #learnView .la-reply.needswork{background:var(--la-hint-bg);border-color:var(--la-hint-bd)}#learnView .la-reply.needswork::before{border-color:var(--la-hint-bd)}#learnView .la-reply.needswork .la-klabel{color:var(--la-hint)}#learnView .la-reply.needswork .la-coachdot{background:var(--la-hint)}
+  #learnView .tutor-body{font-size:.9rem;white-space:pre-wrap;color:var(--text)}
+  #learnView .la-afford{font-size:.76rem;color:var(--textLight);margin-top:.55rem;font-style:italic}
+  #learnView .la-idle{margin-top:.6rem;color:var(--textLight);font-size:.84rem}
+  /* READ — collapsible teaching, low emphasis, never competes with DO */
+  #learnView details.la-read{background:#F7F8FA;border:1px solid var(--border);border-radius:10px;margin:.45rem 0;overflow:hidden}
+  #learnView details.la-read>summary{cursor:pointer;list-style:none;padding:.6rem .8rem;font-size:.82rem;font-weight:600;color:var(--la-read);display:flex;align-items:center;gap:.45rem}
+  #learnView details.la-read>summary::-webkit-details-marker{display:none}
+  #learnView details.la-read>summary::after{content:"⌄";margin-left:auto;font-size:1rem;transition:transform .2s}
+  #learnView details.la-read[open]>summary::after{transform:rotate(180deg)}
+  #learnView details.la-read>summary:hover{background:#EFF2F7}
+  #learnView details.la-read .la-rbody{padding:0 .85rem .85rem;font-size:.85rem;color:var(--text);line-height:1.55}
+  @keyframes lafade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* shared inputs / labels / rows (kept) */
   #learnView .small,#laSettings .small{font-size:.83rem;color:var(--textLight)}
   #learnView textarea,#learnView input[type=text],#laSettings input[type=text],#laSettings input[type=password]{width:100%;border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;font:inherit;font-size:.9rem;resize:vertical;outline:none;line-height:1.55;background:#fff;color:var(--text)}
   #learnView textarea:focus,#learnView input:focus,#laSettings input:focus{border-color:var(--accent)}
   #learnView .fieldlabel,#laSettings .fieldlabel{font-size:.83rem;font-weight:600;display:block;margin:.7rem 0 .25rem}
   #learnView .fieldhint{font-weight:400;color:var(--textLight)}
   #learnView .row,#laSettings .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.8rem}
-  #learnView .hint{background:#fff;border:1px dashed var(--border);border-radius:10px;padding:.6rem .8rem;margin-top:.5rem;font-size:.84rem}
-  #learnView .hint .htag{font-weight:700;color:var(--accentText)}
-  #learnView .tutor{background:var(--tutorBg);border:1px solid #D5DEFB;border-radius:12px;padding:.9rem 1rem;margin-top:.9rem}
-  #learnView .tutor .who{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.84rem;color:var(--accentText);margin-bottom:.35rem}
-  #learnView .tutor-body{font-size:.88rem;white-space:pre-wrap}
-  #learnView .tutor.good{background:var(--goodBg);border-color:#BfE6CC}#learnView .tutor.good .who{color:var(--good)}
-  #learnView .tutor.warn{background:var(--warnBg);border-color:#F2D8BD}#learnView .tutor.warn .who{color:var(--warn)}
-  #learnView .mc button.mc-opt{display:block;width:100%;text-align:left;border:1px solid var(--border);background:#fff;border-radius:9px;padding:.5rem .7rem;margin-bottom:.4rem;cursor:pointer;font:inherit;font-size:.85rem;color:var(--text)}
-  #learnView .mc button.mc-opt:hover{border-color:var(--accent)}
-  #learnView .mc button.correct{border-color:var(--good);background:var(--goodBg)}
-  #learnView .mc button.wrong{border-color:#E8655A;background:#FDECEA}
+  /* quick-check options */
+  #learnView .mc button.mc-opt{display:block;width:100%;text-align:left;border:1px solid var(--la-ask-bd);background:#fff;border-radius:10px;padding:.55rem .75rem;margin-bottom:.4rem;cursor:pointer;font:inherit;font-size:.86rem;color:var(--text)}
+  #learnView .mc button.mc-opt:hover{border-color:var(--la-ask)}
+  #learnView .mc button.correct{border-color:var(--la-okc);background:var(--la-okbg)}
+  #learnView .mc button.wrong{border-color:var(--la-hint-bd);background:var(--la-hint-bg)}
+  #learnView .mc-fb{font-size:.84rem;margin-top:.25rem;color:var(--text)}
   #learnView .spinner,#laSettings .spinner{width:14px;height:14px;border:2px solid #cdd6f5;border-top-color:var(--accent);border-radius:50%;display:inline-block;animation:laspin .7s linear infinite;vertical-align:middle}
   @keyframes laspin{to{transform:rotate(360deg)}}
   #learnView .note,#laSettings .note{font-size:.78rem;color:var(--textLight);background:#F7F8FA;border-radius:8px;padding:.55rem .7rem;margin-top:.6rem}
@@ -702,7 +735,7 @@
   #laSettings.open{display:flex}
   #laSettings .la-modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.25)}
   #laSettings h3{margin-bottom:.5rem}
-  @media (prefers-reduced-motion:reduce){ #learnView .spinner,#laSettings .spinner{animation:none} #learnView .progress-bar{transition:none} #learnView .pick-card{transition:none} }
+  @media (prefers-reduced-motion:reduce){ #learnView .spinner,#laSettings .spinner{animation:none} #learnView .progress-bar{transition:none} #learnView .pick-card{transition:none} #learnView .la-hint,#learnView .la-reply{animation:none} #learnView details.la-read>summary::after{transition:none} }
   @media(max-width:820px){
     #learnView .layout{flex-direction:column}
     #learnView .stepper{width:100%;position:static;display:flex;overflow-x:auto;gap:.3rem}
@@ -4849,7 +4882,8 @@ const METHODS=[
 ];
 
 /* ============================ state ============================ */
-let state = load() || { methodId:null, step:0, work:{}, mc:{}, hints:{}, ai:{on:false,key:'',model:'claude-3-5-haiku-latest'} };
+let state = load() || { methodId:null, step:0, work:{}, mc:{}, hints:{}, open:{}, ai:{on:false,key:'',model:'claude-3-5-haiku-latest'} };
+if(!state.open) state.open={}; // remembers Why/Example disclosure per step
 function save(){ try{ localStorage.setItem('analysisHelperMM', JSON.stringify(state)); }catch(e){} }
 function load(){ try{ return JSON.parse(localStorage.getItem('analysisHelperMM')||'null'); }catch(e){ return null; } }
 function method(){ return METHODS.find(m=>m.id===state.methodId); }
@@ -4875,43 +4909,48 @@ function renderPicker(){
 
 function renderMethod(){
   document.getElementById('laChange').style.display='';
-  const m=method(), st=curStep();
+  const m=method(), st=curStep(), last=state.step===m.steps.length-1;
+  const mins=Math.max(1, m.steps.length-state.step); // gentle, non-binding estimate
   app().innerHTML=`<div class="layout">
     <aside class="stepper"><h2>${esc(m.name)}</h2><div id="laStepList"></div>
       <div class="progress-wrap"><div class="progress-bar" id="laBar"></div></div>
+      <p class="small" style="margin:.5rem .4rem 0">You're doing fine — one step at a time.</p>
       <div class="row" style="margin-top:.7rem">
         <button class="btn btn-ghost btn-sm" onclick="LA.exportWork()">Export</button>
         <button class="btn btn-ghost btn-sm" onclick="LA.resetMethod()">Restart</button>
       </div></aside>
     <main class="main">
       <div class="panel">
-        <div class="eyebrow">Step ${state.step+1} of ${m.steps.length}</div>
+        <div class="eyebrow">Step ${state.step+1} of ${m.steps.length} · about ${mins} min · no test, no grade</div>
         <h3 id="laStepHeading" tabindex="-1">${esc(st.title)}</h3>
-        <div class="block why"><div class="label">💡 Why this step</div><div class="small" style="color:var(--text)">${st.why}</div></div>
-        <div class="block example"><div class="label">👀 Worked example</div><div class="small" style="color:var(--text)">${st.example}</div></div>
-        <div class="block task"><div class="label">✏️ Your turn — on your data</div>
+        ${readToggles(st)}
+        <section class="la-kind la-do" aria-labelledby="laDoLabel">
+          <div class="la-khead"><span class="la-kicon" aria-hidden="true">✏️</span><span class="la-klabel" id="laDoLabel">Your turn</span></div>
+          <p class="la-reassure">Have a go — there are no wrong answers here; your tutor will help you improve it.</p>
           <div id="laFields">${fieldsHtml(st)}</div>
-          ${st.sample?`<div class="row"><button class="btn btn-ghost btn-sm" onclick="LA.useSample()">Use a sample dataset</button></div>`:''}
+          ${st.sample?`<div class="row"><button class="btn btn-ghost btn-sm" onclick="LA.useSample()">Try a sample</button></div>`:''}
           <p class="small" style="margin-top:.5rem">🔒 ${TA_NOTE}</p>
           <div class="row">
-            <button class="btn btn-ghost btn-sm" onclick="LA.showHint()">Need a hint?</button>
-            <button class="btn btn-primary btn-sm" id="laFbBtn" onclick="LA.getFeedback()">Ask the tutor for feedback</button>
+            <button class="btn btn-ghost btn-sm" onclick="LA.showHint()">💡 Stuck? Get a hint</button>
+            <button class="btn btn-primary" id="laFbBtn" onclick="LA.getFeedback()">✨ Ask your tutor</button>
           </div>
           <div id="laHintBox" aria-live="polite" aria-atomic="true"></div>
-          <div id="laTutorBox" aria-live="polite" aria-atomic="true"></div>
-        </div>
+          <div id="laTutorBox" aria-live="polite" aria-atomic="true"><div class="la-idle">💬 When you're ready, ask your tutor for feedback — it'll point at one or two things to try, not mark you.</div></div>
+        </section>
         ${st.mc?mcHtml(st):''}
       </div>
       <div class="panel" style="display:flex;justify-content:space-between;align-items:center">
-        <button class="btn btn-ghost" id="laPrevBtn" onclick="LA.go(-1)">← Back</button>
-        <span class="small">Step ${state.step+1} / ${m.steps.length}</span>
-        <button class="btn btn-primary" id="laNextBtn" onclick="LA.go(1)">${state.step===m.steps.length-1?'Finish':'Next →'}</button>
+        <button class="btn btn-ghost btn-sm" id="laPrevBtn" onclick="LA.go(-1)">← Back</button>
+        <span class="small">Step ${state.step+1} of ${m.steps.length}</span>
+        <button class="btn btn-ghost" id="laNextBtn" onclick="LA.go(1)">${last?'Finish ✓':'Next step →'}</button>
       </div>
     </main></div>`;
   renderStepper();
   document.getElementById('laPrevBtn').style.visibility=state.step===0?'hidden':'visible';
   // save-as-you-type
   document.getElementById('laFields').addEventListener('input', e=>{ if(e.target.dataset.fid){ workOf(state.methodId)[e.target.dataset.fid]=e.target.value; save(); } });
+  // remember the Why/Example disclosure choice per step
+  app().querySelectorAll('details.la-read').forEach(d=>d.addEventListener('toggle',()=>{ state.open[d.dataset.okey]=d.open; save(); }));
   const h=document.getElementById('laStepHeading'); if(h) h.focus();
 }
 
@@ -4922,6 +4961,18 @@ function fieldsHtml(st){
     if(f.type==='text') return `${lbl}<input type="text" id="${id}" data-fid="${f.id}" value="${v}" placeholder="${esc(f.placeholder||'')}">`;
     return `${lbl}<textarea id="${id}" data-fid="${f.id}" rows="${f.rows||5}" placeholder="${esc(f.placeholder||'')}">${v}</textarea>`;
   }).join('');
+}
+
+/* ---- READ: teaching collapsed behind friendly toggles (state remembered per step) ---- */
+function okey(st,which){ return state.methodId+'_'+st.id+'_'+which; }
+function readToggles(st){
+  const wk=okey(st,'why'), ek=okey(st,'example');
+  return `<details class="la-read" data-okey="${wk}" ${state.open[wk]?'open':''}>
+      <summary><span class="la-kicon" aria-hidden="true">💡</span> Why this matters</summary>
+      <div class="la-rbody">${st.why}</div></details>
+    <details class="la-read" data-okey="${ek}" ${state.open[ek]?'open':''}>
+      <summary><span class="la-kicon" aria-hidden="true">👀</span> Show me an example</summary>
+      <div class="la-rbody">${st.example}</div></details>`;
 }
 
 function renderStepper(){
@@ -4939,18 +4990,19 @@ function stepHasInput(i){ const st=method().steps[i], w=workOf(state.methodId); 
 /* ---- quick check ---- */
 function mcHtml(st){
   const key=state.methodId+'_'+st.id, ans=state.mc[key];
-  return `<div class="block"><div class="label">🧠 Quick check</div>
-    <div class="small" style="color:var(--text);margin-bottom:.3rem">${esc(st.mc.q)}</div>
+  return `<section class="la-kind la-ask">
+    <div class="la-khead"><span class="la-kicon" aria-hidden="true">❓</span><span class="la-klabel">Quick check · no stakes</span></div>
+    <div class="la-q">${esc(st.mc.q)}</div>
     <div class="mc" id="mc_${st.id}">${st.mc.options.map((o,i)=>{
       let cls=''; if(ans!=null){ if(o.ok)cls='correct'; else if(ans===i)cls='wrong'; }
-      return `<button class="mc-opt ${cls}" ${ans!=null&&(o.ok||ans===i)?`aria-label="${o.ok?'Correct: ':'Not quite: '}${esc(o.t)}"`:''} onclick="LA.answerMc('${st.id}',${i})">${(ans!=null&&o.ok)?'✓ ':((ans===i&&!o.ok)?'✗ ':'')}${esc(o.t)}</button>`;
+      return `<button class="mc-opt ${cls}" ${ans!=null&&(o.ok||ans===i)?`aria-label="${o.ok?'Correct: ':'Not quite: '}${esc(o.t)}"`:''} onclick="LA.answerMc('${st.id}',${i})">${(ans!=null&&o.ok)?'✓ ':((ans===i&&!o.ok)?'↻ ':'')}${esc(o.t)}</button>`;
     }).join('')}</div>
-    <div class="small" id="mcfb_${st.id}">${ans!=null?(esc((st.mc.options[ans].ok?'✓ Correct. ':'✗ Not quite. ')+st.mc.options[ans].why)):''}</div></div>`;
+    <div class="mc-fb" id="mcfb_${st.id}">${ans!=null?(esc((st.mc.options[ans].ok?'✓ Nice — that’s it. ':'↻ Not quite — ')+st.mc.options[ans].why)):''}</div></section>`;
 }
 function answerMc(id,i){ collectCurrent(); state.mc[state.methodId+'_'+id]=i; save();
   const st=method().steps.find(s=>s.id===id);
   document.getElementById('mc_'+id).outerHTML=mcHtml(st).match(/<div class="mc"[\s\S]*?<\/div>/)[0];
-  const fb=document.getElementById('mcfb_'+id); if(fb) fb.textContent=(st.mc.options[i].ok?'✓ Correct. ':'✗ Not quite. ')+st.mc.options[i].why;
+  const fb=document.getElementById('mcfb_'+id); if(fb) fb.textContent=(st.mc.options[i].ok?'✓ Nice — that’s it. ':'↻ Not quite — ')+st.mc.options[i].why;
   // re-bind the option buttons (outerHTML replaced)
   [...document.querySelectorAll('#mc_'+id+' .mc-opt')].forEach((b,bi)=>{ b.onclick=()=>answerMc(id,bi); });
 }
@@ -4958,23 +5010,32 @@ function answerMc(id,i){ collectCurrent(); state.mc[state.methodId+'_'+id]=i; sa
 /* ---- hints ---- */
 function showHint(){ collectCurrent(); const st=curStep(), key=state.methodId+'_'+st.id;
   const n=state.hints[key]||0, hs=st.hints||[];
-  if(n>=hs.length){ document.getElementById('laHintBox').innerHTML=`<div class="hint"><span class="htag">No more hints —</span> ask the tutor for feedback on what you’ve written.</div>`; return; }
+  const note=(label,body)=>`<div class="la-kind la-hint"><div class="la-khead"><span class="la-kicon" aria-hidden="true">💡</span><span class="la-klabel">${label}</span></div><div class="la-kbody">${body}</div></div>`;
+  if(n>=hs.length){ document.getElementById('laHintBox').innerHTML=note('That’s all the hints','You’ve got every hint for this step — have a go, then ask your tutor for feedback on what you wrote.'); return; }
   state.hints[key]=n+1; save();
-  let html=''; for(let i=0;i<=n;i++) html+=`<div class="hint"><span class="htag">Hint ${i+1}:</span> ${esc(hs[i])}</div>`;
+  let html=''; for(let i=0;i<=n;i++) html+=note('Hint '+(i+1), esc(hs[i]));
   document.getElementById('laHintBox').innerHTML=html;
 }
 
 /* ---- tutor ---- */
 function collectCurrent(){ const w=workOf(state.methodId); curStep().fields.forEach(f=>{ const el=document.getElementById('fld_'+f.id); if(el) w[f.id]=el.value; }); save(); }
-function tutorBox(kind,text){ document.getElementById('laTutorBox').innerHTML=`<div class="tutor ${kind}"><div class="who">✨ Tutor ${state.ai.on?'(AI)':'(demo)'}</div><div class="tutor-body">${esc(text)}</div></div>`; }
+function tutorBox(kind,text){
+  const cls=kind==='good'?'good':(kind==='warn'?'needswork':'');
+  const lead=kind==='good'?'✓ ':(kind==='warn'?'↻ ':'');
+  const mode=state.ai.on?'AI':'demo';
+  document.getElementById('laTutorBox').innerHTML=`<div class="la-kind la-reply ${cls}">
+    <div class="la-khead"><span class="la-coachdot" aria-hidden="true"></span><span class="la-kicon" aria-hidden="true">✨</span><span class="la-klabel">Your tutor · ${mode}</span></div>
+    <div class="tutor-body">${lead}${esc(text)}</div>
+    <p class="la-afford">This is feedback to improve your draft — tweak it and ask again.</p></div>`;
+}
 async function getFeedback(){
   collectCurrent(); const st=curStep(), btn=document.getElementById('laFbBtn');
   if(state.ai.on && state.ai.key){
     btn.innerHTML='<span class="spinner"></span> Thinking…'; btn.disabled=true;
-    document.getElementById('laTutorBox').innerHTML='<div class="small" style="margin-top:.5rem">Tutor is thinking…</div>';
+    document.getElementById('laTutorBox').innerHTML='<div class="la-idle">✨ Your tutor is reading your draft…</div>';
     try{ tutorBox('', await aiFeedback(st)); }
-    catch(e){ const demo=st.check(workOf(state.methodId)); tutorBox('warn','AI request failed ('+(e.message||e)+'). Demo feedback instead:\n\n'+demo.text); }
-    btn.innerHTML='Ask the tutor for feedback'; btn.disabled=false;
+    catch(e){ const demo=st.check(workOf(state.methodId)); tutorBox('warn','I couldn’t reach the AI just now ('+(e.message||e)+'), so here’s demo feedback instead:\n\n'+demo.text); }
+    btn.innerHTML='✨ Ask your tutor'; btn.disabled=false;
   } else { const r=st.check(workOf(state.methodId)); tutorBox(r.kind,r.text); }
 }
 function aiFeedback(st){
