@@ -744,9 +744,14 @@
   @media (prefers-reduced-motion:reduce){ #learnView .spinner,#laSettings .spinner{animation:none} #learnView .progress-bar{transition:none} #learnView .pick-card{transition:none} #learnView .la-hint,#learnView .la-reply{animation:none} #learnView details.la-read>summary::after{transition:none} }
   @media(max-width:820px){
     #learnView .layout{flex-direction:column}
-    #learnView .stepper{width:100%;position:static;display:flex;overflow-x:auto;gap:.3rem}
-    #learnView .stepper h2,#learnView .progress-wrap{display:none}
-    #learnView .step-item{flex-direction:column;min-width:78px;text-align:center;font-size:.68rem}
+    /* stepper becomes a compact top bar; the STEP LIST itself scrolls horizontally */
+    #learnView .stepper{width:100%;min-width:0;position:static;display:block;padding:.7rem .8rem}
+    #learnView .stepper h2{display:block;margin:0 0 .5rem;font-size:.72rem}
+    #learnView #laStepList{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.35rem;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+    #learnView .step-item{flex:0 0 auto;width:auto;flex-direction:column;align-items:center;gap:.25rem;min-width:60px;max-width:88px;text-align:center;font-size:.66rem;padding:.4rem .3rem}
+    #learnView .step-item .step-num{width:26px;height:26px;font-size:.78rem}
+    #learnView .step-item .step-name{line-height:1.2}
+    #learnView .progress-wrap{display:block;margin:.55rem .1rem 0}
   }
 </style>
 </head>
@@ -5107,6 +5112,9 @@ function renderStepper(){
       <span class="step-num" aria-hidden="true">${done?'✓':i+1}</span><span class="step-name">${esc(st.name)}</span></button>`;
   }).join('');
   document.getElementById('laBar').style.width=(state.step/(m.steps.length-1)*100)+'%';
+  // keep the current step visible in the horizontal mobile step bar (no page scroll)
+  const list=document.getElementById('laStepList'), cur=list&&list.querySelector('[aria-current="step"]');
+  if(list&&cur&&list.scrollWidth>list.clientWidth){ list.scrollLeft=cur.offsetLeft-(list.clientWidth/2)+(cur.offsetWidth/2); }
 }
 function stepHasInput(i){ const st=method().steps[i], w=workOf(state.methodId); return st.fields.some(f=>(w[f.id]||'').trim().length>0); }
 
