@@ -4490,6 +4490,92 @@ function r2(x){return Math.round(x*100)/100;}
 const TA_NOTE='Keep work in your browser. Use the format shown; one idea per line.';
 const METHODS=[
 {
+ id:'thematic-analysis', name:'Thematic analysis',
+ blurb:'Identify, code, and interpret patterns of meaning (themes) across qualitative data.',
+ tags:['Themes','Qualitative','Attitudinal'],
+ steps:[
+  {id:'frame',name:'Frame',title:'1 · Frame your question & data',
+   why:'Thematic analysis answers “what patterns of meaning run through qualitative data?” Name what you want to learn and gather text you actually collected — interview transcripts, open-ended survey answers, field notes. A focused question keeps your coding honest.',
+   example:'Question: “Why do first-time users abandon onboarding?” Data: 4 interview excerpts.',
+   fields:[{id:'q',label:'Your research question',type:'text',placeholder:'e.g. Why do older adults avoid online banking?'},
+           {id:'data',label:'Paste your qualitative data',hint:'(stays in your browser)',type:'textarea',rows:8,placeholder:'Paste transcripts / open-ended responses. Prefix speakers like P1:, P2: if you can.'}],
+   sample:{q:'Why do first-time users abandon onboarding?',data:'P3: I just froze — “Continue” didn’t tell me if it would send the money or go to the next screen, so I backed out and phoned my daughter.\nP3: I always double-check by taking a screenshot. I don’t trust that it saved.\nP7: I skipped the tutorial to get started, then got stuck and there was no way back to it.\nP7: When it asked me to verify my identity I almost gave up — it wasn’t clear why they needed my passport just to view my balance.'},
+   hints:['Keep the question about meaning or experience (“why”, “how do people feel/decide”), not numbers.','If your question contains “how many” or “which is better”, thematic analysis is the wrong tool — note that and pick another.'],
+   mc:{q:'Which is a question thematic analysis can answer well?',
+     options:[{t:'Which of two layouts converts better?',ok:false,why:'That’s a comparative/quantitative question — use an experiment or A/B test.'},
+              {t:'What concerns shape how people feel about a task?',ok:true,why:'Yes — TA surfaces patterns of meaning and concern across accounts.'},
+              {t:'How many users completed onboarding?',ok:false,why:'That’s a metric — use descriptive analytics, not TA.'}]},
+   check:d=>{ const q=(d.q||'').toLowerCase();
+     if(!d.q||!d.data) return {kind:'warn',text:'Add both a question and some data so I can check the fit. Even 3–4 lines of real text is enough to practise.'};
+     if(/how many|how much|which is better|conversion|\brate\b|percentage|faster|significan/.test(q)) return {kind:'warn',text:'Your question sounds quantitative (“'+d.q+'”). Thematic analysis won’t give you numbers or a “better” verdict. Reframe it toward meaning (“why do people…”, “how do they experience…”) or pick a quantitative method.'};
+     return {kind:'good',text:'Good fit. “'+d.q+'” is about meaning and experience, which is exactly what thematic analysis surfaces. As you code, keep checking each code earns its place against this question.'}; } },
+  {id:'familiar',name:'Familiarise',title:'2 · Familiarise yourself',
+   why:'Before coding, read everything once and jot first impressions. This immersion stops you coding mechanically and helps you notice tone, contradictions, and surprises. Write notes in your own words — not codes yet.',
+   example:'Note: “Several people improvise safety checks (screenshots, phoning family) — they don’t trust feedback.”',
+   fields:[{id:'fam',label:'Your first impressions',type:'textarea',rows:5,placeholder:'First impressions, in your own words…'}],
+   hints:['Don’t write codes yet — just reactions. What’s the emotional tone? Any contradictions?','Try completing: “I keep noticing that…” and “I didn’t expect…”.'],
+   check:d=>{ if(wc(d.fam)<8) return {kind:'warn',text:'Push a bit further — write 2–4 fuller notes. What’s the emotional tone? Any contradictions between participants? Immersion now pays off when you code.'};
+     if(/\bcode|theme/i.test(d.fam)) return {kind:'warn',text:'You’re jumping to codes/themes already. For now stay with impressions in plain language — you’ll code next. What surprised you?'};
+     return {kind:'good',text:'Nice — these are genuine impressions, not premature codes. Hold on to anything that surprised you; surprises often become your most interesting themes.'}; } },
+  {id:'code',name:'Open code',title:'3 · Open coding',
+   why:'A code is a short label that captures the meaning of a specific excerpt. Good codes are interpretive (what’s going on) not just topics (what it’s about). “Distrust of system feedback” is a code; “feedback” is only a topic. Code closely — one idea per excerpt.',
+   example:'Excerpt: “I always double-check by taking a screenshot.” → Code: Improvising safety to compensate for low trust (not just “screenshots”).',
+   fields:[{id:'codes',label:'Your coded excerpts',type:'textarea',rows:7,placeholder:'excerpt → your interpretive code (one per line)'}],
+   hints:['A topic answers “what is this about?”; a code answers “what’s going on here?”. Push each label toward the second.','Re-read one excerpt and finish: “This person is …-ing because …”. That sentence is your code.'],
+   mc:{q:'Which is the stronger code for: “I skipped the tutorial because I wanted to get in and do the thing”?',
+     options:[{t:'Tutorial',ok:false,why:'That’s a topic label — it carries no interpretation.'},
+              {t:'Skipping help in favour of acting immediately',ok:true,why:'Yes — it captures the behaviour and the motive.'},
+              {t:'User is impatient',ok:false,why:'Too much of a judgement and not grounded in the words; stay close to the data.'}]},
+   check:d=>{ const ls=lines(d.codes); if(ls.length<3) return {kind:'warn',text:'Code at least 4 excerpts so patterns can emerge. Use the format <excerpt → code> so each label stays tied to evidence.'};
+     const topicish=ls.filter(l=>{ const c=(l.split('→')[1]||'').trim(); return c && c.split(/\s+/).length<=2; });
+     const noArrow=ls.filter(l=>!l.includes('→')).length;
+     let msg='You coded '+ls.length+' excerpts — good momentum. ';
+     if(noArrow) msg+='A few lines don’t link an excerpt to a code; keep the <excerpt → code> link so your codes stay grounded. ';
+     if(topicish.length) msg+='These look like topics rather than interpretations: '+topicish.slice(0,3).map(l=>'“'+(l.split('→')[1]||'').trim()+'”').join(', ')+'. Ask “what is this person doing or feeling?” and lengthen the label. ';
+     else msg+='Your codes read as interpretive — that’s the hard part done well. ';
+     return {kind:(topicish.length||noArrow)?'warn':'good', text:msg+'Next we’ll group them.'}; } },
+  {id:'cluster',name:'Cluster',title:'4 · Cluster codes into candidate themes',
+   why:'Group related codes that seem to belong together into candidate themes. A theme is a pattern of shared meaning, not a bucket of everything on a topic. Watch for codes that sit alone (maybe a sub-theme, maybe noise) and codes that overlap (maybe one code).',
+   example:'Codes “improvising safety”, “distrust of feedback”, “double-checking” → candidate theme: Compensating for untrustworthy feedback.',
+   fields:[{id:'clusters',label:'Your candidate themes',type:'textarea',rows:6,placeholder:'Theme guess: code, code, code (one group per line)'}],
+   hints:['Group by shared meaning, not shared keyword.','A code that fits nowhere may be a sub-theme or an outlier — don’t force it in.'],
+   check:d=>{ const g=lines(d.clusters); if(g.length<2) return {kind:'warn',text:'Aim for 2–3 candidate themes. Group codes that share a meaning. If everything lands in one group, look for a tension that splits it.'};
+     return {kind:'good',text:'You formed '+g.length+' candidate themes. Test each: do these codes share meaning, or just a topic? And is any code stranded alone — a sub-theme or outlier worth noting? Refine, then name them.'}; } },
+  {id:'theme',name:'Name themes',title:'5 · Define & name your themes',
+   why:'Name each theme so it tells a reader something (a short phrase, not one word), write a 1–2 sentence definition of its boundary, and attach at least one verbatim quote as evidence. If you can’t find a quote, the theme isn’t grounded yet.',
+   example:'Theme: “Compensating for untrustworthy feedback” — Def: users build their own safety rituals because the system doesn’t reassure them an action worked. Quote: “I always double-check by taking a screenshot.”',
+   fields:[{id:'themes',label:'Your defined themes',type:'textarea',rows:8,placeholder:'Theme: …\nDefinition: …\nQuote: “…”\n\n(separate themes with a blank line)'}],
+   hints:['Every theme needs a verbatim quote. If you can’t find one, the theme is a hunch — revise it.','A one-word theme (“Trust”) is usually a topic. Make it a claim-like phrase (“Trust must be re-earned each session”).'],
+   mc:{q:'A theme with no supporting quote means…',
+     options:[{t:'It’s fine if it feels true',ok:false,why:'Themes must be evidenced — a hunch isn’t a finding.'},
+              {t:'It isn’t grounded yet; find evidence or revise it',ok:true,why:'Exactly — every theme needs verbatim support.'},
+              {t:'You need more participants',ok:false,why:'Maybe later, but first the claim must be grounded in the data you have.'}]},
+   check:d=>{ const t=d.themes||''; const hasQuote=/[“"].+[”"]/.test(t)||/quote\s*:/i.test(t);
+     const oneWord=(t.match(/theme\s*:\s*\w+\s*(\n|$)/gi)||[]).length;
+     if(wc(t)<10) return {kind:'warn',text:'Flesh each theme out: a phrase-length name, a 1–2 sentence definition, and a verbatim quote.'};
+     if(!hasQuote) return {kind:'warn',text:'I can’t see a verbatim quote attached. Every theme needs evidence — pull the exact words from a participant. If you can’t, the theme isn’t grounded yet and should be revised.'};
+     if(oneWord) return {kind:'warn',text:'At least one theme is a single word (a topic). Rewrite it as a claim-like phrase that tells the reader what the pattern is.'};
+     return {kind:'good',text:'Strong: named, defined, and evidenced with quotes. That’s a defensible theme. Now turn each into a claim that answers your question.'}; } },
+  {id:'interpret',name:'Interpret',title:'6 · Interpret — claims, contrasts, limits',
+   why:'Turn each theme into a claim that answers your question, note any disconfirming case (where the pattern breaks — this strengthens credibility), and state limitations (small sample, single context). Interpretation is where themes become insight.',
+   example:'Claim: distrust of feedback, not lack of skill, drives abandonment. Disconfirming: P7 abandoned over identity verification, not feedback. Limit: 4 participants, one app.',
+   fields:[{id:'interp',label:'Your interpretation',type:'textarea',rows:6,placeholder:'Claim per theme…\nDisconfirming case…\nLimitations…'}],
+   hints:['A disconfirming case is a gift — find the participant who breaks the pattern and say why.','Limitations aren’t weakness; naming them (sample size, one context) makes your claim credible.'],
+   check:d=>{ const t=d.interp||''; const hasDis=/disconfirm|except|but P|however|counter/i.test(t); const hasLim=/limit|small|sample|one (app|context)|caution/i.test(t);
+     let msg=''; if(!hasDis) msg+='Add a disconfirming case — the participant who breaks the pattern. It makes your reading more credible, not less. ';
+     if(!hasLim) msg+='State a limitation or two (sample size, single context) so the claim is appropriately bounded. ';
+     if(!msg) return {kind:'good',text:'Good interpretation — claims tied to themes, a disconfirming case, and honest limits. That’s the difference between a hunch and a finding.'};
+     return {kind:'warn',text:msg}; } },
+  {id:'reflect',name:'Reflect',title:'7 · Reflect & export',
+   why:'Reflection consolidates learning. Name what surprised you, where your evidence is weakest, and how your own assumptions might have shaped your coding (reflexivity). Then export your work as a mini findings write-up with an audit trail.',
+   example:'“I assumed older users struggle with tech, but the data pointed to trust, not ability — I had to re-code.”',
+   fields:[{id:'reflect',label:'Your reflection',type:'textarea',rows:5,placeholder:'What surprised you? Where is your evidence weakest? How might your assumptions have shaped your coding?'}],
+   hints:['Reflexivity = how you shaped the analysis. What did you assume going in?','Name the single weakest piece of evidence in your themes — that’s honest and useful.'],
+   check:d=>{ if(wc(d.reflect)<8) return {kind:'warn',text:'Go a little deeper — what surprised you, and how might your own assumptions have shaped what you coded? That reflexivity is part of rigour.'};
+     return {kind:'good',text:'Lovely reflection. You can export your write-up and audit trail now. Notice how much of the insight came from your interpretation — the method just kept you honest.'}; } }
+ ]
+},
+{
  id:'content-analysis', name:'Content analysis',
  blurb:'Systematically categorise text/media against a coding scheme and (optionally) count categories.',
  tags:['Themes','Scores/Measures','Qual + Quant'],
@@ -4916,7 +5002,7 @@ function renderPicker(){
   const soonCard=m=>`<div class="pick-card soon" aria-disabled="true">
         <h3>${esc(m.name)}</h3><p>${esc(m.blurb)}</p>
         <div class="tags">${m.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
-        <span class="pill soon">Walkthrough coming soon</span>
+        <span class="pill soon">Coming soon</span>
       </div>`;
   app().innerHTML=`<h2 style="font-size:1.1rem;margin-bottom:.2rem">Choose a method to learn</h2>
     <p class="small" style="margin-bottom:1rem">Pick a method to practise it on your own data with a step-by-step tutor. More walkthroughs are on the way — the rest of the catalogue is listed below.</p>
@@ -4924,13 +5010,20 @@ function renderPicker(){
     ${g.length?`<h3 class="la-group">✏️ Guided walkthroughs <span>${g.length}</span></h3><div class="pick-grid">${g.map(guidedCard).join('')}</div>`:''}
     ${s.length?`<h3 class="la-group">🗂️ More methods · walkthrough coming soon <span>${s.length}</span></h3><div class="pick-grid">${s.map(soonCard).join('')}</div>`:''}`;
 }
-// Unified picker catalogue: the 6 guided walkthroughs + the rest of the analysisMethods catalogue as "coming soon".
+// Single source of truth: the picker is DERIVED from the global analysisMethods catalogue (46 entries).
+// A catalogue method renders as a guided walkthrough if a METHODS entry (one with steps) matches it by
+// normalised name (id as fallback); otherwise it renders as "coming soon". Counts always sum to 46.
 function laAllMethods(){
   const az=(a,b)=>a.name.localeCompare(b.name);
-  const guidedNames=new Set(METHODS.map(m=>m.name));
+  const norm=s=>(s||'').trim().toLowerCase();
+  const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+  const guidedByName={}, guidedById={};
+  METHODS.forEach(m=>{ guidedByName[norm(m.name)]=m; guidedById[norm(m.id)]=m; });
   const guided=METHODS.map(m=>({id:m.id,name:m.name,blurb:m.blurb,tags:m.tags||[],steps:m.steps.length})).sort(az);
   const cat=(typeof analysisMethods!=='undefined'&&Array.isArray(analysisMethods))?analysisMethods:[];
-  const soon=cat.filter(a=>!guidedNames.has(a.name)).map(a=>({id:a.id,name:a.name,blurb:laBrief(a),tags:(a.outputType||[]).slice(0,3)})).sort(az);
+  const soon=cat.filter(a=>!(guidedByName[norm(a.name)]||guidedById[norm(a.id)]))
+    .map(a=>({id:a.id,name:a.name,blurb:laBrief(a),tags:[(a.outputType||[])[0],cap((a.dataType||[])[0])].filter(Boolean)}))
+    .sort(az);
   return {guided,soon};
 }
 function laBrief(a){ let s=(a.produces||a.whatItIs||'').replace(/\s+/g,' ').trim(); if(s.length>120){ s=s.slice(0,117).replace(/[\s.,;:]+\S*$/,'')+'…'; } return s; }
@@ -5133,8 +5226,6 @@ function mount(containerId){
 }
 // header search filters the picker (when no walkthrough is open)
 function laQuery(){ const sb=document.getElementById('searchInput'); return (sb?sb.value:'').toLowerCase().trim(); }
-function laPickerList(){ const q=laQuery(); return q?METHODS.filter(m=>(m.name+' '+m.blurb+' '+m.tags.join(' ')).toLowerCase().includes(q)):METHODS; }
-function laPickerNote(){ const q=laQuery(); if(!q) return ''; const n=laPickerList().length; return `<p class="la-count" role="status">Showing ${n} of ${METHODS.length} guided methods for “${esc(q)}”.${n?'':' Nothing matched — clear the search.'}</p>`; }
 function applySearch(){ if(!state.methodId) renderPicker(); }
 function collectOnLeave(){ if(state.methodId) collectCurrent(); }
 window.LA={ mount, pick, toPicker, go, jump, useSample, showHint, getFeedback, answerMc, exportWork, resetMethod, openSettings, saveKey, useDemo, applySearch, collectOnLeave };
