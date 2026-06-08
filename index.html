@@ -652,6 +652,12 @@
   #learnView .pick-card p{font-size:.82rem;color:var(--textLight)}
   #learnView .pill{display:inline-block;font-size:.68rem;font-weight:700;border-radius:12px;padding:.15rem .55rem;margin-top:.6rem}
   #learnView .pill.ready{background:var(--goodBg);color:var(--good)}
+  #learnView .pill.soon{background:#EEF1F6;color:#5A6577}
+  #learnView .la-group{font-size:.92rem;font-weight:700;color:var(--text);margin:1.5rem 0 .75rem;display:flex;align-items:center;gap:.5rem}
+  #learnView .la-group span{font-size:.7rem;font-weight:700;background:#EEF1F6;color:#5A6577;border-radius:10px;padding:1px 8px}
+  #learnView .pick-card.soon{cursor:default;background:#FAFBFC;border-style:dashed}
+  #learnView .pick-card.soon:hover{transform:none;box-shadow:none;border-color:var(--border)}
+  #learnView .pick-card.soon h3{color:var(--textLight)}
   #learnView .tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.5rem}
   #learnView .tag{font-size:.66rem;font-weight:700;border-radius:10px;padding:2px 8px;background:#EEF1F6;color:#5A6577}
   #learnView .la-count{font-size:.82rem;color:var(--textLight);margin-bottom:.8rem}
@@ -4897,15 +4903,38 @@ function render(){ state.methodId ? renderMethod() : renderPicker(); }
 
 function renderPicker(){
   document.getElementById('laChange').style.display='none';
+  const q=laQuery(), all=laAllMethods();
+  const g=q?all.guided.filter(m=>laMatch(m,q)):all.guided;
+  const s=q?all.soon.filter(m=>laMatch(m,q)):all.soon;
+  const total=all.guided.length+all.soon.length, shown=g.length+s.length;
+  const note=q?`<p class="la-count" role="status">Showing ${shown} of ${total} methods for “${esc(q)}”.${shown?'':' Nothing matched — clear the search.'}</p>`:'';
+  const guidedCard=m=>`<button class="pick-card" onclick="LA.pick('${m.id}')">
+        <h3>${esc(m.name)}</h3><p>${esc(m.blurb)}</p>
+        <div class="tags">${m.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+        <span class="pill ready">Guided path · ${m.steps} steps</span>
+      </button>`;
+  const soonCard=m=>`<div class="pick-card soon" aria-disabled="true">
+        <h3>${esc(m.name)}</h3><p>${esc(m.blurb)}</p>
+        <div class="tags">${m.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+        <span class="pill soon">Walkthrough coming soon</span>
+      </div>`;
   app().innerHTML=`<h2 style="font-size:1.1rem;margin-bottom:.2rem">Choose a method to learn</h2>
-    <p class="small" style="margin-bottom:1rem">Each walkthrough coaches you through the method on your own data. Demo tutor works with no setup.</p>
-    ${laPickerNote()}<div class="pick-grid">${laPickerList().map(m=>`
-      <button class="pick-card" onclick="LA.pick('${m.id}')">
-        <h3>${m.name}</h3><p>${m.blurb}</p>
-        <div class="tags">${m.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-        <span class="pill ready">Guided path · ${m.steps.length} steps</span>
-      </button>`).join('')}</div>`;
+    <p class="small" style="margin-bottom:1rem">Pick a method to practise it on your own data with a step-by-step tutor. More walkthroughs are on the way — the rest of the catalogue is listed below.</p>
+    ${note}
+    ${g.length?`<h3 class="la-group">✏️ Guided walkthroughs <span>${g.length}</span></h3><div class="pick-grid">${g.map(guidedCard).join('')}</div>`:''}
+    ${s.length?`<h3 class="la-group">🗂️ More methods · walkthrough coming soon <span>${s.length}</span></h3><div class="pick-grid">${s.map(soonCard).join('')}</div>`:''}`;
 }
+// Unified picker catalogue: the 6 guided walkthroughs + the rest of the analysisMethods catalogue as "coming soon".
+function laAllMethods(){
+  const az=(a,b)=>a.name.localeCompare(b.name);
+  const guidedNames=new Set(METHODS.map(m=>m.name));
+  const guided=METHODS.map(m=>({id:m.id,name:m.name,blurb:m.blurb,tags:m.tags||[],steps:m.steps.length})).sort(az);
+  const cat=(typeof analysisMethods!=='undefined'&&Array.isArray(analysisMethods))?analysisMethods:[];
+  const soon=cat.filter(a=>!guidedNames.has(a.name)).map(a=>({id:a.id,name:a.name,blurb:laBrief(a),tags:(a.outputType||[]).slice(0,3)})).sort(az);
+  return {guided,soon};
+}
+function laBrief(a){ let s=(a.produces||a.whatItIs||'').replace(/\s+/g,' ').trim(); if(s.length>120){ s=s.slice(0,117).replace(/[\s.,;:]+\S*$/,'')+'…'; } return s; }
+function laMatch(m,q){ return (m.name+' '+(m.blurb||'')+' '+(m.tags||[]).join(' ')).toLowerCase().includes(q); }
 
 function renderMethod(){
   document.getElementById('laChange').style.display='';
