@@ -285,6 +285,10 @@
   @media(max-width:900px) {
     .layout { flex-direction:column; }
     .main { max-height:none; }
+    /* tabs scroll horizontally so all five stay reachable (Learn Analysis no longer runs off-screen) */
+    .tabs { flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .tabs::-webkit-scrollbar { height:0; display:none; }
+    .tab { flex:0 0 auto; white-space:nowrap; padding:.5rem .85rem; }
     .sidebar {
       position:fixed; top:0; left:0; bottom:0; height:100%; max-height:none;
       width:86%; max-width:330px; min-width:0; z-index:300;
@@ -710,6 +714,11 @@
   #learnView .tutor-body{font-size:.9rem;white-space:pre-wrap;color:var(--text)}
   #learnView .la-afford{font-size:.76rem;color:var(--textLight);margin-top:.55rem;font-style:italic}
   #learnView .la-idle{margin-top:.6rem;color:var(--textLight);font-size:.84rem}
+  /* CHART tool — picture of the student's own numbers (drawn in JS) */
+  #learnView .la-chart{background:#fff;border:1px solid var(--border)}
+  #learnView .la-chart .la-klabel{color:var(--accentText)}
+  #learnView .la-chartbox{margin-top:.7rem;overflow-x:auto}
+  #learnView .la-chartbox svg{display:block;max-width:100%;height:auto;background:#FBFCFE;border:1px solid var(--border);border-radius:10px;padding:.4rem}
   /* READ — collapsible teaching, low emphasis, never competes with DO */
   #learnView details.la-read{background:#F7F8FA;border:1px solid var(--border);border-radius:10px;margin:.45rem 0;overflow:hidden}
   #learnView details.la-read>summary{cursor:pointer;list-style:none;padding:.6rem .8rem;font-size:.82rem;font-weight:600;color:var(--la-read);display:flex;align-items:center;gap:.45rem}
@@ -4100,7 +4109,16 @@ function switchTab(tab) {
   if (tab==='project') renderProject();
   if (tab==='compare') renderCompare();
   if (tab==='learn' && window.LA) LA.mount('learnView');
+  centerTabInView('tab-'+tab);
   updateURL();
+}
+// keep the active tab fully visible when the tab bar scrolls horizontally (mobile)
+function centerTabInView(id) {
+  const list = document.getElementById('tablist'), at = document.getElementById(id);
+  if (!list || !at || list.scrollWidth <= list.clientWidth) return;
+  const lr = list.getBoundingClientRect(), ar = at.getBoundingClientRect(), m = 12;
+  if (ar.left < lr.left + m) list.scrollLeft -= (lr.left + m - ar.left);
+  else if (ar.right > lr.right - m) list.scrollLeft += (ar.right - lr.right + m);
 }
 
 // WAI-ARIA tabs: Left/Right (and Home/End) move between tabs with roving tabindex
@@ -4382,11 +4400,12 @@ document.addEventListener('keydown', e => {
 const TOUR = [
   { target: null, title: 'Welcome to the Map of Design Methods 👋', body: 'A quick tour of how to find the right research methods for your project — it takes under a minute.' },
   { target: '.search-box', title: 'Search & browse', body: 'Find any of 97 methods by name, or scroll the cards. Every card opens full step-by-step guidance.' },
-  { target: '#tablist', title: 'Four ways in', body: 'Explore methods, get tailored advice, build “My Project”, and Compare methods side by side.' },
+  { target: '#tablist', title: 'Five ways in', body: 'Five tabs across the top: Explore the catalogue, get tailored picks from the Method Advisor, build “My Project”, Compare methods side by side, and Learn Analysis with guided tutorials.' },
   { target: '.lens-toggle', title: 'Collection vs Analysis', body: 'Collection methods gather data from users; Analysis methods make sense of data you already have.' },
   { target: '#tab-advisor', title: 'Not sure where to start?', body: 'Describe your project in plain words and the Method Advisor suggests methods that fit.' },
   { target: '#tab-project', title: 'Build an analysis plan', body: 'Add methods to “My Project” to get an automatic Analysis Plan you can export.' },
-  { target: '#tab-learn', title: 'Learn an analysis method', body: 'New to a method? “Learn Analysis” coaches you through it step by step on your own data — with hints, quick checks, and a practice tutor. Seven guided walkthroughs so far, with more on the way.' }
+  { target: '#tab-compare', title: 'Compare side by side', body: 'Shortlist methods and line them up in one table — what each produces, the data it needs, effort and rigour — to choose between similar options with confidence.' },
+  { target: '#tab-learn', title: 'Learn an analysis method', body: 'New to a method? “Learn Analysis” coaches you through it step by step on your own data — with hints, quick checks, charts, and a practice tutor. Seven guided walkthroughs so far, with more on the way.' }
 ];
 let tourIdx = 0, tourLastFocus = null;
 const TOUR_INERT = ['.header', '.phase-legend', '.layout', '.site-footer'];
@@ -4437,6 +4456,8 @@ function showTourStep(i) {
   pop.setAttribute('aria-label', step.title);
   // restart the entrance animation each step
   pop.style.animation = 'none'; void pop.offsetWidth; pop.style.animation = '';
+  // bring tab targets into view first so the spotlight lands correctly on mobile
+  if (step.target && /^#tab-/.test(step.target)) centerTabInView(step.target.slice(1));
   positionTour();
   const nb = document.getElementById('tourNext');
   if (nb) nb.focus();
@@ -4487,6 +4508,41 @@ function mean(a){return a.reduce((x,y)=>x+y,0)/a.length;}
 function median(a){const b=[...a].sort((x,y)=>x-y),m=Math.floor(b.length/2);return b.length%2?b[m]:(b[m-1]+b[m])/2;}
 function sd(a){if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1));}
 function r2(x){return Math.round(x*100)/100;}
+/* ---- chart helpers: data → inline SVG, computed entirely in JS (the tutor never draws) ---- */
+function laDots(vals,X,baseY,color,r){ // a stacked dot plot row; returns {svg, topY}
+  const colW=r*2, buckets={}; let topY=baseY;
+  const svg=[...vals].sort((a,b)=>a-b).map(v=>{
+    const x=X(v), key=Math.round(x/colW), lvl=(buckets[key]=(buckets[key]||0)); buckets[key]++;
+    const cy=baseY-r-lvl*(colW-1); if(cy-r<topY) topY=cy-r;
+    return `<circle cx="${x.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r-0.5}" fill="${color}" fill-opacity=".6" stroke="${color}" stroke-width="1"/>`;
+  }).join('');
+  return {svg, topY};
+}
+function laDotPlot(vals,unit){ // descriptive: one distribution with mean & median markers
+  if(!vals.length) return '';
+  const W=560,H=190,padL=34,padR=34,base=H-42;
+  const lo=Math.min(...vals),hi=Math.max(...vals),span=(hi-lo)||1;
+  const X=v=>padL+(v-lo)/span*(W-padL-padR);
+  const d=laDots(vals,X,base,'#2D5BD0',6);
+  const m=mean(vals),md=median(vals),top=18;
+  const mLine=`<line x1="${X(m).toFixed(1)}" y1="${top}" x2="${X(m).toFixed(1)}" y2="${base}" stroke="#C0392B" stroke-width="2" stroke-dasharray="4 3"/><text x="${X(m).toFixed(1)}" y="${top-4}" fill="#C0392B" font-size="12" text-anchor="middle">mean ${r2(m)}</text>`;
+  const mdLine=`<line x1="${X(md).toFixed(1)}" y1="${top}" x2="${X(md).toFixed(1)}" y2="${base}" stroke="#1E7F4F" stroke-width="2"/><text x="${X(md).toFixed(1)}" y="${base+30}" fill="#1E7F4F" font-size="12" text-anchor="middle">median ${r2(md)}</text>`;
+  const axis=`<line x1="${padL}" y1="${base}" x2="${W-padR}" y2="${base}" stroke="#9AA5B5"/><text x="${padL}" y="${base+16}" font-size="10" fill="#5A6577">${r2(lo)}</text><text x="${W-padR}" y="${base+16}" font-size="10" fill="#5A6577" text-anchor="end">${r2(hi)}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Dot plot of your ${esc(unit||'values')}; each dot is one value, with the mean and median marked. n=${vals.length}, range ${r2(lo)} to ${r2(hi)}.">${axis}${mLine}${mdLine}${d.svg}</svg>`;
+}
+function laGroupPlot(A,B,unit){ // inferential: two groups on a shared axis with group means
+  if(!A.length||!B.length) return '';
+  const all=A.concat(B),lo=Math.min(...all),hi=Math.max(...all),span=(hi-lo)||1;
+  const W=560,H=210,padL=30,padR=28,axisY=184;
+  const X=v=>padL+(v-lo)/span*(W-padL-padR);
+  function row(vals,baseY,color,label){
+    const d=laDots(vals,X,baseY,color,6),m=mean(vals);
+    const mk=`<line x1="${X(m).toFixed(1)}" y1="${d.topY-2}" x2="${X(m).toFixed(1)}" y2="${baseY+6}" stroke="${color}" stroke-width="2" stroke-dasharray="4 3"/><text x="${X(m).toFixed(1)}" y="${d.topY-6}" fill="${color}" font-size="11" text-anchor="middle">${label} mean ${r2(m)}</text>`;
+    return `<text x="6" y="${baseY-2}" font-size="12" font-weight="700" fill="${color}">${label}</text>${d.svg}${mk}`;
+  }
+  const axis=`<line x1="${padL}" y1="${axisY}" x2="${W-padR}" y2="${axisY}" stroke="#9AA5B5"/><text x="${padL}" y="${axisY+15}" font-size="10" fill="#5A6577">${r2(lo)}</text><text x="${W-padR}" y="${axisY+15}" font-size="10" fill="#5A6577" text-anchor="end">${r2(hi)}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Dot plots comparing Group A and Group B on the same ${esc(unit||'scale')}, each with its group mean marked.">${row(A,84,'#2D5BD0','A')}${row(B,168,'#9B59B6','B')}${axis}</svg>`;
+}
 
 /* ============================ method definitions ============================
    Each step: {id,name,title,why,example, fields:[{id,label,type,rows,placeholder}],
@@ -4841,6 +4897,7 @@ const METHODS=[
    why:'Show the distribution, not just a single bar. A dot/box plot reveals spread and outliers that a mean hides. Label axes, start counts at zero, and don’t truncate to exaggerate differences.',
    example:'A box plot of task times shows the two slow users as outliers — far more informative than "mean = 53s".',
    fields:[{id:'viz',label:'What chart will you use, and why?',type:'text',placeholder:'e.g. box plot to show spread + outliers; bar of success rate with CI'}],
+   chart:d=>{ const a=parseNums(d.data); return a.length?laDotPlot(a,d.metric):''; },
    hints:['Prefer charts that show variability (box/dot/strip) over a lone bar of the mean.','One honesty check: would the chart look different with a zero baseline? If so, use one.'],
    check:d=>{ if(wc(d.viz)<3) return {kind:'warn',text:'Pick a chart that shows the distribution, and say why. The chart is part of the argument.'};
      return {kind:'good',text:'Good choice — showing spread keeps the reader from over-reading a single number.'}; } },
@@ -4895,6 +4952,7 @@ const METHODS=[
    example:'Group A mean 41s, Group B 53s, difference 12s, d ≈ 0.6 (a medium effect).',
    fields:[{id:'groupA',label:'Group A numbers',type:'textarea',rows:3,placeholder:'38, 42, 41, 39, 44, 40'},
            {id:'groupB',label:'Group B numbers',type:'textarea',rows:3,placeholder:'55, 60, 48, 70, 52, 58'}],
+   chart:d=>{ const A=parseNums(d.groupA),B=parseNums(d.groupB); return (A.length&&B.length)?laGroupPlot(A,B):''; },
    sample:{groupA:'38, 42, 41, 39, 44, 40, 37, 43',groupB:'55, 60, 48, 70, 52, 58, 64, 51'},
    hints:['Effect size (Cohen’s d) answers "how big?" — a tiny, significant difference can be practically meaningless.','The tool gives d; get the exact p from JASP, jamovi, R, or SPSS using the test you chose.'],
    check:d=>{ const A=parseNums(d.groupA),B=parseNums(d.groupB); if(A.length<2||B.length<2) return {kind:'warn',text:'Enter at least a few numbers in each group to compare them.'};
@@ -5065,6 +5123,12 @@ function renderMethod(){
           <div id="laHintBox" aria-live="polite" aria-atomic="true"></div>
           <div id="laTutorBox" aria-live="polite" aria-atomic="true"><div class="la-idle">💬 When you're ready, ask your tutor for feedback — it'll point at one or two things to try, not mark you.</div></div>
         </section>
+        ${st.chart?`<section class="la-kind la-chart">
+          <div class="la-khead"><span class="la-kicon" aria-hidden="true">📊</span><span class="la-klabel">Chart your data</span></div>
+          <p class="small">A picture of the numbers you entered — drawn in your browser from your own data, so you can see the spread, not just an average.</p>
+          <div class="row"><button class="btn btn-ghost btn-sm" onclick="LA.drawChart()">📈 Draw / update chart</button></div>
+          <div id="laChart" class="la-chartbox" aria-live="polite"></div>
+        </section>`:''}
         ${st.mc?mcHtml(st):''}
       </div>
       <div class="panel" style="display:flex;justify-content:space-between;align-items:center">
@@ -5079,7 +5143,16 @@ function renderMethod(){
   document.getElementById('laFields').addEventListener('input', e=>{ if(e.target.dataset.fid){ workOf(state.methodId)[e.target.dataset.fid]=e.target.value; save(); } });
   // remember the Why/Example disclosure choice per step
   app().querySelectorAll('details.la-read').forEach(d=>d.addEventListener('toggle',()=>{ state.open[d.dataset.okey]=d.open; save(); }));
+  if(st.chart) drawChart(); // auto-render the chart if data is already entered
   const h=document.getElementById('laStepHeading'); if(h) h.focus();
+}
+/* ---- chart tool: render the current step's chart from the student's data ---- */
+function drawChart(){
+  const st=curStep(); if(!st.chart) return;
+  collectCurrent();
+  const box=document.getElementById('laChart'); if(!box) return;
+  const svg=st.chart(workOf(state.methodId));
+  box.innerHTML = svg || '<p class="small">Enter your numbers above, then press “Draw / update chart”.</p>';
 }
 
 function fieldsHtml(st){
@@ -5237,7 +5310,7 @@ function mount(containerId){
 function laQuery(){ const sb=document.getElementById('searchInput'); return (sb?sb.value:'').toLowerCase().trim(); }
 function applySearch(){ if(!state.methodId) renderPicker(); }
 function collectOnLeave(){ if(state.methodId) collectCurrent(); }
-window.LA={ mount, pick, toPicker, go, jump, useSample, showHint, getFeedback, answerMc, exportWork, resetMethod, openSettings, saveKey, useDemo, applySearch, collectOnLeave };
+window.LA={ mount, pick, toPicker, go, jump, useSample, showHint, getFeedback, answerMc, exportWork, resetMethod, openSettings, saveKey, useDemo, applySearch, collectOnLeave, drawChart };
 
 })();
 
