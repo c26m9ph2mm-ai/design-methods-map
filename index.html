@@ -663,6 +663,8 @@
   .learn-ui .step-num{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:#EAEef7;color:var(--textLight);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
   .learn-ui .step-item.active .step-num{background:var(--accent);color:#fff}
   .learn-ui .step-item.done .step-num{background:var(--good);color:#fff}
+  .learn-ui .step-item.visited .step-num{background:#CBD5E0;color:#fff}
+  .learn-ui textarea:focus-visible,.learn-ui input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   .learn-ui .progress-wrap{height:6px;background:#EAEef7;border-radius:4px;margin:.6rem .4rem 0;overflow:hidden}
   .learn-ui .progress-bar{height:100%;background:var(--accent);transition:width .3s}
   .learn-aside-actions{margin-top:.7rem;display:flex;gap:.4rem;flex-wrap:wrap}
@@ -4430,7 +4432,7 @@ const LEARN_STEPS = [
       <label class="fieldlabel" for="f_rq">Your research question</label>
       <input type="text" id="f_rq" placeholder="e.g. Why do older adults avoid online banking?" value="${escHtml(s.rq)}">
       <label class="fieldlabel" for="f_data">Paste your qualitative data <span class="small">(stays in your browser)</span></label>
-      <textarea id="f_data" rows="8" placeholder="Paste transcripts / open-ended responses. Prefix speakers like P1:, P2: if you can.">${escHtml(s.data)}</textarea>
+      <textarea id="f_data" rows="8" aria-label="Your qualitative data — stays in your browser" placeholder="Paste transcripts / open-ended responses. Prefix speakers like P1:, P2: if you can.">${escHtml(s.data)}</textarea>
       <div class="row"><button class="btn btn-ghost btn-sm" onclick="learnUseSample()">Use a sample dataset</button></div>`;
     },
     collect(){ learnState.rq=learnVal('f_rq'); learnState.data=learnVal('f_data'); },
@@ -4445,7 +4447,7 @@ const LEARN_STEPS = [
     why:`Before coding, read everything once and jot first impressions. This "immersion" stops you from coding mechanically and helps you notice tone, contradictions, and surprises. Write notes in your own words — not codes yet.`,
     example:`Note: "Several people improvise safety checks (screenshots, phoning family) — they don't trust feedback."`,
     render(s){ return `
-      <p class="small">Re-read your data, then write 2–4 first-impression notes. What stands out? What surprised you?</p>
+      <label class="fieldlabel small" for="f_fam">Re-read your data, then write 2–4 first-impression notes. What stands out? What surprised you?</label>
       <textarea id="f_fam" rows="5" placeholder="First impressions, in your own words...">${escHtml(s.familiar)}</textarea>`;
     },
     collect(){ learnState.familiar=learnVal('f_fam'); },
@@ -4456,8 +4458,8 @@ const LEARN_STEPS = [
     why:`A code is a short label that captures the meaning of a specific excerpt. Good codes are interpretive (what's going on) not just topics (what it's about). "Distrust of system feedback" is a code; "feedback" is only a topic. Code closely — one idea per excerpt.`,
     example:`Excerpt: "I always double-check by taking a screenshot." → Code: <code>Improvising safety to compensate for low trust</code> (not just "screenshots").`,
     render(s){ return `
-      <p class="small">Pick 4–6 excerpts from your data and give each an interpretive code. One per line, format:
-      <code>excerpt → your code</code></p>
+      <label class="fieldlabel small" for="f_codes">Pick 4–6 excerpts from your data and give each an interpretive code. One per line, format:
+      <code>excerpt → your code</code></label>
       <textarea id="f_codes" rows="7" placeholder='"I couldn&apos;t tell if Continue would send it" → Uncertainty about consequence of an action'>${escHtml(s.codes)}</textarea>`;
     },
     collect(){ learnState.codes=learnVal('f_codes'); },
@@ -4472,8 +4474,8 @@ const LEARN_STEPS = [
     why:`Group related codes that seem to "belong together" into candidate themes. A theme is a pattern of shared meaning, not a bucket of everything on a topic. Watch for codes that sit alone (maybe a sub-theme, maybe noise) and codes that overlap (maybe one code).`,
     example:`Codes "improvising safety", "distrust of feedback", "double-checking" → candidate theme <code>Compensating for untrustworthy feedback</code>.`,
     render(s){ return `
-      <p class="small">Group your codes into 2–3 candidate themes. One group per line, format:
-      <code>Theme guess: code, code, code</code></p>
+      <label class="fieldlabel small" for="f_clusters">Group your codes into 2–3 candidate themes. One group per line, format:
+      <code>Theme guess: code, code, code</code></label>
       <textarea id="f_clusters" rows="6" placeholder="Compensating for untrustworthy feedback: improvising safety, distrust of feedback, double-checking">${escHtml(s.clusters)}</textarea>`;
     },
     collect(){ learnState.clusters=learnVal('f_clusters'); },
@@ -4484,7 +4486,7 @@ const LEARN_STEPS = [
     why:`Name each theme so it tells a reader something (a short phrase, not one word), write a 1–2 sentence definition of its boundary, and attach at least one verbatim quote as evidence. If you can't find a quote, the theme isn't grounded yet.`,
     example:`Theme: "Compensating for untrustworthy feedback" — Def: users build their own safety rituals because the system doesn't reassure them an action worked. Quote: "I always double-check by taking a screenshot."`,
     render(s){ return `
-      <p class="small">For each theme: name, definition, and a quote. Separate themes with a blank line.</p>
+      <label class="fieldlabel small" for="f_themes">For each theme: name, definition, and a quote. Separate themes with a blank line.</label>
       <textarea id="f_themes" rows="8" placeholder="Theme: ...&#10;Definition: ...&#10;Quote: &quot;...&quot;">${escHtml(s.themes)}</textarea>`;
     },
     collect(){ learnState.themes=learnVal('f_themes'); },
@@ -4499,6 +4501,7 @@ const LEARN_STEPS = [
     why:`Turn each theme into a claim that answers your question, note any disconfirming case (where the pattern breaks — this strengthens credibility), and state limitations (small sample, single context). Interpretation is where themes become insight.`,
     example:`Claim: distrust of feedback, not lack of skill, drives abandonment. Disconfirming: P7 abandoned over identity verification, not feedback. Limit: 4 participants, one app.`,
     render(s){ return `
+      <label class="fieldlabel small" for="f_interp">For each theme: a claim that answers your question, a disconfirming case, and limitations.</label>
       <textarea id="f_interp" rows="7" placeholder="Claim per theme...&#10;Disconfirming case...&#10;Limitations...">${escHtml(s.interpret)}</textarea>`;
     },
     collect(){ learnState.interpret=learnVal('f_interp'); },
@@ -4509,6 +4512,7 @@ const LEARN_STEPS = [
     why:`Reflection consolidates learning. Name what surprised you, where your evidence is weakest, and how your own assumptions might have shaped your coding (reflexivity). Then export your work as a mini findings write-up with an audit trail of your decisions.`,
     example:`"I assumed older users struggle with tech, but the data pointed to trust, not ability — I had to re-code."`,
     render(s){ return `
+      <label class="fieldlabel small" for="f_reflect">Reflect: what surprised you? Where is your evidence weakest? How might your assumptions have shaped your coding?</label>
       <textarea id="f_reflect" rows="5" placeholder="What surprised you? Where is your evidence weakest? How might your assumptions have shaped your coding?">${escHtml(s.reflection)}</textarea>
       <div class="row"><button class="btn btn-primary" onclick="learnExport()">Export findings + audit trail</button></div>`;
     },
@@ -4531,7 +4535,9 @@ function learnMethod(){ return LEARN_METHODS.find(m => m.id === learnState.metho
 function learnSteps(){ const m = learnMethod(); return m ? m.steps : []; }
 function learnCollectCurrent(){ const st = learnSteps()[learnState.step]; if (st && st.collect) st.collect(); }
 
-function renderLearn(){
+let learnAutosaveTimer = null;
+function learnAutosave(){ clearTimeout(learnAutosaveTimer); learnAutosaveTimer = setTimeout(() => { learnCollectCurrent(); learnSave(); }, 300); }
+function renderLearn(focusHeading){
   const v = document.getElementById('learnView');
   if (!learnState.methodId) { v.innerHTML = learnPickerHTML(); return; }
   const m = learnMethod();
@@ -4558,7 +4564,10 @@ function renderLearn(){
       </main>
     </div>`;
   learnUpdateAiBadge();
-  learnRenderStep(false);
+  // autosave every keystroke (panel element persists across step re-renders; input events bubble to it)
+  const panel = document.getElementById('learnStepPanel');
+  if (panel) panel.addEventListener('input', learnAutosave);
+  learnRenderStep(!!focusHeading);
 }
 function learnPickerHTML(){
   const guided = new Set(LEARN_METHODS.map(m => m.id));
@@ -4577,7 +4586,7 @@ function learnPickerHTML(){
     <p class="learn-sub">Pick a method and get coached through it step by step, working on your own data (it stays in your browser). Start with a guided walkthrough, or open any method's reference card.</p>
     <div class="learn-grid">${cards}</div>`;
 }
-function learnPick(id){ learnCollectCurrent(); learnState.methodId = id; if (learnState.step == null) learnState.step = 0; learnSave(); renderLearn(); }
+function learnPick(id){ learnCollectCurrent(); learnState.methodId = id; if (learnState.step == null) learnState.step = 0; learnSave(); renderLearn(true); }
 function learnBackToPicker(){ learnCollectCurrent(); learnState.methodId = null; learnSave(); renderLearn(); }
 
 function learnRenderStep(focusHeading){
@@ -4597,10 +4606,10 @@ function learnRenderStep(focusHeading){
           <button class="btn btn-ghost btn-sm" onclick="learnShowHint()">Need a hint?</button>
           <button class="btn btn-primary btn-sm" onclick="learnGetFeedback()" id="learnFbBtn">Ask the tutor for feedback</button>
         </div>
-        <div id="learnHintBox"></div>
-        <div id="learnTutorBox"></div>
+        <div id="learnHintBox" aria-live="polite" aria-atomic="true"></div>
+        <div id="learnTutorBox" aria-live="polite" aria-atomic="true"></div>
       </div>
-      ${mc}
+      <div id="learnMcWrap">${mc}</div>
     </div>`;
   document.getElementById('learnCounter').textContent = `Step ${learnState.step+1} / ${steps.length}`;
   document.getElementById('learnPrevBtn').style.visibility = learnState.step===0 ? 'hidden' : 'visible';
@@ -4608,14 +4617,18 @@ function learnRenderStep(focusHeading){
   learnRenderStepper();
   if (focusHeading) { const hd = document.getElementById('learnStepHeading'); if (hd) hd.focus(); }
 }
+const LEARN_FIELD = { frame:['rq','data'], familiar:['familiar'], code:['codes'], cluster:['clusters'], theme:['themes'], interpret:['interpret'], reflect:['reflection'] };
+function learnStepHasInput(st){ return (LEARN_FIELD[st.id]||[]).some(k => (learnState[k]||'').trim().length>0); }
 function learnRenderStepper(){
   const steps = learnSteps();
   document.getElementById('learnStepper').innerHTML =
     `<h2>Your progress</h2>` +
     steps.map((st,i) => {
-      const done = i<learnState.step, active = i===learnState.step;
-      return `<button type="button" class="step-item ${active?'active':''} ${done?'done':''}" ${active?'aria-current="step"':''} onclick="learnJump(${i})">
-        <span class="step-num">${done?'✓':i+1}</span><span class="step-name">${escHtml(st.name)}</span></button>`;
+      const active = i===learnState.step, has = learnStepHasInput(st), visited = i<learnState.step && !has;
+      const cls = active ? 'active' : (has ? 'done' : (visited ? 'visited' : ''));
+      const status = active ? ' (current)' : (has ? ' (completed)' : (visited ? ' (visited, no input yet)' : ' (not started)'));
+      return `<button type="button" class="step-item ${cls}" ${active?'aria-current="step"':''} aria-label="Go to step ${i+1}: ${escHtml(st.name)}${status}" onclick="learnJump(${i})">
+        <span class="step-num">${has?'✓':i+1}</span><span class="step-name">${escHtml(st.name)}</span></button>`;
     }).join('') +
     `<div class="progress-wrap"><div class="progress-bar" style="width:${(learnState.step/(steps.length-1)*100)}%"></div></div>
      <div class="learn-aside-actions">
@@ -4629,13 +4642,21 @@ function learnMcHtml(st){
     <div class="small" style="color:var(--text);margin-bottom:.3rem">${st.mc.q}</div>
     <div class="mc" role="group" aria-label="Quick check">${st.mc.options.map((o,i) => {
       let cls=''; if (ans!=null) { if (o.ok) cls='correct'; else if (ans===i) cls='wrong'; }
-      return `<button type="button" class="${cls}" aria-pressed="${ans===i}" onclick="learnAnswerMc('${st.id}',${i})">${escHtml(o.t)}</button>`;
+      const tag = ans!=null ? (o.ok ? ', correct answer' : (ans===i ? ', your answer — incorrect' : '')) : '';
+      return `<button type="button" class="${cls}" aria-pressed="${ans===i}" aria-label="${escHtml(o.t)}${tag}" onclick="learnAnswerMc('${st.id}',${i})">${escHtml(o.t)}</button>`;
     }).join('')}</div>
-    <div class="small mc-fb">${ans!=null ? ('→ '+escHtml(st.mc.options[ans].why)) : ''}</div></div>`;
+    <div class="small mc-fb">${ans!=null ? `<strong>${st.mc.options[ans].ok ? '✓ Correct' : '✗ Not quite'}</strong> — ${escHtml(st.mc.options[ans].why)}` : ''}</div></div>`;
 }
-function learnAnswerMc(id,i){ learnState.mc[id]=i; learnSave(); learnRenderStep(false); }
+function learnAnswerMc(id,i){
+  learnCollectCurrent();          // save typed inputs first so nothing is lost
+  learnState.mc[id]=i; learnSave();
+  // update only the quick-check, not the whole step (keeps textareas intact)
+  const w=document.getElementById('learnMcWrap');
+  if (w) w.innerHTML = learnMcHtml(learnSteps()[learnState.step]);
+}
 
 function learnShowHint(){
+  learnCollectCurrent();          // preserve typed inputs before re-render-safe ops
   const id = learnSteps()[learnState.step].id;
   const n = (learnState.hintsShown[id]||0), hints = LEARN_HINTS[id]||[];
   if (n>=hints.length) { document.getElementById('learnHintBox').innerHTML = `<div class="hint"><span class="htag">No more hints —</span> try asking the tutor for feedback on what you've written.</div>`; return; }
@@ -4648,7 +4669,7 @@ function learnShowHint(){
    NOTE for future quantitative paths: compute every numeric/statistical result in JS and
    pass it to the model only to EXPLAIN — never let the LLM produce the numbers. */
 function learnTutorBox(kind,text){
-  document.getElementById('learnTutorBox').innerHTML = `<div class="tutor ${kind}"><div class="who"><span>✨</span> Tutor ${learnState.ai.on?'(AI)':'(demo)'}</div><div class="tutor-body">${escHtml(text)}</div></div>`;
+  document.getElementById('learnTutorBox').innerHTML = `<div class="tutor ${kind}" role="group" aria-label="Tutor feedback"><div class="who"><span aria-hidden="true">✨</span> Tutor feedback ${learnState.ai.on?'(AI)':'(demo)'}</div><div class="tutor-body">${escHtml(text)}</div></div>`;
 }
 async function learnGetFeedback(){
   learnCollectCurrent(); learnSave();
@@ -4656,6 +4677,7 @@ async function learnGetFeedback(){
   const btn = document.getElementById('learnFbBtn');
   if (learnState.ai.on && learnState.ai.key) {
     btn.innerHTML = '<span class="spinner"></span> Thinking…'; btn.disabled = true;
+    document.getElementById('learnTutorBox').innerHTML = `<div class="tutor" role="status"><div class="who"><span aria-hidden="true">✨</span> Tutor feedback (AI)</div><div class="tutor-body"><span class="spinner" aria-hidden="true"></span> Tutor is thinking…</div></div>`;
     try { const txt = await learnAiFeedback(st); learnTutorBox('', txt); }
     catch(e){ learnTutorBox('warn', 'AI request failed ('+(e.message||e)+'). Falling back to the demo tutor.\n\n'+learnDemoFeedback(st)); }
     btn.innerHTML = 'Ask the tutor for feedback'; btn.disabled = false;
@@ -4747,7 +4769,7 @@ function learnGo(d){
   learnState.step = n; learnSave(); learnRenderStep(true);
 }
 function learnJump(i){ learnCollectCurrent(); learnState.step = i; learnSave(); learnRenderStep(true); }
-function learnUseSample(){ learnState.data = LEARN_SAMPLE; if (!learnState.rq) learnState.rq = "Why do first-time users abandon onboarding?"; learnSave(); learnRenderStep(false); }
+function learnUseSample(){ learnCollectCurrent(); learnState.data = LEARN_SAMPLE; if (!learnState.rq) learnState.rq = "Why do first-time users abandon onboarding?"; learnSave(); learnRenderStep(false); }
 function learnExport(){
   learnCollectCurrent(); learnSave();
   const s = learnState, m = learnMethod();
